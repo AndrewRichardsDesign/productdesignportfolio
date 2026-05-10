@@ -38,6 +38,14 @@ const projects = [
     tags: ['SaaS', 'Design System', 'Enterprise'],
     link: '#',
   },
+  {
+    id: 5,
+    title: 'Arcatext',
+    description: 'A translation keyboard.',
+    image: '/project-arcatext-placeholder.svg',
+    tags: ['Mobile', 'Keyboard', 'Translation'],
+    link: '#',
+  },
 ];
 
 export default function Projects() {
