@@ -44,7 +44,7 @@ const projects = [
     description: 'A translation keyboard.',
     image: '/project-arcatext-placeholder.svg',
     tags: ['Mobile', 'Keyboard', 'Translation'],
-    link: '#',
+    link: '#/arcatext',
   },
 ];
 
