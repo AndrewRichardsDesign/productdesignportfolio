@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -316,6 +316,98 @@ function Prose({ children }: { children: React.ReactNode }) {
   );
 }
 
+const tocItems = [
+  { id: 'sec-01', n: '01', label: 'Overview' },
+  { id: 'sec-02', n: '02', label: 'Problem / Opportunity' },
+  { id: 'sec-03', n: '03', label: 'Strategy' },
+  { id: 'sec-04', n: '04', label: 'Product System' },
+  { id: 'sec-05', n: '05', label: 'Key Design Decisions' },
+  { id: 'sec-06', n: '06', label: 'Execution / Outcomes' },
+  { id: 'sec-07', n: '07', label: 'Deeper Case Studies' },
+];
+
+function SideToc() {
+  const [activeId, setActiveId] = useState<string>(tocItems[0].id);
+
+  useEffect(() => {
+    const sections = tocItems
+      .map((item) => document.getElementById(item.id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible.length > 0) {
+          setActiveId(visible[0].target.id);
+        }
+      },
+      {
+        rootMargin: '-30% 0px -55% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', `#/arcatext`);
+    }
+  };
+
+  return (
+    <nav
+      aria-label="Section navigation"
+      className="hidden xl:block fixed top-1/2 left-6 -translate-y-1/2 z-40"
+    >
+      <ol className="space-y-3 text-sm">
+        {tocItems.map((item) => {
+          const isActive = activeId === item.id;
+          return (
+            <li key={item.id}>
+              <a
+                href={`#${item.id}`}
+                onClick={(e) => handleClick(e, item.id)}
+                className={`group flex items-baseline gap-3 py-1 transition-colors duration-200 ${
+                  isActive
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <span
+                  className={`text-xs font-mono ${
+                    isActive ? 'text-primary' : 'text-muted-foreground/70'
+                  }`}
+                >
+                  {item.n}
+                </span>
+                <span
+                  className={`relative leading-snug ${
+                    isActive
+                      ? 'underline underline-offset-4 decoration-primary decoration-2'
+                      : 'no-underline'
+                  }`}
+                >
+                  {item.label}
+                </span>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
 export default function Arcatext() {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -349,6 +441,8 @@ export default function Arcatext() {
 
   return (
     <div ref={rootRef} className="relative">
+      <SideToc />
+
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -425,7 +519,7 @@ export default function Arcatext() {
       </section>
 
       {/* 01 — Overview */}
-      <section className="py-20 sm:py-28">
+      <section id="sec-01" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader number="01" eyebrow="Overview" title="What is" highlight="Arcatext?" />
@@ -546,7 +640,7 @@ export default function Arcatext() {
       </section>
 
       {/* 02 — Problem / Opportunity */}
-      <section className="py-20 sm:py-28">
+      <section id="sec-02" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -642,7 +736,7 @@ export default function Arcatext() {
       </section>
 
       {/* 03 — Strategy */}
-      <section className="py-20 sm:py-28">
+      <section id="sec-03" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -744,7 +838,7 @@ export default function Arcatext() {
       </section>
 
       {/* 04 — Product System */}
-      <section className="py-20 sm:py-28">
+      <section id="sec-04" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -808,7 +902,7 @@ export default function Arcatext() {
       </section>
 
       {/* 05 — Key Design Decisions */}
-      <section className="py-20 sm:py-28">
+      <section id="sec-05" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -844,7 +938,7 @@ export default function Arcatext() {
       </section>
 
       {/* 06 — Execution / Outcomes */}
-      <section className="py-20 sm:py-28">
+      <section id="sec-06" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -1083,7 +1177,7 @@ export default function Arcatext() {
       </section>
 
       {/* 07 — Deeper Case Studies */}
-      <section className="py-20 sm:py-28">
+      <section id="sec-07" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
