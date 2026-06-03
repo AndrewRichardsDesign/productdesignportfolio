@@ -131,11 +131,77 @@ const decisions = [
   },
 ];
 
-const outcomes = [
+const directionalInsights = [
   {
-    title: 'Gathered feedback from students and teachers',
-    desc: 'Mapped current learning behaviors, classroom practices, and the role conversational practice could play alongside existing methods.',
+    title: 'Current apps did not fully prepare learners for real-world conversation',
+    desc: 'Language apps were useful for habit-building, vocabulary, and structured practice, but scripted content often failed to prepare learners for unpredictable, personal, context-dependent conversations.',
   },
+  {
+    title: 'Generic content did not always align with learner goals',
+    desc: 'Learners had specific reasons for studying — travel, relationships, work, school, cultural connection, or communication with a specific person. When lesson content did not match those goals, practice felt less relevant and less motivating.',
+  },
+  {
+    title: 'Real conversations were motivating, but poorly supported',
+    desc: 'Students and language-exchange users were often most engaged when practice connected to real people and real topics. But the tools around those conversations were fragmented.',
+  },
+  {
+    title: 'Switching between tools created too much friction',
+    desc: 'Learners often had to move between messaging apps, translators, keyboards, and reverse-translation tools just to understand and respond to a message.',
+  },
+  {
+    title: 'Users were unlikely to move existing conversations into a new app',
+    desc: 'Learners were unlikely to move established relationships into a dedicated language-learning messenger or convince friends and penpals to adopt another platform. A standalone app could still serve dedicated language-exchange discovery, but it was not the strongest first surface for conversations already happening elsewhere.',
+  },
+  {
+    title: 'Trust mattered as much as accuracy',
+    desc: 'Users know tools like Google Translate and DeepL can be "bad," but they think of bad translation as obvious broken grammar. They are less prepared for the more dangerous failure: a translation that looks fluent but changes tone, sounds unnatural, or subtly shifts intent.',
+    response:
+      'This shaped the Check experience. Reverse translation helps verify intent, while a glanceable naturalness score and teacher-style explanations help users understand whether a message sounds fluent in context — and why a translation works instead of simply trusting the output.',
+  },
+  {
+    title: 'Language nuance needed more controls',
+    desc: 'Studying language-specific translation needs revealed gaps around gender, homographs, script options, and contextual accuracy. Users needed more levers to shape meaning instead of settling for generic outputs.',
+  },
+];
+
+const productResponses = [
+  {
+    insight: 'Reduce friction in translating and understanding messages',
+    response:
+      'A consolidated keyboard experience that brought previously dispersed translation tasks into one writing surface.',
+  },
+  {
+    insight: 'Build confidence before sending',
+    response:
+      'The Check experience: reverse translation, a glanceable naturalness score concept, and teacher-style explanations to verify intent and avoid sending fluent-looking translations that subtly change meaning.',
+  },
+  {
+    insight: 'Support same-language corrections',
+    response:
+      'Part of the Reword feature — improving clarity, grammar, and naturalness even when the user is not translating into another language.',
+  },
+  {
+    insight: 'Lower the barrier for non-Roman script languages',
+    response: 'Alphabet and romanization controls.',
+  },
+  {
+    insight: 'Help users maintain conversation context',
+    response:
+      'The "send a copy" concept, helping users preserve translated context across message exchanges.',
+  },
+  {
+    insight: 'Expose the learning value inside each message',
+    response:
+      'Synonyms, homograph clarification, sentence breakdown, and the Meaning Map concept.',
+  },
+  {
+    insight: 'Support contextual accuracy through user controls',
+    response:
+      'Gender controls, script options, clarification tools, and alternate phrasing.',
+  },
+];
+
+const outcomes = [
   {
     title: 'Defined the product vision',
     desc: 'Shaped Arcatext around a central insight: written conversation can become a personalized language-learning environment.',
@@ -168,6 +234,26 @@ const outcomes = [
     title: 'Established the platform roadmap',
     desc: 'The MVP keyboard is the foundation for AI conversation partners, progress insights, personalized learning paths, and teacher tools.',
   },
+];
+
+const launchQuestions = [
+  { n: '01', q: 'Can users translate with less friction?' },
+  { n: '02', q: 'Do they trust the output enough to send it?' },
+  { n: '03', q: 'Do clarification tools encourage learning behavior?' },
+  { n: '04', q: 'Can usage patterns support the subscription model?' },
+];
+
+const launchSignals = [
+  'Time-to-translation',
+  'Reword completion rate',
+  'Check view usage',
+  'Send-after-check rate',
+  'Edit / regenerate behavior',
+  'Repeat keyboard usage',
+  'Retention',
+  'Language-pair activity',
+  'Free-to-paid conversion',
+  'Token cost per active user',
 ];
 
 const caseStudies = [
@@ -448,6 +534,12 @@ export default function Arcatext() {
                 feasibility, AI behavior, implementation, pricing, and interaction design were
                 not separate tracks — they constantly shaped each other.
               </p>
+              <p>
+                It also deepened my understanding of how design and development depend on each
+                other. There were many features and interaction details I initially wanted to
+                include, but building and testing them in code exposed reliability risks, edge
+                cases, or implementation costs that changed the design direction.
+              </p>
             </Prose>
           </div>
         </div>
@@ -571,6 +663,27 @@ export default function Arcatext() {
               </p>
             </Prose>
           </div>
+
+          <div className="mt-12 reveal">
+            <Prose>
+              <p>
+                Starting with a keyboard gave Arcatext the most versatile entry point into the
+                learner’s communication life. Instead of asking users to practice in one new
+                destination, the keyboard could plug into daily texting with friends and
+                penpals, language-exchange apps, dating apps, email, and AI chatbots. This
+                allowed me to test the core learning hypothesis — that real texting can become
+                effective language practice — across many existing contexts before investing in
+                a dedicated AI conversation platform for more focused learning.
+              </p>
+            </Prose>
+          </div>
+
+          <figure className="mt-12 reveal max-w-3xl">
+            <blockquote className="text-2xl sm:text-3xl font-semibold leading-snug text-balance">
+              “The keyboard is not just a translation shortcut. It is the
+              <span className="gradient-text"> entry point into a larger learning system.</span>”
+            </blockquote>
+          </figure>
 
           <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-6">
             {[
@@ -737,27 +850,235 @@ export default function Arcatext() {
             <SectionHeader
               number="06"
               eyebrow="Execution / Outcomes"
-              title="What I built and"
-              highlight="shipped."
+              title="From discovery to a"
+              highlight="shipped product."
             />
           </div>
 
-          <ol className="space-y-4">
-            {outcomes.map((o, i) => (
-              <li
-                key={o.title}
-                className="reveal flex gap-6 rounded-2xl bg-muted/40 p-6"
-              >
-                <span className="text-sm font-mono text-primary/70 pt-0.5 shrink-0 w-8">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <div>
-                  <h3 className="font-semibold mb-1">{o.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{o.desc}</p>
+          {/* Discovery interviews */}
+          <div className="reveal">
+            <h3 className="text-xl sm:text-2xl font-semibold mb-5">
+              Conducted discovery interviews with learners and teachers
+            </h3>
+            <Prose>
+              <p>
+                I spoke with language students, language teachers, and language-exchange app
+                users to understand how they were currently learning, practicing, and teaching
+                languages. I explored the tools they relied on, where existing methods broke
+                down, what made conversation practice difficult, and what support they needed
+                in real communication contexts.
+              </p>
+              <p>
+                These conversations helped validate the opportunity around texting-based
+                practice and shaped early product decisions — including the shift away from a
+                standalone messaging app and toward a keyboard that could support learners
+                inside the apps they already used.
+              </p>
+            </Prose>
+          </div>
+
+          {/* Research synthesis */}
+          <div className="mt-16 reveal">
+            <h3 className="text-xl sm:text-2xl font-semibold mb-5">Research synthesis</h3>
+            <Prose>
+              <p>
+                To keep early product direction grounded in user needs, I translated interview
+                notes and quotes into affinity themes — tracing each insight back to real user
+                pain points instead of relying on assumptions about what language learners
+                might want.
+              </p>
+              <p>
+                The strongest pattern was that learners did not need another generic practice
+                environment. They needed a way to close the gap between learning and real
+                conversation. Practice had to feel relevant to their goals, reflect the
+                vocabulary and grammar they actually wanted to use, and support either real
+                conversations or highly customizable conversational practice.
+              </p>
+              <p>
+                Further concept exploration, user feedback, market research, and language
+                study helped narrow the strategy. There was overlap across users, but some
+                needs were language-specific — additional support for non-Roman scripts,
+                gendered grammar, and translation context. Studying translation tools also
+                revealed a broader product gap: the complexity and nuance of language was not
+                well supported, and users often had to accept generic outputs because tools
+                lacked meaningful controls.
+              </p>
+            </Prose>
+          </div>
+
+          {/* Directional insights */}
+          <div className="mt-20">
+            <h3 className="text-xl sm:text-2xl font-semibold mb-8 reveal">
+              Directional insights
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {directionalInsights.map((insight) => (
+                <div
+                  key={insight.title}
+                  className="reveal rounded-2xl bg-muted/40 p-6 lg:p-7"
+                >
+                  <h4 className="font-semibold mb-3 text-balance">{insight.title}</h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {insight.desc}
+                  </p>
+                  {insight.response && (
+                    <div className="mt-5 pt-5 border-t border-primary/15">
+                      <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">
+                        Product response
+                      </p>
+                      <p className="text-sm text-foreground/85 leading-relaxed">
+                        {insight.response}
+                      </p>
+                    </div>
+                  )}
                 </div>
-              </li>
-            ))}
-          </ol>
+              ))}
+            </div>
+          </div>
+
+          {/* So what */}
+          <div className="mt-20 reveal rounded-2xl bg-primary/10 p-8 lg:p-10">
+            <p className="text-xs uppercase tracking-[0.2em] text-primary mb-4">So what?</p>
+            <p className="text-xl sm:text-2xl font-semibold leading-snug text-balance mb-5">
+              Arcatext needed to close the gap between learning and
+              <span className="gradient-text"> real conversations.</span>
+            </p>
+            <Prose>
+              <p>
+                It had to support relevant vocabulary and grammar, align with users’
+                interests, and enable practice through real or highly customizable
+                conversations. That led to a keyboard-first strategy: a keyboard could support
+                real conversations wherever they already happened, while also creating a
+                foundation for future AI conversation tools, learning insights, and
+                teacher-facing features.
+              </p>
+            </Prose>
+          </div>
+
+          {/* From insight to product response */}
+          <div className="mt-20">
+            <h3 className="text-xl sm:text-2xl font-semibold mb-8 reveal">
+              From insight to product response
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {productResponses.map((item, i) => (
+                <div
+                  key={item.insight}
+                  className="reveal rounded-2xl bg-muted/40 p-6 lg:p-7"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-xs font-mono text-primary/70">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                      Insight
+                    </span>
+                  </div>
+                  <h4 className="font-semibold mb-4 text-balance">{item.insight}</h4>
+                  <div className="pt-4 border-t border-primary/15">
+                    <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">
+                      Response
+                    </p>
+                    <p className="text-sm text-foreground/85 leading-relaxed">
+                      {item.response}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Competitive product requirement */}
+          <div className="mt-20 reveal">
+            <h3 className="text-xl sm:text-2xl font-semibold mb-5">
+              Competitive product requirement
+            </h3>
+            <Prose>
+              <p>
+                After studying how translation tools are used during texting, it became clear
+                that Arcatext could not only be a better translator — it had to be a better
+                keyboard experience.
+              </p>
+              <p>
+                To earn a place in a daily-use interface, Arcatext needed to preserve familiar
+                typing patterns, reduce friction, and outperform the basic translation
+                workflows available through Apple Translate, Google Translate, DeepL, and
+                Gboard. The product had to bridge experiential gaps while expanding beyond
+                basic translation into confidence, context, and learning.
+              </p>
+            </Prose>
+          </div>
+
+          {/* Shipped */}
+          <div className="mt-20">
+            <h3 className="text-xl sm:text-2xl font-semibold mb-8 reveal">What I shipped</h3>
+            <ol className="space-y-4">
+              {outcomes.map((o, i) => (
+                <li
+                  key={o.title}
+                  className="reveal flex gap-6 rounded-2xl bg-muted/40 p-6"
+                >
+                  <span className="text-sm font-mono text-primary/70 pt-0.5 shrink-0 w-8">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <h4 className="font-semibold mb-1">{o.title}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{o.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Launch measurement plan */}
+          <div className="mt-20">
+            <div className="reveal mb-10">
+              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">
+                Launch measurement plan
+              </p>
+              <h3 className="text-2xl sm:text-3xl font-semibold mb-6 text-balance max-w-3xl">
+                Measurement as part of <span className="gradient-text">launch readiness.</span>
+              </h3>
+              <Prose>
+                <p>
+                  Since Arcatext had not yet launched publicly, I treated measurement as part
+                  of launch readiness. I defined success around four questions.
+                </p>
+              </Prose>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
+              {launchQuestions.map((item) => (
+                <div
+                  key={item.n}
+                  className="reveal rounded-2xl bg-muted/40 p-6 flex gap-5"
+                >
+                  <span className="text-sm font-mono text-primary/70 shrink-0">
+                    {item.n}
+                  </span>
+                  <p className="text-base sm:text-lg text-foreground/90 leading-snug">
+                    {item.q}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="reveal">
+              <h4 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-5">
+                Planned signals
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {launchSignals.map((s) => (
+                  <span
+                    key={s}
+                    className="px-3 py-1.5 text-sm rounded-full bg-muted/60 text-foreground/85"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
