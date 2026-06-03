@@ -368,7 +368,7 @@ export default function Arcatext() {
             </div>
 
             <aside className="lg:col-span-5 reveal">
-              <div className="rounded-2xl border border-border/50 bg-card/50 p-8">
+              <div className="rounded-2xl bg-muted/40 p-8">
                 <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-primary mb-4">
                   <Languages className="w-4 h-4" />
                   Product type
@@ -454,7 +454,7 @@ export default function Arcatext() {
       </section>
 
       {/* 02 — Problem / Opportunity */}
-      <section className="py-20 sm:py-28 border-t border-border/40">
+      <section className="py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -486,7 +486,7 @@ export default function Arcatext() {
               </p>
             </Prose>
 
-            <div className="mt-10 rounded-2xl border border-primary/30 bg-primary/5 p-8">
+            <div className="mt-10 rounded-2xl bg-primary/10 p-8">
               <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">
                 The opportunity
               </p>
@@ -504,7 +504,7 @@ export default function Arcatext() {
               {problems.map((p) => (
                 <div
                   key={p.title}
-                  className="reveal rounded-2xl border border-border/50 bg-card/40 p-6 hover:border-primary/30 transition-colors"
+                  className="reveal rounded-2xl bg-muted/40 p-6 hover:bg-muted/60 transition-colors"
                 >
                   <h4 className="font-semibold mb-2">{p.title}</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
@@ -522,7 +522,7 @@ export default function Arcatext() {
               {opportunities.map((o) => (
                 <div
                   key={o.title}
-                  className="reveal rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-transparent p-6"
+                  className="reveal rounded-2xl bg-gradient-to-br from-primary/10 to-primary/[0.03] p-6"
                 >
                   <h4 className="font-semibold mb-2">{o.title}</h4>
                   <p className="text-sm text-muted-foreground leading-relaxed">{o.desc}</p>
@@ -550,7 +550,7 @@ export default function Arcatext() {
       </section>
 
       {/* 03 — Strategy */}
-      <section className="py-20 sm:py-28 border-t border-border/40">
+      <section className="py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -601,7 +601,7 @@ export default function Arcatext() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="reveal rounded-2xl border border-border/50 bg-card/40 p-6 lg:p-8"
+                className="reveal rounded-2xl bg-muted/40 p-6 lg:p-8"
               >
                 <h3 className="text-lg font-semibold mb-3">{item.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
@@ -609,7 +609,7 @@ export default function Arcatext() {
             ))}
           </div>
 
-          <div className="mt-16 reveal rounded-2xl border border-border/50 bg-card/30 p-8 lg:p-10">
+          <div className="mt-16 reveal rounded-2xl bg-muted/40 p-8 lg:p-10">
             <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">
               Strategic planning artifact
             </p>
@@ -631,7 +631,7 @@ export default function Arcatext() {
       </section>
 
       {/* 04 — Product System */}
-      <section className="py-20 sm:py-28 border-t border-border/40">
+      <section className="py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -661,7 +661,7 @@ export default function Arcatext() {
             {productLoop.map((s, i) => (
               <div
                 key={s.step}
-                className="reveal rounded-2xl border border-border/50 bg-card/40 p-6 flex flex-col gap-4"
+                className="reveal rounded-2xl bg-muted/40 p-6 flex flex-col gap-4"
               >
                 <div className="flex items-center justify-between">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -695,7 +695,7 @@ export default function Arcatext() {
       </section>
 
       {/* 05 — Key Design Decisions */}
-      <section className="py-20 sm:py-28 border-t border-border/40">
+      <section className="py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -719,7 +719,7 @@ export default function Arcatext() {
             {decisions.map((d) => (
               <div
                 key={d.n}
-                className="reveal rounded-2xl border border-border/50 bg-card/40 p-6 lg:p-8 hover:border-primary/30 transition-colors"
+                className="reveal rounded-2xl bg-muted/40 p-6 lg:p-8 hover:bg-muted/60 transition-colors"
               >
                 <span className="text-sm font-mono text-primary/70">{d.n}</span>
                 <h3 className="text-lg lg:text-xl font-semibold mt-2 mb-3">{d.title}</h3>
@@ -731,7 +731,7 @@ export default function Arcatext() {
       </section>
 
       {/* 06 — Execution / Outcomes */}
-      <section className="py-20 sm:py-28 border-t border-border/40">
+      <section className="py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -746,7 +746,7 @@ export default function Arcatext() {
             {outcomes.map((o, i) => (
               <li
                 key={o.title}
-                className="reveal flex gap-6 rounded-2xl border border-border/50 bg-card/40 p-6"
+                className="reveal flex gap-6 rounded-2xl bg-muted/40 p-6"
               >
                 <span className="text-sm font-mono text-primary/70 pt-0.5 shrink-0 w-8">
                   {String(i + 1).padStart(2, '0')}
@@ -762,7 +762,7 @@ export default function Arcatext() {
       </section>
 
       {/* 07 — Deeper Case Studies */}
-      <section className="py-20 sm:py-28 border-t border-border/40">
+      <section className="py-20 sm:py-28">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader
@@ -787,7 +787,7 @@ export default function Arcatext() {
               <a
                 key={cs.title}
                 href="#"
-                className="reveal group rounded-2xl border border-border/50 bg-card/40 p-6 lg:p-8 hover:border-primary/40 hover:bg-card/60 transition-all"
+                className="reveal group rounded-2xl bg-muted/40 p-6 lg:p-8 hover:bg-muted/70 transition-all"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
@@ -810,7 +810,7 @@ export default function Arcatext() {
       </section>
 
       {/* Footer CTA */}
-      <section className="py-24 border-t border-border/40">
+      <section className="py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-balance">
             Want to talk about <span className="gradient-text">Arcatext</span> or
