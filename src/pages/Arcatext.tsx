@@ -592,6 +592,20 @@ export default function Arcatext() {
             </Prose>
           </div>
 
+          <div className="mt-12 reveal">
+            <Prose>
+              <p>
+                Starting with a keyboard gave Arcatext the most versatile entry point into the
+                learner’s communication life. Instead of asking users to practice in one new
+                destination, the keyboard could plug into daily texting with friends and
+                penpals, language-exchange apps, dating apps, email, and AI chatbots. This
+                allowed me to test the core learning hypothesis — that real texting can become
+                effective language practice — across many existing contexts before investing in
+                a dedicated AI conversation platform for more focused learning.
+              </p>
+            </Prose>
+          </div>
+
           <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-6">
             {[
               {
