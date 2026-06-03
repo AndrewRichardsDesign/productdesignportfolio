@@ -170,6 +170,26 @@ const outcomes = [
   },
 ];
 
+const launchQuestions = [
+  { n: '01', q: 'Can users translate with less friction?' },
+  { n: '02', q: 'Do they trust the output enough to send it?' },
+  { n: '03', q: 'Do clarification tools encourage learning behavior?' },
+  { n: '04', q: 'Can usage patterns support the subscription model?' },
+];
+
+const launchSignals = [
+  'Time-to-translation',
+  'Reword completion rate',
+  'Check view usage',
+  'Send-after-check rate',
+  'Edit / regenerate behavior',
+  'Repeat keyboard usage',
+  'Retention',
+  'Language-pair activity',
+  'Free-to-paid conversion',
+  'Token cost per active user',
+];
+
 const caseStudies = [
   {
     title: 'Translation Keyboard UX',
@@ -758,6 +778,56 @@ export default function Arcatext() {
               </li>
             ))}
           </ol>
+
+          {/* Launch measurement plan */}
+          <div className="mt-20">
+            <div className="reveal mb-10">
+              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">
+                Launch measurement plan
+              </p>
+              <h3 className="text-2xl sm:text-3xl font-semibold mb-6 text-balance max-w-3xl">
+                Measurement as part of <span className="gradient-text">launch readiness.</span>
+              </h3>
+              <Prose>
+                <p>
+                  Since Arcatext had not yet launched publicly, I treated measurement as part
+                  of launch readiness. I defined success around four questions.
+                </p>
+              </Prose>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
+              {launchQuestions.map((item) => (
+                <div
+                  key={item.n}
+                  className="reveal rounded-2xl bg-muted/40 p-6 flex gap-5"
+                >
+                  <span className="text-sm font-mono text-primary/70 shrink-0">
+                    {item.n}
+                  </span>
+                  <p className="text-base sm:text-lg text-foreground/90 leading-snug">
+                    {item.q}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="reveal">
+              <h4 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-5">
+                Planned signals
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {launchSignals.map((s) => (
+                  <span
+                    key={s}
+                    className="px-3 py-1.5 text-sm rounded-full bg-muted/60 text-foreground/85"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
