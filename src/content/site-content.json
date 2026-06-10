@@ -396,5 +396,234 @@
         "href": "#"
       }
     ]
+  },
+  "arcatext": {
+    "backToPortfolio": "Back to Portfolio",
+    "brand": "Arcatext",
+    "toc": ["Overview", "Problem / Opportunity", "Strategy", "Product System", "Key Design Decisions", "Execution / Outcomes", "Deeper Case Studies"],
+    "hero": {
+      "status": "In development",
+      "title": "Arcatext",
+      "subtitle": "A translation keyboard that turns real conversations into the lesson — then gives you the insight to grow.",
+      "typeTags": ["AI Translation Keyboard", "Language-Learning Tool", "Messaging Companion"],
+      "roleLabel": "Role",
+      "roleValue": "Founder · Product Designer · iOS Developer",
+      "platformLabel": "Platform",
+      "platformValue": "iOS · Custom keyboard",
+      "surfaceLabel": "Surface",
+      "surfaceValue": "Any messaging app (iMessage, WhatsApp, HelloTalk, …)"
+    },
+    "overview": {
+      "eyebrow": "Overview",
+      "titleLead": "What is",
+      "titleHighlight": "Arcatext?",
+      "intro": [
+        "Arcatext is a language-learning product designed to make the complexity and nuance of language more accessible — and the learning process more natural, engaging, and practical.",
+        "The first phase, a translation keyboard, helps users turn real conversations with friends, penpals, and AI into personalized language-learning experiences. Instead of forcing learners through generic lessons, Arcatext helps them learn from the conversations they actually want to have.",
+        "It combines context-aware translation, clarification tools, and language exposure so users can communicate across languages with greater fluency, accuracy, and confidence."
+      ],
+      "productTypeLabel": "Product type",
+      "productTypeList": ["AI translation keyboard", "Language-learning tool", "Messaging companion", "Future AI conversation platform"],
+      "originTitle": "Origin",
+      "origin": [
+        "Arcatext began as a personal attempt to make multilingual texting feel more fluid. Early exploration exposed the friction of existing translator keyboards and copy-paste workflows, which shifted the project from a conceptual messaging app optimization into a true product able to create value in any messaging app."
+      ],
+      "readingWritingTitle": "The focus on reading and writing",
+      "readingWriting": [
+        "Language learning involves reading, writing, speaking, listening, vocabulary, grammar, and tone. While many tools support guided lessons or speaking practice, the biggest opportunity was in reading and writing — especially in real texting conversations.",
+        "Messaging gives learners time to pause, revise, compare, and understand language before responding. That made it the ideal entry point: a way to turn everyday conversations into personalized learning moments."
+      ],
+      "roleTitle": "My role",
+      "role": [
+        "I led Arcatext as a founder-designer, taking the product from early concept through research, MVP design, implementation, pricing strategy, and launch preparation.",
+        "My role spanned product strategy, UX architecture, interaction design, AI behavior design, front-end and back-end development, and business formation. I created the LLC, developed the iOS app, designed the core translation keyboard experience, and built the foundation for Arcatext to evolve from an MVP into a broader language-learning platform.",
+        "A major shift in the project was learning to work across strategy, design, technology, and business at the same time. Product direction, technical feasibility, AI behavior, implementation, pricing, and interaction design were not separate tracks — they constantly shaped each other.",
+        "It also deepened my understanding of how design and development depend on each other. There were many features and interaction details I initially wanted to include, but building and testing them in code exposed reliability risks, edge cases, or implementation costs that changed the design direction."
+      ]
+    },
+    "problem": {
+      "eyebrow": "Problem / Opportunity",
+      "titleLead": "Most language-learning tools separate practice from",
+      "titleHighlight": "real communication.",
+      "intro": [
+        "Learners spend time on scripted exercises, flashcards, grammar drills, and guided lessons — but those activities don’t always prepare them for the conversations they actually want to have. Real communication is personal, unpredictable, emotional, and full of nuance.",
+        "A learner may know vocabulary from an app but still struggle when texting a friend, replying to a penpal, navigating tone, choosing the right level of formality, reading an unfamiliar script, or understanding why one translation sounds natural and another does not.",
+        "Translation tools solve part of the problem, but they usually focus on producing a result rather than helping the user learn from the moment. They translate the message, but rarely expose the decisions behind the translation."
+      ],
+      "opportunityEyebrow": "The opportunity",
+      "opportunityLead": "What if everyday messages could become personalized",
+      "opportunityHighlight": "language-learning moments?",
+      "problemsTitle": "Key problems",
+      "problems": [
+        { "title": "Learning is disconnected from real life", "desc": "Scripted exercises rarely prepare learners for the unpredictable, personal conversations they actually want to have." },
+        { "title": "Generic paths over personal goals", "desc": "Guided systems decide what to learn next, even when those lessons ignore the relationships and topics that motivate the user." },
+        { "title": "Translators solve the message, not the moment", "desc": "Most tools produce a result without explaining why a translation works — or how meaning shifts through tone, gender, or context." },
+        { "title": "Nuance is hidden in a black box", "desc": "Users often need to adjust gender, register, or word choice, but those decisions are buried inside the translation engine." },
+        { "title": "Unfamiliar scripts add a second barrier", "desc": "For Japanese, Arabic, Hindi, Korean, Thai, Armenian, and others, the writing system is its own challenge on top of the language." }
+      ],
+      "opportunitiesTitle": "Product opportunities",
+      "opportunities": [
+        { "title": "Use natural conversations as lessons", "desc": "Every message becomes a chance to learn vocabulary, grammar, tone, and cultural nuance in context." },
+        { "title": "Give users control over meaning", "desc": "Treat translation as a dialogue — clarify ambiguity, compare alternatives, adjust nuance." },
+        { "title": "Turn translation into feedback", "desc": "Reverse translation, synonyms, and homograph clarification build confidence instead of blind copying." },
+        { "title": "Bridge scripts with romanization", "desc": "Romanization connects meaning, pronunciation, and native script — letting learners participate before full literacy." },
+        { "title": "Learn from real behavior", "desc": "Real conversations reveal recurring words, grammar gaps, and topics — the foundation for an adaptive learning path." }
+      ],
+      "closing": [
+        "Before Arcatext, practicing through texting often meant a multi-step process just to get a translation: translating outgoing messages, using separate tools to understand incoming messages, re-translating earlier messages to maintain context, and still having limited control over gender, homographs, script, and tone.",
+        "Arcatext reduces that friction by bringing translation, context, and clarification into one integrated writing experience."
+      ]
+    },
+    "strategy": {
+      "eyebrow": "Strategy",
+      "titleLead": "Balancing the learner, the product, the system, and the",
+      "titleHighlight": "market.",
+      "intro": [
+        "Product strategy meant constantly weighing the relationship between the learner, the product experience, the technical system, and the market — prioritizing what would reduce friction now while setting up the product for a broader language-learning platform later."
+      ],
+      "second": [
+        "Starting with a keyboard gave Arcatext the most versatile entry point into the learner’s communication life. Instead of asking users to practice in one new destination, the keyboard could plug into daily texting with friends and penpals, language-exchange apps, dating apps, email, and AI chatbots. This allowed me to test the core learning hypothesis — that real texting can become effective language practice — across many existing contexts before investing in a dedicated AI conversation platform for more focused learning."
+      ],
+      "quoteLead": "“The keyboard is not just a translation shortcut. It is the",
+      "quoteHighlight": "entry point into a larger learning system.”",
+      "cards": [
+        { "title": "Start where learners already communicate", "desc": "Build Arcatext as a keyboard so it works inside iMessage, WhatsApp, HelloTalk, Instagram, dating apps, and email — available at the exact moment a user needs help." },
+        { "title": "Messaging app vs. keyboard", "desc": "Evaluated building a new messaging app, but learners were unlikely to move existing conversations or convince contacts to switch platforms. The keyboard meets users where their relationships already exist." },
+        { "title": "Competitive review", "desc": "Existing translation keyboards introduced cost, usability, or reliability issues. That pushed the product toward a purpose-built keyboard focused on one-tap translation and minimal interruption to the texting flow." },
+        { "title": "Serve multiple language levels", "desc": "Beginners get a safe communication assistant. Intermediates get a feedback tool. Advanced learners get a nuance tool. The product grows with the user." },
+        { "title": "Leverage real relationships first", "desc": "Begin with the conversations users already care about — friends, penpals, classmates, partners, exchange partners — then expand into 24/7 AI conversations once the core learning loop is established." },
+        { "title": "Build toward a personalized learning system", "desc": "Repeated communication becomes structured insight: vocabulary, grammar patterns, translation choices, confidence gaps. The foundation for adaptive practice and teacher tools." }
+      ],
+      "artifactEyebrow": "Strategic planning artifact",
+      "artifactTitle": "A four-phase product strategy canvas",
+      "artifact": [
+        "To map the product beyond the MVP, I created a strategy canvas organizing Arcatext across four phases: an integrated translation keyboard, an AI conversation platform, data-driven learning insights, and teacher tools. The canvas mapped target users, competitive disruption, feature evolution, revenue streams, and long-term AI infrastructure — connecting near-term UX decisions to a scalable product strategy."
+      ]
+    },
+    "productSystem": {
+      "eyebrow": "Product System",
+      "titleLead": "Built around a",
+      "titleHighlight": "simple loop.",
+      "loop": [
+        { "step": "Write", "icon": "PenLine", "desc": "Start with something the user actually wants to say — to a friend, a penpal, a class, or an AI." },
+        { "step": "Reword", "icon": "Sparkles", "desc": "Translate or refine the message while preserving intent, tone, and language-specific nuance." },
+        { "step": "Check", "icon": "ShieldCheck", "desc": "Inspect the result before sending. Reverse translation and alternates build trust in the output." },
+        { "step": "Clarify", "icon": "HelpCircle", "desc": "Resolve ambiguity — homographs, gender, formality, script — so meaning stays in the user’s control." },
+        { "step": "Learn", "icon": "GraduationCap", "desc": "Turn each interaction into vocabulary, grammar, and confidence the user can build on over time." }
+      ],
+      "closing": [
+        "The product system is designed to make translation useful in the moment while also turning that moment into learning. The Reword experience supports context-aware translation, grammar correction, tone refinement, and language-specific options like speaker gender, recipient gender, group gender, and script preferences. The Check experience helps users verify meaning before sending, so they avoid blindly sending text they don’t understand."
+      ]
+    },
+    "decisions": {
+      "eyebrow": "Key Design Decisions",
+      "titleLead": "Design principle:",
+      "titleHighlight": "minimize interruption.",
+      "intro": [
+        "Every interaction needed to preserve the flow of texting rather than pull the user into a separate learning task."
+      ],
+      "items": [
+        { "n": "01", "title": "Embed learning inside the writing surface", "desc": "A keyboard sits inside iMessage, WhatsApp, HelloTalk, Instagram, dating apps, email — meeting users where their relationships already exist instead of asking them to leave the conversation." },
+        { "n": "02", "title": "Treat translation as a learning interaction", "desc": "Most translators present a single output and expect trust. Arcatext lets users inspect, compare, reverse-check, and clarify — shifting the product from translator to learning companion." },
+        { "n": "03", "title": "Make nuance controllable", "desc": "Expose hidden translation decisions: gender, tone, formality, script, regional variation. Translation isn’t one fixed answer — it’s a set of meaning decisions." },
+        { "n": "04", "title": "Support confidence before sending", "desc": "The Check experience reduces the fear of sending something wrong, awkward, or unintended — supporting both communication and learning confidence." },
+        { "n": "05", "title": "Design for multiple fluency levels", "desc": "Beginner: a safe communication assistant. Intermediate: a feedback tool. Advanced: a nuance tool. The product reveals depth as the user grows." },
+        { "n": "06", "title": "Use real conversations as the curriculum", "desc": "Instead of a fixed sequence, the user’s actual writing becomes the source of learning — making the path personal, relevant, and emotionally meaningful." }
+      ]
+    },
+    "execution": {
+      "eyebrow": "Execution / Outcomes",
+      "titleLead": "From discovery to a",
+      "titleHighlight": "shipped product.",
+      "discoveryTitle": "Conducted discovery interviews with learners and teachers",
+      "discovery": [
+        "I spoke with language students, language teachers, and language-exchange app users to understand how they were currently learning, practicing, and teaching languages. I explored the tools they relied on, where existing methods broke down, what made conversation practice difficult, and what support they needed in real communication contexts.",
+        "These conversations helped validate the opportunity around texting-based practice and shaped early product decisions — including the shift away from a standalone messaging app and toward a keyboard that could support learners inside the apps they already used."
+      ],
+      "synthesisTitle": "Research synthesis",
+      "synthesis": [
+        "To keep early product direction grounded in user needs, I translated interview notes and quotes into affinity themes — tracing each insight back to real user pain points instead of relying on assumptions about what language learners might want.",
+        "The strongest pattern was that learners did not need another generic practice environment. They needed a way to close the gap between learning and real conversation. Practice had to feel relevant to their goals, reflect the vocabulary and grammar they actually wanted to use, and support either real conversations or highly customizable conversational practice.",
+        "Further concept exploration, user feedback, market research, and language study helped narrow the strategy. There was overlap across users, but some needs were language-specific — additional support for non-Roman scripts, gendered grammar, and translation context. Studying translation tools also revealed a broader product gap: the complexity and nuance of language was not well supported, and users often had to accept generic outputs because tools lacked meaningful controls."
+      ],
+      "directionalTitle": "Directional insights",
+      "directionalInsights": [
+        { "title": "Current apps did not fully prepare learners for real-world conversation", "desc": "Language apps were useful for habit-building, vocabulary, and structured practice, but scripted content often failed to prepare learners for unpredictable, personal, context-dependent conversations.", "response": "" },
+        { "title": "Generic content did not always align with learner goals", "desc": "Learners had specific reasons for studying — travel, relationships, work, school, cultural connection, or communication with a specific person. When lesson content did not match those goals, practice felt less relevant and less motivating.", "response": "" },
+        { "title": "Real conversations were motivating, but poorly supported", "desc": "Students and language-exchange users were often most engaged when practice connected to real people and real topics. But the tools around those conversations were fragmented.", "response": "" },
+        { "title": "Switching between tools created too much friction", "desc": "Learners often had to move between messaging apps, translators, keyboards, and reverse-translation tools just to understand and respond to a message.", "response": "" },
+        { "title": "Users were unlikely to move existing conversations into a new app", "desc": "Learners were unlikely to move established relationships into a dedicated language-learning messenger or convince friends and penpals to adopt another platform. A standalone app could still serve dedicated language-exchange discovery, but it was not the strongest first surface for conversations already happening elsewhere.", "response": "" },
+        { "title": "Trust mattered as much as accuracy", "desc": "Users know tools like Google Translate and DeepL can be \"bad,\" but they think of bad translation as obvious broken grammar. They are less prepared for the more dangerous failure: a translation that looks fluent but changes tone, sounds unnatural, or subtly shifts intent.", "response": "This shaped the Check experience. Reverse translation helps verify intent, while a glanceable naturalness score and teacher-style explanations help users understand whether a message sounds fluent in context — and why a translation works instead of simply trusting the output." },
+        { "title": "Language nuance needed more controls", "desc": "Studying language-specific translation needs revealed gaps around gender, homographs, script options, and contextual accuracy. Users needed more levers to shape meaning instead of settling for generic outputs.", "response": "" }
+      ],
+      "soWhatLabel": "So what?",
+      "soWhatLead": "Arcatext needed to close the gap between learning and",
+      "soWhatHighlight": "real conversations.",
+      "soWhat": [
+        "It had to support relevant vocabulary and grammar, align with users’ interests, and enable practice through real or highly customizable conversations. That led to a keyboard-first strategy: a keyboard could support real conversations wherever they already happened, while also creating a foundation for future AI conversation tools, learning insights, and teacher-facing features."
+      ],
+      "insightToResponseTitle": "From insight to product response",
+      "productResponses": [
+        { "insight": "Reduce friction in translating and understanding messages", "response": "A consolidated keyboard experience that brought previously dispersed translation tasks into one writing surface." },
+        { "insight": "Build confidence before sending", "response": "The Check experience: reverse translation, a glanceable naturalness score concept, and teacher-style explanations to verify intent and avoid sending fluent-looking translations that subtly change meaning." },
+        { "insight": "Support same-language corrections", "response": "Part of the Reword feature — improving clarity, grammar, and naturalness even when the user is not translating into another language." },
+        { "insight": "Lower the barrier for non-Roman script languages", "response": "Alphabet and romanization controls." },
+        { "insight": "Help users maintain conversation context", "response": "The \"send a copy\" concept, helping users preserve translated context across message exchanges." },
+        { "insight": "Expose the learning value inside each message", "response": "Synonyms, homograph clarification, sentence breakdown, and the Meaning Map concept." },
+        { "insight": "Support contextual accuracy through user controls", "response": "Gender controls, script options, clarification tools, and alternate phrasing." }
+      ],
+      "competitiveTitle": "Competitive product requirement",
+      "competitive": [
+        "After studying how translation tools are used during texting, it became clear that Arcatext could not only be a better translator — it had to be a better keyboard experience.",
+        "To earn a place in a daily-use interface, Arcatext needed to preserve familiar typing patterns, reduce friction, and outperform the basic translation workflows available through Apple Translate, Google Translate, DeepL, and Gboard. The product had to bridge experiential gaps while expanding beyond basic translation into confidence, context, and learning."
+      ],
+      "shippedTitle": "What I shipped",
+      "outcomes": [
+        { "title": "Defined the product vision", "desc": "Shaped Arcatext around a central insight: written conversation can become a personalized language-learning environment." },
+        { "title": "Built a web-based proof of concept", "desc": "Used HTML, JavaScript, and the ChatGPT API to validate the core Reword behavior before committing to the iOS keyboard." },
+        { "title": "Designed the MVP translation keyboard", "desc": "Shipped the first product surface inside existing messaging apps, supporting users in real communication contexts." },
+        { "title": "Built the Reword experience", "desc": "The core translation interaction — transforming an original message into a natural target-language version while preserving intent." },
+        { "title": "Designed the Check experience", "desc": "A pre-send verification flow that addresses a major trust issue: users copying translations without knowing whether the output matches intent." },
+        { "title": "Added nuance controls", "desc": "Speaker gender, recipient gender, group-chat gender, alphabet/script options, synonyms, reverse translation, and homograph clarification." },
+        { "title": "Developed a scalable language-resource strategy", "desc": "A structured translation pool for common messages and variations — a path toward faster responses, lower AI cost, and reusable linguistic data." },
+        { "title": "Established the platform roadmap", "desc": "The MVP keyboard is the foundation for AI conversation partners, progress insights, personalized learning paths, and teacher tools." }
+      ],
+      "launchEyebrow": "Launch measurement plan",
+      "launchLead": "Measurement as part of",
+      "launchHighlight": "launch readiness.",
+      "launch": [
+        "Since Arcatext had not yet launched publicly, I treated measurement as part of launch readiness. I defined success around four questions."
+      ],
+      "launchQuestions": [
+        { "n": "01", "q": "Can users translate with less friction?" },
+        { "n": "02", "q": "Do they trust the output enough to send it?" },
+        { "n": "03", "q": "Do clarification tools encourage learning behavior?" },
+        { "n": "04", "q": "Can usage patterns support the subscription model?" }
+      ],
+      "plannedSignalsLabel": "Planned signals",
+      "launchSignals": ["Time-to-translation", "Reword completion rate", "Check view usage", "Send-after-check rate", "Edit / regenerate behavior", "Repeat keyboard usage", "Retention", "Language-pair activity", "Free-to-paid conversion", "Token cost per active user"]
+    },
+    "caseStudies": {
+      "eyebrow": "Deeper Case Studies",
+      "titleLead": "Focused looks at the most complex",
+      "titleHighlight": "design problems.",
+      "intro": [
+        "The Arcatext project page tells the high-level product story. Individual case studies go deeper on the specific design problems that shaped the product."
+      ],
+      "items": [
+        { "title": "Translation Keyboard UX", "question": "How might we design a keyboard experience that feels lightweight, fast, and useful inside any messaging app?" },
+        { "title": "Check View", "question": "How might we help users trust a translation before sending it?" },
+        { "title": "Homograph Clarification", "question": "How might we help users control meaning when one word has multiple possible interpretations?" },
+        { "title": "Gender-Aware Translation", "question": "How might we make gendered language visible and controllable without overwhelming the user?" },
+        { "title": "Learning Insights", "question": "How might real conversations become measurable progress?" }
+      ]
+    },
+    "footerCta": {
+      "titleLead": "Want to talk about",
+      "titleHighlight": "Arcatext",
+      "titleRest": "or language-learning design?",
+      "getInTouch": "Get in Touch",
+      "backToProjects": "Back to Projects"
+    }
   }
 }
