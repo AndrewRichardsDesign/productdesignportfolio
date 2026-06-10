@@ -2,47 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Award, Briefcase, Coffee, Heart, MapPin, Sparkles } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { useContent } from '@/content/ContentContext';
+import { Editable } from '@/content/Editable';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const stats = [
-  { value: 8, suffix: '+', label: 'Years Experience' },
-  { value: 50, suffix: '+', label: 'Projects Delivered' },
-  { value: 30, suffix: '+', label: 'Happy Clients' },
-  { value: 12, suffix: '', label: 'Design Awards' },
-];
-
-const skills = [
-  'UI/UX Design',
-  'Design Systems',
-  'User Research',
-  'Prototyping',
-  'Brand Strategy',
-  'Motion Design',
-  'Figma',
-  'Adobe Creative Suite',
-];
-
-const experiences = [
-  {
-    role: 'Senior Product Designer',
-    company: 'Tech Innovations Inc.',
-    period: '2021 - Present',
-    description: 'Leading design for enterprise SaaS products, managing a team of 4 designers.',
-  },
-  {
-    role: 'Product Designer',
-    company: 'Digital Agency Studio',
-    period: '2018 - 2021',
-    description: 'Designed mobile and web experiences for Fortune 500 clients.',
-  },
-  {
-    role: 'UI/UX Designer',
-    company: 'StartupXYZ',
-    period: '2016 - 2018',
-    description: 'Built design systems and user interfaces from the ground up.',
-  },
-];
+const personalIcons: Record<string, LucideIcon> = {
+  Coffee,
+  Heart,
+};
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const [count, setCount] = useState(0);
@@ -81,7 +50,50 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   );
 }
 
+/** In admin mode, edit the counter as plain "value+suffix" text; parse back on blur. */
+function EditableStatValue({ index }: { index: number }) {
+  const { content, setText } = useContent();
+  const stat = content.about.stats[index];
+  const ref = useRef<HTMLSpanElement>(null);
+  const display = `${stat.value}${stat.suffix}`;
+
+  useEffect(() => {
+    const el = ref.current;
+    if (el && document.activeElement !== el && el.innerText !== display) {
+      el.innerText = display;
+    }
+  }, [display]);
+
+  return (
+    <span
+      ref={ref}
+      className="admin-editable tabular-nums"
+      contentEditable
+      suppressContentEditableWarning
+      spellCheck={false}
+      title="Editing: number + suffix"
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          e.currentTarget.blur();
+        }
+      }}
+      onBlur={(e) => {
+        const text = e.currentTarget.innerText.trim();
+        const m = text.match(/^(-?\d+(?:\.\d+)?)\s*(.*)$/);
+        setText(`about.stats.${index}.value`, m ? Number(m[1]) : 0);
+        setText(`about.stats.${index}.suffix`, m ? m[2] : text);
+      }}
+    >
+      {display}
+    </span>
+  );
+}
+
 export default function About() {
+  const { content, isAdmin } = useContent();
+  const about = content.about;
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -180,28 +192,29 @@ export default function About() {
             {/* Section Title */}
             <div className="animate-item">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                About <span className="gradient-text">Me</span>
+                <Editable as="span" path="about.headingLead" />{' '}
+                <Editable as="span" path="about.headingHighlight" className="gradient-text" />
               </h2>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <MapPin className="w-4 h-4" />
-                <span className="text-sm">San Francisco, CA</span>
+                <Editable as="span" path="about.location" className="text-sm" />
               </div>
             </div>
 
             {/* Bio */}
             <div className="animate-item space-y-4">
-              <p className="text-lg text-foreground/90 leading-relaxed">
-                I&apos;m a senior digital product designer with over 8 years of experience 
-                crafting digital experiences that matter. My approach combines strategic 
-                thinking with pixel-perfect execution, ensuring every design decision 
-                serves both user needs and business goals.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                I believe great design is invisible—it simply works. My process is rooted 
-                in empathy, validated by research, and refined through iteration. I&apos;ve 
-                had the privilege of working with startups and Fortune 500 companies alike, 
-                helping them transform complex challenges into intuitive solutions.
-              </p>
+              <Editable
+                as="p"
+                path="about.bio1"
+                multiline
+                className="text-lg text-foreground/90 leading-relaxed"
+              />
+              <Editable
+                as="p"
+                path="about.bio2"
+                multiline
+                className="text-muted-foreground leading-relaxed"
+              />
             </div>
 
             {/* Philosophy */}
@@ -211,11 +224,13 @@ export default function About() {
                   <Sparkles className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2">Design Philosophy</h3>
-                  <p className="text-sm text-muted-foreground">
-                    &ldquo;Design is not just what it looks like and feels like. 
-                    Design is how it works.&rdquo; — Steve Jobs
-                  </p>
+                  <Editable as="h3" path="about.philosophyTitle" className="font-semibold mb-2" />
+                  <Editable
+                    as="p"
+                    path="about.philosophyQuote"
+                    multiline
+                    className="text-sm text-muted-foreground"
+                  />
                 </div>
               </div>
             </div>
@@ -224,16 +239,16 @@ export default function About() {
             <div className="animate-item">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
                 <Briefcase className="w-4 h-4 text-primary" />
-                Skills & Expertise
+                <Editable as="span" path="about.skillsTitle" />
               </h3>
               <div className="skills-container flex flex-wrap gap-2">
-                {skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="skill-tag px-4 py-2 text-sm font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors duration-200 cursor-default"
-                  >
-                    {skill}
-                  </span>
+                {about.skills.map((_, i) => (
+                  <Editable
+                    key={i}
+                    as="span"
+                    path={`about.skills.${i}`}
+                    className="skill-tag px-4 py-2 text-sm font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors duration-200"
+                  />
                 ))}
               </div>
             </div>
@@ -242,18 +257,18 @@ export default function About() {
             <div className="animate-item">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
                 <Award className="w-4 h-4 text-primary" />
-                Experience
+                <Editable as="span" path="about.experienceTitle" />
               </h3>
               <div className="space-y-4">
-                {experiences.map((exp, i) => (
+                {about.experiences.map((_, i) => (
                   <div
                     key={i}
                     className="relative pl-6 pb-4 border-l border-border/50 last:pb-0"
                   >
                     <div className="absolute left-0 top-1.5 w-2 h-2 rounded-full bg-primary -translate-x-1/2" />
-                    <h4 className="font-medium text-sm">{exp.role}</h4>
-                    <p className="text-sm text-muted-foreground">{exp.company}</p>
-                    <p className="text-xs text-muted-foreground/70 mt-1">{exp.period}</p>
+                    <Editable as="h4" path={`about.experiences.${i}.role`} className="font-medium text-sm" />
+                    <Editable as="p" path={`about.experiences.${i}.company`} className="text-sm text-muted-foreground" />
+                    <Editable as="p" path={`about.experiences.${i}.period`} className="text-xs text-muted-foreground/70 mt-1" />
                   </div>
                 ))}
               </div>
@@ -261,14 +276,15 @@ export default function About() {
 
             {/* Personal Touch */}
             <div className="animate-item flex items-center gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Coffee className="w-4 h-4" />
-                <span>Coffee enthusiast</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Heart className="w-4 h-4" />
-                <span>Cat lover</span>
-              </div>
+              {about.personal.map((item, i) => {
+                const Icon = personalIcons[item.icon] ?? Coffee;
+                return (
+                  <div key={i} className="flex items-center gap-2">
+                    <Icon className="w-4 h-4" />
+                    <Editable as="span" path={`about.personal.${i}.text`} />
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -300,8 +316,8 @@ export default function About() {
                     <Award className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground">Recognition</p>
-                    <p className="font-semibold text-sm">Top Designer 2024</p>
+                    <Editable as="p" path="about.badgeLabel" className="text-xs text-muted-foreground" />
+                    <Editable as="p" path="about.badgeValue" className="font-semibold text-sm" />
                   </div>
                 </div>
               </div>
@@ -314,15 +330,19 @@ export default function About() {
           ref={statsRef}
           className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6"
         >
-          {stats.map((stat, i) => (
+          {about.stats.map((stat, i) => (
             <div
               key={i}
               className="stat-item text-center p-6 rounded-2xl bg-card/50 border border-border/30 hover:border-primary/20 transition-colors duration-300"
             >
               <div className="text-3xl sm:text-4xl font-bold gradient-text mb-2">
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                {isAdmin ? (
+                  <EditableStatValue index={i} />
+                ) : (
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                )}
               </div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
+              <Editable as="div" path={`about.stats.${i}.label`} className="text-sm text-muted-foreground" />
             </div>
           ))}
         </div>

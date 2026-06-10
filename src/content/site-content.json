@@ -1,0 +1,211 @@
+{
+  "nav": {
+    "logo": "Portfolio",
+    "links": [
+      { "name": "Home", "href": "#home" },
+      { "name": "Projects", "href": "#projects" },
+      { "name": "Case Studies", "href": "#case-studies" },
+      { "name": "About", "href": "#about" },
+      { "name": "Contact", "href": "#contact" }
+    ]
+  },
+  "hero": {
+    "badge": "Available for new projects",
+    "title": "Digital Product Designer",
+    "subtitle": "Crafting immersive digital experiences that captivate, convert, and inspire. I transform complex problems into elegant solutions.",
+    "ctaPrimary": "View My Work",
+    "ctaSecondary": "Get in Touch",
+    "scrollText": "Scroll to explore",
+    "stats": [
+      { "value": "8+", "label": "Years Experience" },
+      { "value": "50+", "label": "Projects Delivered" },
+      { "value": "30+", "label": "Happy Clients" },
+      { "value": "12", "label": "Design Awards" }
+    ]
+  },
+  "projects": {
+    "headingLead": "Selected",
+    "headingHighlight": "Projects",
+    "subtitle": "A curated collection of work that showcases my approach to solving complex design challenges.",
+    "viewProject": "View Project",
+    "viewAll": "View All Projects",
+    "items": [
+      {
+        "id": 1,
+        "title": "Arcatext",
+        "description": "A translation keyboard.",
+        "image": "/project-arcatext-placeholder.svg",
+        "tags": ["Mobile", "Keyboard", "Translation"],
+        "link": "#/arcatext"
+      },
+      {
+        "id": 2,
+        "title": "Conversant",
+        "description": "Coming soon.",
+        "image": "/project-conversant-placeholder.svg",
+        "tags": ["Product Design"],
+        "link": "#"
+      },
+      {
+        "id": 3,
+        "title": "USAA Mobile App",
+        "description": "Coming soon.",
+        "image": "/project-usaa-placeholder.svg",
+        "tags": ["Mobile App", "Financial Services"],
+        "link": "#"
+      }
+    ]
+  },
+  "caseStudies": {
+    "headingLead": "Case",
+    "headingHighlight": "Studies",
+    "subtitle": "Deep dives into my most impactful projects, from discovery to delivery.",
+    "readMore": "Read Full Case Study",
+    "items": [
+      {
+        "id": 1,
+        "title": "Revolutionizing Banking for Gen Z",
+        "subtitle": "Complete redesign of mobile banking experience",
+        "image": "/case-study-banking.jpg",
+        "duration": "6 months",
+        "team": "5 designers",
+        "stats": [
+          { "label": "User Engagement", "value": "+47%" },
+          { "label": "App Store Rating", "value": "4.8" },
+          { "label": "Daily Active Users", "value": "2M+" }
+        ],
+        "highlights": [
+          { "icon": "Target", "title": "Challenge", "desc": "Simplify complex financial operations for young users" },
+          { "icon": "Lightbulb", "title": "Solution", "desc": "Gamified savings goals with intuitive visual feedback" },
+          { "icon": "Users", "title": "Impact", "desc": "3x increase in savings account openings" }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Healthcare at Your Fingertips",
+        "subtitle": "Telemedicine platform design",
+        "image": "/case-study-telemedicine.jpg",
+        "duration": "8 months",
+        "team": "8 designers",
+        "stats": [
+          { "label": "Patient Satisfaction", "value": "94%" },
+          { "label": "Booking Conversion", "value": "+62%" },
+          { "label": "Video Call Quality", "value": "99.9%" }
+        ],
+        "highlights": [
+          { "icon": "Target", "title": "Challenge", "desc": "Reduce friction in virtual healthcare access" },
+          { "icon": "Lightbulb", "title": "Solution", "desc": "One-tap appointment booking with smart matching" },
+          { "icon": "Users", "title": "Impact", "desc": "500K+ virtual consultations monthly" }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "The Future of Online Learning",
+        "subtitle": "EdTech platform transformation",
+        "image": "/case-study-edtech.jpg",
+        "duration": "10 months",
+        "team": "12 designers",
+        "stats": [
+          { "label": "Course Completion", "value": "+38%" },
+          { "label": "Student Engagement", "value": "4.5h/day" },
+          { "label": "NPS Score", "value": "72" }
+        ],
+        "highlights": [
+          { "icon": "Target", "title": "Challenge", "desc": "Combat low engagement in online courses" },
+          { "icon": "Lightbulb", "title": "Solution", "desc": "Interactive progress tracking with social features" },
+          { "icon": "Users", "title": "Impact", "desc": "1M+ active learners worldwide" }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Sustainable Fashion Marketplace",
+        "subtitle": "Eco-conscious e-commerce experience",
+        "image": "/case-study-fashion.jpg",
+        "duration": "5 months",
+        "team": "4 designers",
+        "stats": [
+          { "label": "Conversion Rate", "value": "+28%" },
+          { "label": "Avg Order Value", "value": "$127" },
+          { "label": "Return Rate", "value": "-15%" }
+        ],
+        "highlights": [
+          { "icon": "Target", "title": "Challenge", "desc": "Build trust in sustainable fashion claims" },
+          { "icon": "Lightbulb", "title": "Solution", "desc": "Transparent impact metrics for each product" },
+          { "icon": "Users", "title": "Impact", "desc": "250K+ eco-conscious shoppers" }
+        ]
+      }
+    ]
+  },
+  "about": {
+    "headingLead": "About",
+    "headingHighlight": "Me",
+    "location": "San Francisco, CA",
+    "bio1": "I'm a senior digital product designer with over 8 years of experience crafting digital experiences that matter. My approach combines strategic thinking with pixel-perfect execution, ensuring every design decision serves both user needs and business goals.",
+    "bio2": "I believe great design is invisible—it simply works. My process is rooted in empathy, validated by research, and refined through iteration. I've had the privilege of working with startups and Fortune 500 companies alike, helping them transform complex challenges into intuitive solutions.",
+    "philosophyTitle": "Design Philosophy",
+    "philosophyQuote": "“Design is not just what it looks like and feels like. Design is how it works.” — Steve Jobs",
+    "skillsTitle": "Skills & Expertise",
+    "skills": [
+      "UI/UX Design",
+      "Design Systems",
+      "User Research",
+      "Prototyping",
+      "Brand Strategy",
+      "Motion Design",
+      "Figma",
+      "Adobe Creative Suite"
+    ],
+    "experienceTitle": "Experience",
+    "experiences": [
+      { "role": "Senior Product Designer", "company": "Tech Innovations Inc.", "period": "2021 - Present" },
+      { "role": "Product Designer", "company": "Digital Agency Studio", "period": "2018 - 2021" },
+      { "role": "UI/UX Designer", "company": "StartupXYZ", "period": "2016 - 2018" }
+    ],
+    "personal": [
+      { "icon": "Coffee", "text": "Coffee enthusiast" },
+      { "icon": "Heart", "text": "Cat lover" }
+    ],
+    "badgeLabel": "Recognition",
+    "badgeValue": "Top Designer 2024",
+    "stats": [
+      { "value": 8, "suffix": "+", "label": "Years Experience" },
+      { "value": 50, "suffix": "+", "label": "Projects Delivered" },
+      { "value": 30, "suffix": "+", "label": "Happy Clients" },
+      { "value": 12, "suffix": "", "label": "Design Awards" }
+    ]
+  },
+  "contact": {
+    "headingLead": "Let's Create Something",
+    "headingHighlight": "Amazing",
+    "subtitle": "Have a project in mind? I'd love to hear about it. Drop me a message and let's start the conversation.",
+    "nameLabel": "Your Name",
+    "emailLabel": "Email Address",
+    "projectTypeLabel": "Project Type",
+    "messageLabel": "Tell me about your project",
+    "submitLabel": "Send Message",
+    "submittedLabel": "Message Sent!",
+    "altContactText": "Prefer email? Reach me at",
+    "email": "hello@designer.com",
+    "social": [
+      { "name": "LinkedIn", "icon": "Linkedin", "href": "#" },
+      { "name": "Dribbble", "icon": "Dribbble", "href": "#" },
+      { "name": "Twitter", "icon": "Twitter", "href": "#" },
+      { "name": "Instagram", "icon": "Instagram", "href": "#" },
+      { "name": "GitHub", "icon": "Github", "href": "#" }
+    ],
+    "quickLinks": [
+      { "name": "Download Resume", "href": "#" },
+      { "name": "View Dribbble", "href": "#" },
+      { "name": "Schedule a Call", "href": "#" }
+    ]
+  },
+  "footer": {
+    "copyright": "Portfolio. All rights reserved.",
+    "madeWithPre": "Made with",
+    "madeWithPost": "using React & Tailwind",
+    "links": [
+      { "name": "Privacy", "href": "#" },
+      { "name": "Terms", "href": "#" }
+    ]
+  }
+}

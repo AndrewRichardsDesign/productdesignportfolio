@@ -2,22 +2,35 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Send, Linkedin, Dribbble, Twitter, Instagram, Github, Mail, ArrowUpRight, CheckCircle } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useContent } from '@/content/ContentContext';
+import { Editable } from '@/content/Editable';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const socialLinks = [
-  { name: 'LinkedIn', icon: Linkedin, href: '#', color: 'hover:bg-[#0077b5]/10 hover:text-[#0077b5]' },
-  { name: 'Dribbble', icon: Dribbble, href: '#', color: 'hover:bg-[#ea4c89]/10 hover:text-[#ea4c89]' },
-  { name: 'Twitter', icon: Twitter, href: '#', color: 'hover:bg-[#1da1f2]/10 hover:text-[#1da1f2]' },
-  { name: 'Instagram', icon: Instagram, href: '#', color: 'hover:bg-[#e4405f]/10 hover:text-[#e4405f]' },
-  { name: 'GitHub', icon: Github, href: '#', color: 'hover:bg-foreground/10' },
-];
+const socialIcons: Record<string, LucideIcon> = {
+  Linkedin,
+  Dribbble,
+  Twitter,
+  Instagram,
+  Github,
+};
+
+const socialColors: Record<string, string> = {
+  Linkedin: 'hover:bg-[#0077b5]/10 hover:text-[#0077b5]',
+  Dribbble: 'hover:bg-[#ea4c89]/10 hover:text-[#ea4c89]',
+  Twitter: 'hover:bg-[#1da1f2]/10 hover:text-[#1da1f2]',
+  Instagram: 'hover:bg-[#e4405f]/10 hover:text-[#e4405f]',
+  Github: 'hover:bg-foreground/10',
+};
 
 export default function Contact() {
+  const { content, isAdmin } = useContent();
+  const contact = content.contact;
   const sectionRef = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -142,13 +155,15 @@ export default function Contact() {
         {/* Section Header */}
         <div className="contact-title text-center mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Let&apos;s Create Something{' '}
-            <span className="gradient-text">Amazing</span>
+            <Editable as="span" path="contact.headingLead" />{' '}
+            <Editable as="span" path="contact.headingHighlight" className="gradient-text" />
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Have a project in mind? I&apos;d love to hear about it. Drop me a message 
-            and let&apos;s start the conversation.
-          </p>
+          <Editable
+            as="p"
+            path="contact.subtitle"
+            multiline
+            className="text-lg text-muted-foreground max-w-2xl mx-auto"
+          />
         </div>
 
         {/* Contact Form */}
@@ -161,7 +176,7 @@ export default function Contact() {
             {/* Name Field */}
             <div className="form-field space-y-2">
               <Label htmlFor="name" className="text-sm font-medium">
-                Your Name
+                <Editable as="span" path="contact.nameLabel" />
               </Label>
               <Input
                 id="name"
@@ -178,7 +193,7 @@ export default function Contact() {
             {/* Email Field */}
             <div className="form-field space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">
-                Email Address
+                <Editable as="span" path="contact.emailLabel" />
               </Label>
               <Input
                 id="email"
@@ -196,7 +211,7 @@ export default function Contact() {
           {/* Project Type Field */}
           <div className="form-field space-y-2">
             <Label htmlFor="projectType" className="text-sm font-medium">
-              Project Type
+              <Editable as="span" path="contact.projectTypeLabel" />
             </Label>
             <select
               id="projectType"
@@ -219,7 +234,7 @@ export default function Contact() {
           {/* Message Field */}
           <div className="form-field space-y-2">
             <Label htmlFor="message" className="text-sm font-medium">
-              Tell me about your project
+              <Editable as="span" path="contact.messageLabel" />
             </Label>
             <Textarea
               id="message"
@@ -243,12 +258,12 @@ export default function Contact() {
               {isSubmitted ? (
                 <span className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5" />
-                  Message Sent!
+                  <Editable as="span" path="contact.submittedLabel" />
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
                   <Send className="w-4 h-4" />
-                  Send Message
+                  <Editable as="span" path="contact.submitLabel" />
                 </span>
               )}
             </Button>
@@ -258,48 +273,52 @@ export default function Contact() {
         {/* Alternative Contact */}
         <div className="mt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            Prefer email? Reach me at{' '}
+            <Editable as="span" path="contact.altContactText" />{' '}
             <a
-              href="mailto:hello@designer.com"
+              href={`mailto:${contact.email}`}
+              onClick={(e) => isAdmin && e.preventDefault()}
               className="text-primary hover:underline inline-flex items-center gap-1"
             >
               <Mail className="w-3 h-3" />
-              hello@designer.com
+              <Editable as="span" path="contact.email" />
             </a>
           </p>
         </div>
 
         {/* Social Links */}
         <div className="social-links mt-12 flex justify-center gap-4">
-          {socialLinks.map((social) => (
-            <a
-              key={social.name}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`social-link w-12 h-12 rounded-full bg-card/50 border border-border/50 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:border-primary/30 ${social.color}`}
-              aria-label={social.name}
-            >
-              <social.icon className="w-5 h-5" />
-            </a>
-          ))}
+          {contact.social.map((social) => {
+            const Icon = socialIcons[social.icon] ?? Github;
+            return (
+              <a
+                key={social.name}
+                href={social.href}
+                onClick={(e) => isAdmin && e.preventDefault()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`social-link w-12 h-12 rounded-full bg-card/50 border border-border/50 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:border-primary/30 ${socialColors[social.icon] ?? ''}`}
+                aria-label={social.name}
+              >
+                <Icon className="w-5 h-5" />
+              </a>
+            );
+          })}
         </div>
 
         {/* Quick Links */}
         <div className="mt-16 pt-8 border-t border-border/30">
           <div className="flex flex-wrap justify-center gap-6 text-sm">
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-              Download Resume
-              <ArrowUpRight className="w-3 h-3" />
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-              View Dribbble
-              <ArrowUpRight className="w-3 h-3" />
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-              Schedule a Call
-              <ArrowUpRight className="w-3 h-3" />
-            </a>
+            {contact.quickLinks.map((quickLink, i) => (
+              <a
+                key={i}
+                href={quickLink.href}
+                onClick={(e) => isAdmin && e.preventDefault()}
+                className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+              >
+                <Editable as="span" path={`contact.quickLinks.${i}.name`} />
+                <ArrowUpRight className="w-3 h-3" />
+              </a>
+            ))}
           </div>
         </div>
       </div>

@@ -2,86 +2,22 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Calendar, Users, Target, Lightbulb } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useContent } from '@/content/ContentContext';
+import { Editable } from '@/content/Editable';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const caseStudies = [
-  {
-    id: 1,
-    title: 'Revolutionizing Banking for Gen Z',
-    subtitle: 'Complete redesign of mobile banking experience',
-    image: '/case-study-banking.jpg',
-    stats: [
-      { label: 'User Engagement', value: '+47%' },
-      { label: 'App Store Rating', value: '4.8' },
-      { label: 'Daily Active Users', value: '2M+' },
-    ],
-    highlights: [
-      { icon: Target, title: 'Challenge', desc: 'Simplify complex financial operations for young users' },
-      { icon: Lightbulb, title: 'Solution', desc: 'Gamified savings goals with intuitive visual feedback' },
-      { icon: Users, title: 'Impact', desc: '3x increase in savings account openings' },
-    ],
-    duration: '6 months',
-    team: '5 designers',
-  },
-  {
-    id: 2,
-    title: 'Healthcare at Your Fingertips',
-    subtitle: 'Telemedicine platform design',
-    image: '/case-study-telemedicine.jpg',
-    stats: [
-      { label: 'Patient Satisfaction', value: '94%' },
-      { label: 'Booking Conversion', value: '+62%' },
-      { label: 'Video Call Quality', value: '99.9%' },
-    ],
-    highlights: [
-      { icon: Target, title: 'Challenge', desc: 'Reduce friction in virtual healthcare access' },
-      { icon: Lightbulb, title: 'Solution', desc: 'One-tap appointment booking with smart matching' },
-      { icon: Users, title: 'Impact', desc: '500K+ virtual consultations monthly' },
-    ],
-    duration: '8 months',
-    team: '8 designers',
-  },
-  {
-    id: 3,
-    title: 'The Future of Online Learning',
-    subtitle: 'EdTech platform transformation',
-    image: '/case-study-edtech.jpg',
-    stats: [
-      { label: 'Course Completion', value: '+38%' },
-      { label: 'Student Engagement', value: '4.5h/day' },
-      { label: 'NPS Score', value: '72' },
-    ],
-    highlights: [
-      { icon: Target, title: 'Challenge', desc: 'Combat low engagement in online courses' },
-      { icon: Lightbulb, title: 'Solution', desc: 'Interactive progress tracking with social features' },
-      { icon: Users, title: 'Impact', desc: '1M+ active learners worldwide' },
-    ],
-    duration: '10 months',
-    team: '12 designers',
-  },
-  {
-    id: 4,
-    title: 'Sustainable Fashion Marketplace',
-    subtitle: 'Eco-conscious e-commerce experience',
-    image: '/case-study-fashion.jpg',
-    stats: [
-      { label: 'Conversion Rate', value: '+28%' },
-      { label: 'Avg Order Value', value: '$127' },
-      { label: 'Return Rate', value: '-15%' },
-    ],
-    highlights: [
-      { icon: Target, title: 'Challenge', desc: 'Build trust in sustainable fashion claims' },
-      { icon: Lightbulb, title: 'Solution', desc: 'Transparent impact metrics for each product' },
-      { icon: Users, title: 'Impact', desc: '250K+ eco-conscious shoppers' },
-    ],
-    duration: '5 months',
-    team: '4 designers',
-  },
-];
+const highlightIcons: Record<string, LucideIcon> = {
+  Target,
+  Lightbulb,
+  Users,
+};
 
 export default function CaseStudies() {
+  const { content } = useContent();
+  const caseStudies = content.caseStudies.items;
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
@@ -144,11 +80,15 @@ export default function CaseStudies() {
         {/* Section Header */}
         <div ref={headerRef} className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Case <span className="gradient-text">Studies</span>
+            <Editable as="span" path="caseStudies.headingLead" />{' '}
+            <Editable as="span" path="caseStudies.headingHighlight" className="gradient-text" />
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Deep dives into my most impactful projects, from discovery to delivery.
-          </p>
+          <Editable
+            as="p"
+            path="caseStudies.subtitle"
+            multiline
+            className="text-lg text-muted-foreground max-w-2xl mx-auto"
+          />
         </div>
 
         {/* Case Studies Cards */}
@@ -173,13 +113,21 @@ export default function CaseStudies() {
                   
                   {/* Stats Badge */}
                   <div className="absolute bottom-4 left-4 right-4 flex justify-center gap-4 sm:gap-8">
-                    {study.stats.map((stat, i) => (
+                    {study.stats.map((_, i) => (
                       <div
                         key={i}
                         className="px-4 py-2 rounded-xl bg-background/80 backdrop-blur-sm text-center"
                       >
-                        <div className="text-lg sm:text-xl font-bold gradient-text">{stat.value}</div>
-                        <div className="text-xs text-muted-foreground">{stat.label}</div>
+                        <Editable
+                          as="div"
+                          path={`caseStudies.items.${index}.stats.${i}.value`}
+                          className="text-lg sm:text-xl font-bold gradient-text"
+                        />
+                        <Editable
+                          as="div"
+                          path={`caseStudies.items.${index}.stats.${i}.label`}
+                          className="text-xs text-muted-foreground"
+                        />
                       </div>
                     ))}
                   </div>
@@ -192,38 +140,56 @@ export default function CaseStudies() {
                 <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1.5">
                     <Calendar className="w-4 h-4" />
-                    <span>{study.duration}</span>
+                    <Editable as="span" path={`caseStudies.items.${index}.duration`} />
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Users className="w-4 h-4" />
-                    <span>{study.team}</span>
+                    <Editable as="span" path={`caseStudies.items.${index}.team`} />
                   </div>
                 </div>
 
                 {/* Title */}
                 <div>
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 group-hover:text-primary transition-colors duration-300">
-                    {study.title}
-                  </h3>
-                  <p className="text-lg text-muted-foreground">{study.subtitle}</p>
+                  <Editable
+                    as="h3"
+                    path={`caseStudies.items.${index}.title`}
+                    className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 group-hover:text-primary transition-colors duration-300"
+                  />
+                  <Editable
+                    as="p"
+                    path={`caseStudies.items.${index}.subtitle`}
+                    className="text-lg text-muted-foreground"
+                  />
                 </div>
 
                 {/* Highlights */}
                 <div className="space-y-4">
-                  {study.highlights.map((highlight, i) => (
-                    <div
-                      key={i}
-                      className="flex items-start gap-4 p-4 rounded-xl bg-card/50 border border-border/30 hover:border-primary/20 transition-colors duration-300"
-                    >
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <highlight.icon className="w-5 h-5 text-primary" />
+                  {study.highlights.map((highlight, i) => {
+                    const Icon = highlightIcons[highlight.icon] ?? Target;
+                    return (
+                      <div
+                        key={i}
+                        className="flex items-start gap-4 p-4 rounded-xl bg-card/50 border border-border/30 hover:border-primary/20 transition-colors duration-300"
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <Icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <Editable
+                            as="h4"
+                            path={`caseStudies.items.${index}.highlights.${i}.title`}
+                            className="font-semibold mb-1"
+                          />
+                          <Editable
+                            as="p"
+                            path={`caseStudies.items.${index}.highlights.${i}.desc`}
+                            multiline
+                            className="text-sm text-muted-foreground"
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-semibold mb-1">{highlight.title}</h4>
-                        <p className="text-sm text-muted-foreground">{highlight.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {/* CTA */}
@@ -232,7 +198,7 @@ export default function CaseStudies() {
                   className="group/btn rounded-full px-6 py-5 border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300"
                 >
                   <span className="flex items-center gap-2">
-                    Read Full Case Study
+                    <Editable as="span" path="caseStudies.readMore" />
                     <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                   </span>
                 </Button>

@@ -8,19 +8,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-
-const navLinks = [
-  { name: 'Home', href: '#home' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Case Studies', href: '#case-studies' },
-  { name: 'About', href: '#about' },
-  { name: 'Contact', href: '#contact' },
-];
+import { useContent } from '@/content/ContentContext';
+import { Editable } from '@/content/Editable';
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
+  const { content, isAdmin } = useContent();
+  const navLinks = content.nav.links;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,6 +35,12 @@ export default function Navigation() {
     setIsMobileMenuOpen(false);
   };
 
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    if (isAdmin) return;
+    scrollToSection(href);
+  };
+
   return (
     <>
       <nav
@@ -53,28 +55,22 @@ export default function Navigation() {
             {/* Logo */}
             <a
               href="#home"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('#home');
-              }}
+              onClick={(e) => handleNavClick(e, '#home')}
               className="text-xl font-bold gradient-text"
             >
-              Portfolio
+              <Editable as="span" path="nav.logo" />
             </a>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
-              {navLinks.map((link) => (
+              {navLinks.map((link, i) => (
                 <a
-                  key={link.name}
+                  key={link.href}
                   href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(link.href);
-                  }}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className="relative text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200 group"
                 >
-                  {link.name}
+                  <Editable as="span" path={`nav.links.${i}.name`} />
                   <span className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 ease-expo-out group-hover:w-full group-hover:left-0" />
                 </a>
               ))}
@@ -151,16 +147,13 @@ export default function Navigation() {
           <div className="flex flex-col gap-4">
             {navLinks.map((link, index) => (
               <a
-                key={link.name}
+                key={link.href}
                 href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection(link.href);
-                }}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className="text-lg font-medium text-foreground/80 hover:text-foreground hover:pl-2 transition-all duration-200"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                {link.name}
+                <Editable as="span" path={`nav.links.${index}.name`} />
               </a>
             ))}
           </div>

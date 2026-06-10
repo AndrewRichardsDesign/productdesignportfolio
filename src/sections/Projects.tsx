@@ -2,37 +2,14 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
+import { useContent } from '@/content/ContentContext';
+import { Editable } from '@/content/Editable';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-  {
-    id: 1,
-    title: 'Arcatext',
-    description: 'A translation keyboard.',
-    image: '/project-arcatext-placeholder.svg',
-    tags: ['Mobile', 'Keyboard', 'Translation'],
-    link: '#/arcatext',
-  },
-  {
-    id: 2,
-    title: 'Conversant',
-    description: 'Coming soon.',
-    image: '/project-conversant-placeholder.svg',
-    tags: ['Product Design'],
-    link: '#',
-  },
-  {
-    id: 3,
-    title: 'USAA Mobile App',
-    description: 'Coming soon.',
-    image: '/project-usaa-placeholder.svg',
-    tags: ['Mobile App', 'Financial Services'],
-    link: '#',
-  },
-];
-
 export default function Projects() {
+  const { content, isAdmin } = useContent();
+  const projects = content.projects.items;
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -94,11 +71,15 @@ export default function Projects() {
         {/* Section Header */}
         <div ref={titleRef} className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            Selected <span className="gradient-text">Projects</span>
+            <Editable as="span" path="projects.headingLead" />{' '}
+            <Editable as="span" path="projects.headingHighlight" className="gradient-text" />
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A curated collection of work that showcases my approach to solving complex design challenges.
-          </p>
+          <Editable
+            as="p"
+            path="projects.subtitle"
+            multiline
+            className="text-lg text-muted-foreground max-w-2xl mx-auto"
+          />
         </div>
 
         {/* Projects Grid */}
@@ -118,6 +99,7 @@ export default function Projects() {
             >
               <a
                 href={project.link}
+                onClick={(e) => isAdmin && e.preventDefault()}
                 className="block relative overflow-hidden rounded-2xl lg:rounded-3xl bg-card border border-border/50 transition-all duration-500 ease-expo-out hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2"
                 style={{ transformStyle: 'preserve-3d' }}
               >
@@ -141,29 +123,34 @@ export default function Projects() {
                 <div className="p-6 lg:p-8">
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
+                    {project.tags.map((_, tagIndex) => (
+                      <Editable
+                        key={tagIndex}
+                        as="span"
+                        path={`projects.items.${index}.tags.${tagIndex}`}
                         className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary"
-                      >
-                        {tag}
-                      </span>
+                      />
                     ))}
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl lg:text-2xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">
-                    {project.title}
-                  </h3>
+                  <Editable
+                    as="h3"
+                    path={`projects.items.${index}.title`}
+                    className="text-xl lg:text-2xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300"
+                  />
 
                   {/* Description */}
-                  <p className="text-muted-foreground text-sm lg:text-base mb-4">
-                    {project.description}
-                  </p>
+                  <Editable
+                    as="p"
+                    path={`projects.items.${index}.description`}
+                    multiline
+                    className="text-muted-foreground text-sm lg:text-base mb-4"
+                  />
 
                   {/* Link */}
                   <div className="flex items-center gap-2 text-sm font-medium text-primary opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-expo-out">
-                    <span>View Project</span>
+                    <Editable as="span" path="projects.viewProject" />
                     <ExternalLink className="w-4 h-4" />
                   </div>
                 </div>
@@ -176,9 +163,10 @@ export default function Projects() {
         <div className="text-center mt-12">
           <a
             href="#"
+            onClick={(e) => isAdmin && e.preventDefault()}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 text-sm font-medium"
           >
-            View All Projects
+            <Editable as="span" path="projects.viewAll" />
             <ArrowUpRight className="w-4 h-4" />
           </a>
         </div>

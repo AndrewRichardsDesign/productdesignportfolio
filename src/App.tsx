@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ThemeProvider } from '@/hooks/useTheme';
+import { ContentProvider } from '@/content/ContentContext';
+import { AdminBar } from '@/content/AdminBar';
 import Navigation from '@/sections/Navigation';
 import Hero from '@/sections/Hero';
 import Projects from '@/sections/Projects';
@@ -45,32 +47,38 @@ function App() {
     };
   }, [route]);
 
+  const isAdmin = route === 'admin';
+
   return (
     <ThemeProvider>
-      <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
-        {route === 'arcatext' ? (
-          <Arcatext />
-        ) : (
-          <>
-            <Navigation />
-            <main>
-              <Hero />
-              <Projects />
-              <CaseStudies />
-              <About />
-              <Contact />
-            </main>
-            <Footer />
-          </>
-        )}
+      <ContentProvider isAdmin={isAdmin}>
+        <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+          {route === 'arcatext' ? (
+            <Arcatext />
+          ) : (
+            <>
+              <Navigation />
+              <main>
+                <Hero />
+                <Projects />
+                <CaseStudies />
+                <About />
+                <Contact />
+              </main>
+              <Footer />
+            </>
+          )}
 
-        <div
-          className="fixed inset-0 pointer-events-none -z-10"
-          style={{
-            background: 'radial-gradient(ellipse at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 50%)',
-          }}
-        />
-      </div>
+          <div
+            className="fixed inset-0 pointer-events-none -z-10"
+            style={{
+              background: 'radial-gradient(ellipse at 50% 0%, hsl(var(--primary) / 0.08) 0%, transparent 50%)',
+            }}
+          />
+
+          <AdminBar />
+        </div>
+      </ContentProvider>
     </ThemeProvider>
   );
 }
