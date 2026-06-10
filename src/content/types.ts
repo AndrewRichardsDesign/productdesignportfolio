@@ -129,4 +129,153 @@ export interface SiteContent {
     madeWithPost: string;
     links: NavLink[];
   };
+  arcatext: ArcatextContent;
+}
+
+export interface TitledItem {
+  title: string;
+  desc: string;
+}
+
+export interface ArcatextLoopStep {
+  step: string;
+  icon: string;
+  desc: string;
+}
+
+export interface ArcatextDecision {
+  n: string;
+  title: string;
+  desc: string;
+}
+
+export interface ArcatextInsight {
+  title: string;
+  desc: string;
+  response: string;
+}
+
+export interface ArcatextResponse {
+  insight: string;
+  response: string;
+}
+
+export interface ArcatextQuestion {
+  n: string;
+  q: string;
+}
+
+export interface ArcatextContent {
+  backToPortfolio: string;
+  brand: string;
+  toc: string[];
+  hero: {
+    status: string;
+    title: string;
+    subtitle: string;
+    typeTags: string[];
+    roleLabel: string;
+    roleValue: string;
+    platformLabel: string;
+    platformValue: string;
+    surfaceLabel: string;
+    surfaceValue: string;
+  };
+  overview: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    productTypeLabel: string;
+    productTypeList: string[];
+    originTitle: string;
+    origin: string[];
+    readingWritingTitle: string;
+    readingWriting: string[];
+    roleTitle: string;
+    role: string[];
+  };
+  problem: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    opportunityEyebrow: string;
+    opportunityLead: string;
+    opportunityHighlight: string;
+    problemsTitle: string;
+    problems: TitledItem[];
+    opportunitiesTitle: string;
+    opportunities: TitledItem[];
+    closing: string[];
+  };
+  strategy: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    second: string[];
+    quoteLead: string;
+    quoteHighlight: string;
+    cards: TitledItem[];
+    artifactEyebrow: string;
+    artifactTitle: string;
+    artifact: string[];
+  };
+  productSystem: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    loop: ArcatextLoopStep[];
+    closing: string[];
+  };
+  decisions: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    items: ArcatextDecision[];
+  };
+  execution: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    discoveryTitle: string;
+    discovery: string[];
+    synthesisTitle: string;
+    synthesis: string[];
+    directionalTitle: string;
+    directionalInsights: ArcatextInsight[];
+    soWhatLabel: string;
+    soWhatLead: string;
+    soWhatHighlight: string;
+    soWhat: string[];
+    insightToResponseTitle: string;
+    productResponses: ArcatextResponse[];
+    competitiveTitle: string;
+    competitive: string[];
+    shippedTitle: string;
+    outcomes: TitledItem[];
+    launchEyebrow: string;
+    launchLead: string;
+    launchHighlight: string;
+    launch: string[];
+    launchQuestions: ArcatextQuestion[];
+    plannedSignalsLabel: string;
+    launchSignals: string[];
+  };
+  caseStudies: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    items: { title: string; question: string }[];
+  };
+  footerCta: {
+    titleLead: string;
+    titleHighlight: string;
+    titleRest: string;
+    getInTouch: string;
+    backToProjects: string;
+  };
 }

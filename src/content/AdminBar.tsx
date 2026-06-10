@@ -17,7 +17,11 @@ export function AdminBar() {
   if (!isAdmin) return null;
 
   const exitAdmin = () => {
-    window.location.hash = '#/';
+    // Drop the admin flag but stay on the current page.
+    const hash = window.location.hash;
+    const path = hash.startsWith('#/') ? hash.slice(2).split('?')[0] : '';
+    const dest = path === 'admin' ? '' : path;
+    window.location.hash = dest ? `#/${dest}` : '#/';
   };
 
   const saving = saveState.status === 'saving';

@@ -11,7 +11,8 @@ and commit the changes back to this repo.
 ### How it works
 
 1. **Open admin mode:** visit the site with `#/admin` in the URL
-   (e.g. `https://your-site/#/admin`). A floating admin bar appears.
+   (e.g. `https://your-site/#/admin`). A floating admin bar appears. To edit the **Arcatext
+   case-study page**, add `?admin` to its URL instead: `https://your-site/#/arcatext?admin`.
 2. **Edit:** every editable piece of text gets a dashed outline. Click any of it and type.
    Press **Enter** to confirm a single-line field, or click away to finish. Changes are kept
    in your browser as a draft (they survive a refresh) until you save.

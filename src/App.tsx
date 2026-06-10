@@ -15,18 +15,26 @@ import Arcatext from '@/pages/Arcatext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-function getRoute() {
+/**
+ * Resolves the current page and whether admin (inline editing) mode is active.
+ * Admin mode is enabled by `#/admin` (home) or an `?admin` flag on any route,
+ * e.g. `#/arcatext?admin`.
+ */
+function parseLocation(): { route: string; isAdmin: boolean } {
   const hash = window.location.hash;
-  if (hash.startsWith('#/')) return hash.slice(2).split('?')[0];
-  return '';
+  const path = hash.startsWith('#/') ? hash.slice(2).split('?')[0] : '';
+  const query = hash.split('?')[1] ?? '';
+  const adminFlag = new URLSearchParams(query).has('admin');
+  if (path === 'admin') return { route: '', isAdmin: true };
+  return { route: path, isAdmin: adminFlag };
 }
 
 function App() {
-  const [route, setRoute] = useState<string>(() => getRoute());
+  const [{ route, isAdmin }, setLocation] = useState(() => parseLocation());
 
   useEffect(() => {
     const onHashChange = () => {
-      setRoute(getRoute());
+      setLocation(parseLocation());
       ScrollTrigger.refresh();
     };
     window.addEventListener('hashchange', onHashChange);
@@ -46,8 +54,6 @@ function App() {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [route]);
-
-  const isAdmin = route === 'admin';
 
   return (
     <ThemeProvider>
