@@ -1,6 +1,6 @@
 {
   "nav": {
-    "logo": "Portfolio",
+    "logo": "Andrew Richards",
     "links": [
       {
         "name": "Home",
@@ -26,9 +26,9 @@
   },
   "hero": {
     "badge": "Available for new projects",
-    "title": "Digital Product Designerrrrr",
-    "subtitle": "Crafting immersive digital experiences that captivate, convert, and inspire. I transform complex problems into elegant solutions.",
-    "ctaPrimary": "View My Work",
+    "title": "Digital Product Designer",
+    "subtitle": "Complex problems deserve elegant solutions that balance user needs, business vision, and code performance.",
+    "ctaPrimary": "View Work",
     "ctaSecondary": "Get in Touch",
     "scrollText": "Scroll to explore",
     "stats": [
