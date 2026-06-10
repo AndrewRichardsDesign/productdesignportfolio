@@ -2,25 +2,52 @@
   "nav": {
     "logo": "Portfolio",
     "links": [
-      { "name": "Home", "href": "#home" },
-      { "name": "Projects", "href": "#projects" },
-      { "name": "Case Studies", "href": "#case-studies" },
-      { "name": "About", "href": "#about" },
-      { "name": "Contact", "href": "#contact" }
+      {
+        "name": "Home",
+        "href": "#home"
+      },
+      {
+        "name": "Projects",
+        "href": "#projects"
+      },
+      {
+        "name": "Case Studies",
+        "href": "#case-studies"
+      },
+      {
+        "name": "About",
+        "href": "#about"
+      },
+      {
+        "name": "Contact",
+        "href": "#contact"
+      }
     ]
   },
   "hero": {
     "badge": "Available for new projects",
-    "title": "Digital Product Designer",
+    "title": "Digital Product Designerrrrr",
     "subtitle": "Crafting immersive digital experiences that captivate, convert, and inspire. I transform complex problems into elegant solutions.",
     "ctaPrimary": "View My Work",
     "ctaSecondary": "Get in Touch",
     "scrollText": "Scroll to explore",
     "stats": [
-      { "value": "8+", "label": "Years Experience" },
-      { "value": "50+", "label": "Projects Delivered" },
-      { "value": "30+", "label": "Happy Clients" },
-      { "value": "12", "label": "Design Awards" }
+      {
+        "value": "8+",
+        "label": "Years Experience"
+      },
+      {
+        "value": "50+",
+        "label": "Projects Delivered"
+      },
+      {
+        "value": "30+",
+        "label": "Happy Clients"
+      },
+      {
+        "value": "12",
+        "label": "Design Awards"
+      }
     ]
   },
   "projects": {
@@ -35,7 +62,11 @@
         "title": "Arcatext",
         "description": "A translation keyboard.",
         "image": "/project-arcatext-placeholder.svg",
-        "tags": ["Mobile", "Keyboard", "Translation"],
+        "tags": [
+          "Mobile",
+          "Keyboard",
+          "Translation"
+        ],
         "link": "#/arcatext"
       },
       {
@@ -43,7 +74,9 @@
         "title": "Conversant",
         "description": "Coming soon.",
         "image": "/project-conversant-placeholder.svg",
-        "tags": ["Product Design"],
+        "tags": [
+          "Product Design"
+        ],
         "link": "#"
       },
       {
@@ -51,7 +84,10 @@
         "title": "USAA Mobile App",
         "description": "Coming soon.",
         "image": "/project-usaa-placeholder.svg",
-        "tags": ["Mobile App", "Financial Services"],
+        "tags": [
+          "Mobile App",
+          "Financial Services"
+        ],
         "link": "#"
       }
     ]
@@ -70,14 +106,35 @@
         "duration": "6 months",
         "team": "5 designers",
         "stats": [
-          { "label": "User Engagement", "value": "+47%" },
-          { "label": "App Store Rating", "value": "4.8" },
-          { "label": "Daily Active Users", "value": "2M+" }
+          {
+            "label": "User Engagement",
+            "value": "+47%"
+          },
+          {
+            "label": "App Store Rating",
+            "value": "4.8"
+          },
+          {
+            "label": "Daily Active Users",
+            "value": "2M+"
+          }
         ],
         "highlights": [
-          { "icon": "Target", "title": "Challenge", "desc": "Simplify complex financial operations for young users" },
-          { "icon": "Lightbulb", "title": "Solution", "desc": "Gamified savings goals with intuitive visual feedback" },
-          { "icon": "Users", "title": "Impact", "desc": "3x increase in savings account openings" }
+          {
+            "icon": "Target",
+            "title": "Challenge",
+            "desc": "Simplify complex financial operations for young users"
+          },
+          {
+            "icon": "Lightbulb",
+            "title": "Solution",
+            "desc": "Gamified savings goals with intuitive visual feedback"
+          },
+          {
+            "icon": "Users",
+            "title": "Impact",
+            "desc": "3x increase in savings account openings"
+          }
         ]
       },
       {
@@ -88,14 +145,35 @@
         "duration": "8 months",
         "team": "8 designers",
         "stats": [
-          { "label": "Patient Satisfaction", "value": "94%" },
-          { "label": "Booking Conversion", "value": "+62%" },
-          { "label": "Video Call Quality", "value": "99.9%" }
+          {
+            "label": "Patient Satisfaction",
+            "value": "94%"
+          },
+          {
+            "label": "Booking Conversion",
+            "value": "+62%"
+          },
+          {
+            "label": "Video Call Quality",
+            "value": "99.9%"
+          }
         ],
         "highlights": [
-          { "icon": "Target", "title": "Challenge", "desc": "Reduce friction in virtual healthcare access" },
-          { "icon": "Lightbulb", "title": "Solution", "desc": "One-tap appointment booking with smart matching" },
-          { "icon": "Users", "title": "Impact", "desc": "500K+ virtual consultations monthly" }
+          {
+            "icon": "Target",
+            "title": "Challenge",
+            "desc": "Reduce friction in virtual healthcare access"
+          },
+          {
+            "icon": "Lightbulb",
+            "title": "Solution",
+            "desc": "One-tap appointment booking with smart matching"
+          },
+          {
+            "icon": "Users",
+            "title": "Impact",
+            "desc": "500K+ virtual consultations monthly"
+          }
         ]
       },
       {
@@ -106,14 +184,35 @@
         "duration": "10 months",
         "team": "12 designers",
         "stats": [
-          { "label": "Course Completion", "value": "+38%" },
-          { "label": "Student Engagement", "value": "4.5h/day" },
-          { "label": "NPS Score", "value": "72" }
+          {
+            "label": "Course Completion",
+            "value": "+38%"
+          },
+          {
+            "label": "Student Engagement",
+            "value": "4.5h/day"
+          },
+          {
+            "label": "NPS Score",
+            "value": "72"
+          }
         ],
         "highlights": [
-          { "icon": "Target", "title": "Challenge", "desc": "Combat low engagement in online courses" },
-          { "icon": "Lightbulb", "title": "Solution", "desc": "Interactive progress tracking with social features" },
-          { "icon": "Users", "title": "Impact", "desc": "1M+ active learners worldwide" }
+          {
+            "icon": "Target",
+            "title": "Challenge",
+            "desc": "Combat low engagement in online courses"
+          },
+          {
+            "icon": "Lightbulb",
+            "title": "Solution",
+            "desc": "Interactive progress tracking with social features"
+          },
+          {
+            "icon": "Users",
+            "title": "Impact",
+            "desc": "1M+ active learners worldwide"
+          }
         ]
       },
       {
@@ -124,14 +223,35 @@
         "duration": "5 months",
         "team": "4 designers",
         "stats": [
-          { "label": "Conversion Rate", "value": "+28%" },
-          { "label": "Avg Order Value", "value": "$127" },
-          { "label": "Return Rate", "value": "-15%" }
+          {
+            "label": "Conversion Rate",
+            "value": "+28%"
+          },
+          {
+            "label": "Avg Order Value",
+            "value": "$127"
+          },
+          {
+            "label": "Return Rate",
+            "value": "-15%"
+          }
         ],
         "highlights": [
-          { "icon": "Target", "title": "Challenge", "desc": "Build trust in sustainable fashion claims" },
-          { "icon": "Lightbulb", "title": "Solution", "desc": "Transparent impact metrics for each product" },
-          { "icon": "Users", "title": "Impact", "desc": "250K+ eco-conscious shoppers" }
+          {
+            "icon": "Target",
+            "title": "Challenge",
+            "desc": "Build trust in sustainable fashion claims"
+          },
+          {
+            "icon": "Lightbulb",
+            "title": "Solution",
+            "desc": "Transparent impact metrics for each product"
+          },
+          {
+            "icon": "Users",
+            "title": "Impact",
+            "desc": "250K+ eco-conscious shoppers"
+          }
         ]
       }
     ]
@@ -157,21 +277,55 @@
     ],
     "experienceTitle": "Experience",
     "experiences": [
-      { "role": "Senior Product Designer", "company": "Tech Innovations Inc.", "period": "2021 - Present" },
-      { "role": "Product Designer", "company": "Digital Agency Studio", "period": "2018 - 2021" },
-      { "role": "UI/UX Designer", "company": "StartupXYZ", "period": "2016 - 2018" }
+      {
+        "role": "Senior Product Designer",
+        "company": "Tech Innovations Inc.",
+        "period": "2021 - Present"
+      },
+      {
+        "role": "Product Designer",
+        "company": "Digital Agency Studio",
+        "period": "2018 - 2021"
+      },
+      {
+        "role": "UI/UX Designer",
+        "company": "StartupXYZ",
+        "period": "2016 - 2018"
+      }
     ],
     "personal": [
-      { "icon": "Coffee", "text": "Coffee enthusiast" },
-      { "icon": "Heart", "text": "Cat lover" }
+      {
+        "icon": "Coffee",
+        "text": "Coffee enthusiast"
+      },
+      {
+        "icon": "Heart",
+        "text": "Cat lover"
+      }
     ],
     "badgeLabel": "Recognition",
     "badgeValue": "Top Designer 2024",
     "stats": [
-      { "value": 8, "suffix": "+", "label": "Years Experience" },
-      { "value": 50, "suffix": "+", "label": "Projects Delivered" },
-      { "value": 30, "suffix": "+", "label": "Happy Clients" },
-      { "value": 12, "suffix": "", "label": "Design Awards" }
+      {
+        "value": 8,
+        "suffix": "+",
+        "label": "Years Experience"
+      },
+      {
+        "value": 50,
+        "suffix": "+",
+        "label": "Projects Delivered"
+      },
+      {
+        "value": 30,
+        "suffix": "+",
+        "label": "Happy Clients"
+      },
+      {
+        "value": 12,
+        "suffix": "",
+        "label": "Design Awards"
+      }
     ]
   },
   "contact": {
@@ -187,16 +341,45 @@
     "altContactText": "Prefer email? Reach me at",
     "email": "hello@designer.com",
     "social": [
-      { "name": "LinkedIn", "icon": "Linkedin", "href": "#" },
-      { "name": "Dribbble", "icon": "Dribbble", "href": "#" },
-      { "name": "Twitter", "icon": "Twitter", "href": "#" },
-      { "name": "Instagram", "icon": "Instagram", "href": "#" },
-      { "name": "GitHub", "icon": "Github", "href": "#" }
+      {
+        "name": "LinkedIn",
+        "icon": "Linkedin",
+        "href": "#"
+      },
+      {
+        "name": "Dribbble",
+        "icon": "Dribbble",
+        "href": "#"
+      },
+      {
+        "name": "Twitter",
+        "icon": "Twitter",
+        "href": "#"
+      },
+      {
+        "name": "Instagram",
+        "icon": "Instagram",
+        "href": "#"
+      },
+      {
+        "name": "GitHub",
+        "icon": "Github",
+        "href": "#"
+      }
     ],
     "quickLinks": [
-      { "name": "Download Resume", "href": "#" },
-      { "name": "View Dribbble", "href": "#" },
-      { "name": "Schedule a Call", "href": "#" }
+      {
+        "name": "Download Resume",
+        "href": "#"
+      },
+      {
+        "name": "View Dribbble",
+        "href": "#"
+      },
+      {
+        "name": "Schedule a Call",
+        "href": "#"
+      }
     ]
   },
   "footer": {
@@ -204,8 +387,14 @@
     "madeWithPre": "Made with",
     "madeWithPost": "using React & Tailwind",
     "links": [
-      { "name": "Privacy", "href": "#" },
-      { "name": "Terms", "href": "#" }
+      {
+        "name": "Privacy",
+        "href": "#"
+      },
+      {
+        "name": "Terms",
+        "href": "#"
+      }
     ]
   }
 }
