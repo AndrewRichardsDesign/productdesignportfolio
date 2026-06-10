@@ -2,8 +2,12 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ArrowDown, ChevronRight, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useContent } from '@/content/ContentContext';
+import { Editable } from '@/content/Editable';
 
 export default function Hero() {
+  const { content, isAdmin } = useContent();
+  const hero = content.hero;
   const heroRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -120,7 +124,7 @@ export default function Hero() {
     }
   };
 
-  const titleText = 'Digital Product Designer';
+  const titleText = hero.title;
 
   return (
     <section
@@ -182,7 +186,7 @@ export default function Hero() {
           style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}
         >
           <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          <span className="text-sm font-medium text-primary">Available for new projects</span>
+          <Editable as="span" path="hero.badge" className="text-sm font-medium text-primary" />
         </div>
 
         {/* Title */}
@@ -191,15 +195,19 @@ export default function Hero() {
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight"
           style={{ transformStyle: 'preserve-3d' }}
         >
-          {titleText.split('').map((char, i) => (
-            <span
-              key={i}
-              className="char inline-block"
-              style={{ display: char === ' ' ? 'inline' : 'inline-block' }}
-            >
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          ))}
+          {isAdmin ? (
+            <Editable as="span" path="hero.title" />
+          ) : (
+            titleText.split('').map((char, i) => (
+              <span
+                key={i}
+                className="char inline-block"
+                style={{ display: char === ' ' ? 'inline' : 'inline-block' }}
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))
+          )}
         </h1>
 
         {/* Subtitle */}
@@ -207,8 +215,7 @@ export default function Hero() {
           ref={subtitleRef}
           className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed"
         >
-          Crafting immersive digital experiences that captivate, convert, and inspire. 
-          I transform complex problems into elegant solutions.
+          <Editable as="span" path="hero.subtitle" multiline />
         </p>
 
         {/* CTA Buttons */}
@@ -219,7 +226,7 @@ export default function Hero() {
             className="group relative overflow-hidden rounded-full px-8 py-6 text-base font-medium gradient-bg text-white shadow-glow hover:shadow-glow-lg transition-all duration-300 hover:scale-105"
           >
             <span className="relative z-10 flex items-center gap-2">
-              View My Work
+              <Editable as="span" path="hero.ctaPrimary" />
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </span>
           </Button>
@@ -232,7 +239,7 @@ export default function Hero() {
           >
             <span className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
-              Get in Touch
+              <Editable as="span" path="hero.ctaSecondary" />
             </span>
           </Button>
         </div>
@@ -241,15 +248,18 @@ export default function Hero() {
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto opacity-0 animate-fade-in"
           style={{ animationDelay: '1.4s', animationFillMode: 'forwards' }}
         >
-          {[
-            { value: '8+', label: 'Years Experience' },
-            { value: '50+', label: 'Projects Delivered' },
-            { value: '30+', label: 'Happy Clients' },
-            { value: '12', label: 'Design Awards' },
-          ].map((stat, i) => (
+          {hero.stats.map((_, i) => (
             <div key={i} className="text-center">
-              <div className="text-2xl sm:text-3xl font-bold gradient-text">{stat.value}</div>
-              <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
+              <Editable
+                as="div"
+                path={`hero.stats.${i}.value`}
+                className="text-2xl sm:text-3xl font-bold gradient-text"
+              />
+              <Editable
+                as="div"
+                path={`hero.stats.${i}.label`}
+                className="text-sm text-muted-foreground mt-1"
+              />
             </div>
           ))}
         </div>
@@ -257,7 +267,7 @@ export default function Hero() {
 
       {/* Scroll Indicator */}
       <div className="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground">
-        <span className="text-xs font-medium uppercase tracking-wider">Scroll to explore</span>
+        <Editable as="span" path="hero.scrollText" className="text-xs font-medium uppercase tracking-wider" />
         <ArrowDown className="w-5 h-5" />
       </div>
 

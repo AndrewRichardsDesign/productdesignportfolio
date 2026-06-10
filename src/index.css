@@ -201,3 +201,23 @@
   background-size: 200% 200%;
   animation: gradient-shift 15s ease infinite;
 }
+
+/* Admin mode inline editing */
+.admin-editable {
+  cursor: text;
+  border-radius: 0.25rem;
+  outline: 1px dashed hsl(var(--primary) / 0.4);
+  outline-offset: 2px;
+  transition: outline-color 0.2s ease, background-color 0.2s ease;
+}
+
+.admin-editable:hover {
+  outline-color: hsl(var(--primary) / 0.7);
+  background-color: hsl(var(--primary) / 0.06);
+}
+
+.admin-editable:focus {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+  background-color: hsl(var(--primary) / 0.08);
+}
