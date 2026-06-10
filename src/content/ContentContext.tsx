@@ -91,6 +91,28 @@ function safeAssetName(name: string): string {
   return `${base}-${Date.now().toString(36)}${ext}`;
 }
 
+function isPlainObject(v: unknown): v is Record<string, unknown> {
+  return typeof v === 'object' && v !== null && !Array.isArray(v);
+}
+
+/**
+ * Merge a saved draft over the default content. Draft values win for fields it
+ * contains, but any key missing from the draft (e.g. a section added to the
+ * schema after the draft was saved) falls back to the default — preventing
+ * stale drafts from crashing the app with `undefined` content.
+ */
+function deepMerge<T>(base: T, override: unknown): T {
+  if (isPlainObject(base) && isPlainObject(override)) {
+    const out: Record<string, unknown> = { ...base };
+    for (const key of Object.keys(override)) {
+      out[key] = key in base ? deepMerge((base as Record<string, unknown>)[key], override[key]) : override[key];
+    }
+    return out as T;
+  }
+  // Arrays and primitives: take the draft's value when present, else the base.
+  return (override === undefined ? base : (override as T));
+}
+
 function readDraft(): SiteContent | null {
   try {
     const raw = localStorage.getItem(DRAFT_KEY);
@@ -108,7 +130,10 @@ export function ContentProvider({
   children: ReactNode;
 }) {
   const base = defaultContent as SiteContent;
-  const [content, setContent] = useState<SiteContent>(() => readDraft() ?? base);
+  const [content, setContent] = useState<SiteContent>(() => {
+    const draft = readDraft();
+    return draft ? deepMerge(base, draft) : base;
+  });
   const [dirty, setDirty] = useState<boolean>(() => readDraft() != null);
   const [token, setTokenState] = useState<string>(() => localStorage.getItem(TOKEN_KEY) ?? '');
   const [branch, setBranchState] = useState<string>(
