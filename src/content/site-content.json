@@ -167,6 +167,8 @@
     ],
     "badgeLabel": "Recognition",
     "badgeValue": "Top Designer 2024",
+    "portrait": "/about-portrait.jpg",
+    "portraitAlt": "Portrait",
     "stats": [
       { "value": 8, "suffix": "+", "label": "Years Experience" },
       { "value": 50, "suffix": "+", "label": "Projects Delivered" },
@@ -184,6 +186,18 @@
     "messageLabel": "Tell me about your project",
     "submitLabel": "Send Message",
     "submittedLabel": "Message Sent!",
+    "namePlaceholder": "John Doe",
+    "emailPlaceholder": "john@example.com",
+    "messagePlaceholder": "I'm looking for a designer to help me with...",
+    "projectTypeDefault": "Select a project type",
+    "projectTypeOptions": [
+      { "value": "web-design", "label": "Web Design" },
+      { "value": "mobile-app", "label": "Mobile App Design" },
+      { "value": "brand-identity", "label": "Brand Identity" },
+      { "value": "design-system", "label": "Design System" },
+      { "value": "consultation", "label": "Consultation" },
+      { "value": "other", "label": "Other" }
+    ],
     "altContactText": "Prefer email? Reach me at",
     "email": "hello@designer.com",
     "social": [

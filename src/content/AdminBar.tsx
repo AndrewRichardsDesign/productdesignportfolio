@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Check, ExternalLink, Eye, EyeOff, Loader2, LogOut, RotateCcw, Save, X } from 'lucide-react';
+import { Check, ExternalLink, Eye, EyeOff, List, Loader2, LogOut, RotateCcw, Save, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ADMIN_TARGET, useContent } from './ContentContext';
+import { ContentEditorPanel } from './ContentEditorPanel';
 
 /**
  * Floating control bar shown only in admin mode (#/admin). Lets the editor
@@ -13,6 +14,7 @@ export function AdminBar() {
     useContent();
   const [showToken, setShowToken] = useState(false);
   const [open, setOpen] = useState(true);
+  const [panelOpen, setPanelOpen] = useState(false);
 
   if (!isAdmin) return null;
 
@@ -27,6 +29,8 @@ export function AdminBar() {
   const saving = saveState.status === 'saving';
 
   return (
+    <>
+    <ContentEditorPanel open={panelOpen} onClose={() => setPanelOpen(false)} />
     <div className="fixed bottom-4 left-1/2 z-[100] w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2">
       <div className="rounded-2xl border border-border/70 bg-background/95 shadow-2xl backdrop-blur-xl">
         {/* Header row */}
@@ -118,6 +122,15 @@ export function AdminBar() {
               <Button
                 size="sm"
                 variant="outline"
+                onClick={() => setPanelOpen(true)}
+                className="gap-1.5"
+              >
+                <List className="h-4 w-4" />
+                Edit all content
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
                 onClick={discardChanges}
                 disabled={!dirty || saving}
                 className="gap-1.5"
@@ -150,12 +163,14 @@ export function AdminBar() {
             )}
 
             <p className="text-[11px] leading-snug text-muted-foreground">
-              Click any text on the page to edit it. Press Enter to confirm, Esc/click away to
-              finish.
+              Click any text on the page to edit it (Enter confirms, click away to finish), or
+              click an image to change it. Use <span className="font-medium">Edit all content</span>{' '}
+              for every field, including links and form options.
             </p>
           </div>
         )}
       </div>
     </div>
+    </>
   );
 }

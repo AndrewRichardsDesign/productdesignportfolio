@@ -34,6 +34,8 @@ interface ContentContextValue {
   setBranch: (branch: string) => void;
   save: () => Promise<void>;
   discardChanges: () => void;
+  /** Commit an image file to the repo's public/ folder; returns the served path. */
+  uploadAsset: (file: File) => Promise<string>;
 }
 
 const ContentContext = createContext<ContentContextValue | null>(null);
@@ -64,11 +66,29 @@ function setByPath<T>(obj: T, path: string, value: unknown): T {
 /** Base64-encode a UTF-8 string (btoa only handles latin1 on its own). */
 function utf8ToBase64(str: string): string {
   const bytes = new TextEncoder().encode(str);
+  return bytesToBase64(bytes);
+}
+
+/** Base64-encode raw bytes in chunks (avoids call-stack limits on large files). */
+function bytesToBase64(bytes: Uint8Array): string {
   let binary = '';
-  bytes.forEach((b) => {
-    binary += String.fromCharCode(b);
-  });
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
   return btoa(binary);
+}
+
+/** Make a filesystem-safe, unique-ish name for an uploaded asset. */
+function safeAssetName(name: string): string {
+  const dot = name.lastIndexOf('.');
+  const ext = dot > -1 ? name.slice(dot).toLowerCase() : '';
+  const base = (dot > -1 ? name.slice(0, dot) : name)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 40) || 'image';
+  return `${base}-${Date.now().toString(36)}${ext}`;
 }
 
 function readDraft(): SiteContent | null {
@@ -211,6 +231,42 @@ export function ContentProvider({
     }
   }, [token, branch, content]);
 
+  const uploadAsset = useCallback(
+    async (file: File): Promise<string> => {
+      if (!token) throw new Error('Enter a GitHub token first.');
+      const fileName = safeAssetName(file.name);
+      const repoPath = `public/uploads/${fileName}`;
+      const buffer = new Uint8Array(await file.arrayBuffer());
+      const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${repoPath}`;
+      const res = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+        body: JSON.stringify({
+          message: `Upload image ${fileName} via admin mode`,
+          content: bytesToBase64(buffer),
+          branch,
+        }),
+      });
+      if (!res.ok) {
+        let detail = `${res.status}`;
+        try {
+          const err = (await res.json()) as { message?: string };
+          if (err.message) detail = err.message;
+        } catch {
+          /* ignore */
+        }
+        throw new Error(detail);
+      }
+      // Served from the site root once the build copies public/ into the bundle.
+      return `/uploads/${fileName}`;
+    },
+    [token, branch]
+  );
+
   const value = useMemo<ContentContextValue>(
     () => ({
       content,
@@ -224,8 +280,9 @@ export function ContentProvider({
       setBranch,
       save,
       discardChanges,
+      uploadAsset,
     }),
-    [content, isAdmin, dirty, token, branch, saveState, setText, setToken, setBranch, save, discardChanges]
+    [content, isAdmin, dirty, token, branch, saveState, setText, setToken, setBranch, save, discardChanges, uploadAsset]
   );
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;
