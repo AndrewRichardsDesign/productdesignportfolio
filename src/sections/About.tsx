@@ -5,6 +5,7 @@ import { Award, Briefcase, Coffee, Heart, MapPin, Sparkles } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
+import { EditableImage } from '@/content/EditableImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -296,10 +297,11 @@ export default function About() {
             >
               {/* Main Image */}
               <div className="relative aspect-[3/4] rounded-2xl lg:rounded-3xl overflow-hidden">
-                <img
-                  src="/about-portrait.jpg"
-                  alt="Portrait"
+                <EditableImage
+                  path="about.portrait"
+                  altPath="about.portraitAlt"
                   className="w-full h-full object-cover"
+                  wrapperClassName="w-full h-full"
                 />
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />

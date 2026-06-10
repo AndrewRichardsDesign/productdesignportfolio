@@ -106,6 +106,8 @@ export interface SiteContent {
     personal: PersonalItem[];
     badgeLabel: string;
     badgeValue: string;
+    portrait: string;
+    portraitAlt: string;
     stats: AboutStat[];
   };
   contact: {
@@ -118,6 +120,11 @@ export interface SiteContent {
     messageLabel: string;
     submitLabel: string;
     submittedLabel: string;
+    namePlaceholder: string;
+    emailPlaceholder: string;
+    messagePlaceholder: string;
+    projectTypeDefault: string;
+    projectTypeOptions: { value: string; label: string }[];
     altContactText: string;
     email: string;
     social: SocialLink[];

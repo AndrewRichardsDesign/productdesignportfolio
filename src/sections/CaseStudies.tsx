@@ -6,6 +6,7 @@ import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
+import { EditableImage } from '@/content/EditableImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -103,10 +104,11 @@ export default function CaseStudies() {
               {/* Image */}
               <div className={`relative ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
                 <div className="relative aspect-[3/2] rounded-2xl lg:rounded-3xl overflow-hidden">
-                  <img
-                    src={study.image}
+                  <EditableImage
+                    path={`caseStudies.items.${index}.image`}
                     alt={study.title}
                     className="w-full h-full object-cover transition-transform duration-700 ease-expo-out group-hover:scale-105"
+                    wrapperClassName="w-full h-full"
                   />
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />

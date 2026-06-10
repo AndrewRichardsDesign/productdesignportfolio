@@ -182,7 +182,7 @@ export default function Contact() {
                 id="name"
                 name="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder={contact.namePlaceholder}
                 value={formData.name}
                 onChange={handleChange}
                 required
@@ -199,7 +199,7 @@ export default function Contact() {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="john@example.com"
+                placeholder={contact.emailPlaceholder}
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -221,13 +221,10 @@ export default function Contact() {
               required
               className="w-full h-12 px-4 rounded-xl bg-card/50 border border-border/50 focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all duration-300 text-foreground outline-none"
             >
-              <option value="" disabled>Select a project type</option>
-              <option value="web-design">Web Design</option>
-              <option value="mobile-app">Mobile App Design</option>
-              <option value="brand-identity">Brand Identity</option>
-              <option value="design-system">Design System</option>
-              <option value="consultation">Consultation</option>
-              <option value="other">Other</option>
+              <option value="" disabled>{contact.projectTypeDefault}</option>
+              {contact.projectTypeOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
             </select>
           </div>
 
@@ -239,7 +236,7 @@ export default function Contact() {
             <Textarea
               id="message"
               name="message"
-              placeholder="I'm looking for a designer to help me with..."
+              placeholder={contact.messagePlaceholder}
               value={formData.message}
               onChange={handleChange}
               required

@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
+import { EditableImage } from '@/content/EditableImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -105,10 +106,11 @@ export default function Projects() {
               >
                 {/* Image Container */}
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src={project.image}
+                  <EditableImage
+                    path={`projects.items.${index}.image`}
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-700 ease-expo-out group-hover:scale-110"
+                    wrapperClassName="w-full h-full"
                   />
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />

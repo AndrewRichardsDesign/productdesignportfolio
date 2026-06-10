@@ -14,8 +14,11 @@ and commit the changes back to this repo.
    (e.g. `https://your-site/#/admin`). A floating admin bar appears. To edit the **Arcatext
    case-study page**, add `?admin` to its URL instead: `https://your-site/#/arcatext?admin`.
 2. **Edit:** every editable piece of text gets a dashed outline. Click any of it and type.
-   Press **Enter** to confirm a single-line field, or click away to finish. Changes are kept
-   in your browser as a draft (they survive a refresh) until you save.
+   Press **Enter** to confirm a single-line field, or click away to finish. Click any **image**
+   to paste a new URL/path or upload a file (which is committed to the repo). For *every* field —
+   including link URLs, form placeholders, and dropdown options — open **Edit all content** in
+   the admin bar, which lists every field on the site. Changes are kept in your browser as a
+   draft (they survive a refresh) until you save.
 3. **Save to GitHub:** paste a GitHub **fine-grained personal access token** into the admin
    bar and click **Save to GitHub**. This commits the updated `site-content.json` to the repo.
    The live site picks up the new copy on its next build/deploy.
