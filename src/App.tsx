@@ -7,7 +7,6 @@ import { AdminBar } from '@/content/AdminBar';
 import Navigation from '@/sections/Navigation';
 import Hero from '@/sections/Hero';
 import Projects from '@/sections/Projects';
-import CaseStudies from '@/sections/CaseStudies';
 import About from '@/sections/About';
 import Contact from '@/sections/Contact';
 import Footer from '@/sections/Footer';
@@ -67,7 +66,6 @@ function App() {
               <main>
                 <Hero />
                 <Projects />
-                <CaseStudies />
                 <About />
                 <Contact />
               </main>
