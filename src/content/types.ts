@@ -137,6 +137,7 @@ export interface SiteContent {
     links: NavLink[];
   };
   arcatext: ArcatextContent;
+  conversant: ConversantContent;
 }
 
 export interface TitledItem {
@@ -277,6 +278,136 @@ export interface ArcatextContent {
     titleHighlight: string;
     intro: string[];
     items: { title: string; question: string }[];
+  };
+  footerCta: {
+    titleLead: string;
+    titleHighlight: string;
+    titleRest: string;
+    getInTouch: string;
+    backToProjects: string;
+  };
+}
+
+export interface ConversantPanel {
+  title: string;
+  desc: string;
+}
+
+export interface ConversantFeature {
+  title: string;
+  tag: string;
+  desc: string[];
+}
+
+export interface ConversantContent {
+  backToPortfolio: string;
+  brand: string;
+  toc: string[];
+  hero: {
+    status: string;
+    title: string;
+    subtitle: string;
+    intro: string;
+    typeTags: string[];
+    roleLabel: string;
+    roleValue: string;
+    platformLabel: string;
+    platformValue: string;
+    surfaceLabel: string;
+    surfaceValue: string;
+  };
+  context: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    calloutEyebrow: string;
+    calloutLead: string;
+    calloutHighlight: string;
+  };
+  goals: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    designGoalsTitle: string;
+    designGoals: string[];
+  };
+  users: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    rolesLabel: string;
+    roles: string[];
+  };
+  problem: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    problemsTitle: string;
+    problems: TitledItem[];
+    closing: string[];
+    challengeLabel: string;
+    challengeLead: string;
+    challengeHighlight: string;
+    challenge: string[];
+  };
+  solution: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    highlightsTitle: string;
+    highlights: TitledItem[];
+  };
+  system: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    panels: ConversantPanel[];
+    closing: string[];
+  };
+  selectedWork: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    features: ConversantFeature[];
+  };
+  role: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    initiativesLabel: string;
+    initiatives: string[];
+    deliverablesLabel: string;
+    deliverables: string[];
+    strategyTitle: string;
+    strategy: string[];
+    constraintsTitle: string;
+    constraints: TitledItem[];
+  };
+  impact: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    processTitle: string;
+    process: string[];
+    processSteps: string[];
+    measuringTitle: string;
+    measuring: string[];
+    collaborationTitle: string;
+    collaboration: string[];
+    collaborators: string[];
+    designSystemsTitle: string;
+    designSystems: string[];
+    demonstratesTitle: string;
+    demonstrates: string[];
+    confidentiality: string;
   };
   footerCta: {
     titleLead: string;
