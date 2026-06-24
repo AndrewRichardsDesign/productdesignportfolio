@@ -89,6 +89,17 @@
           "Financial Services"
         ],
         "link": "#"
+      },
+      {
+        "id": 4,
+        "title": "USAA Member Home Page",
+        "description": "Coming soon.",
+        "image": "/project-usaa-placeholder.svg",
+        "tags": [
+          "Web",
+          "Financial Services"
+        ],
+        "link": "#"
       }
     ]
   },
