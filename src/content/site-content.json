@@ -1194,9 +1194,9 @@
     ],
     "hero": {
       "status": "USAA · Native mobile",
-      "title": "AppX",
+      "title": "USAA Mobile",
       "subtitle": "Native mobile redesign for USAA members",
-      "intro": "AppX was a redesign of USAA's native mobile app — the primary digital access point for members to view accounts, manage policies, complete servicing actions, and receive prioritized content. The work focused on simplifying a dated mobile experience, aligning app and web concepts, and creating a scalable structure for the member's financial relationship with USAA.",
+      "intro": "USAA Mobile was a redesign of USAA's native mobile app — the primary digital access point for members to view accounts, manage policies, complete servicing actions, and receive prioritized content. The work focused on simplifying a dated mobile experience, aligning app and web concepts, and creating a scalable structure for the member's financial relationship with USAA.",
       "roleIntro": "I worked with my team across product strategy, UX structure, interaction design, and detailed feature design. We helped define the app's overall interaction model, the private and public homepage experiences, product cards, customization flows, and iPad patterns while navigating a large enterprise environment with multiple design, business, and development partners.",
       "typeTags": ["Native mobile", "iOS · Android · iPad", "Information architecture", "Personalization"],
       "roleLabel": "Role",
@@ -1378,7 +1378,7 @@
         {
           "title": "iPad",
           "desc": [
-            "After the core mobile app structure was defined, iPad introduced a new design challenge. The app needed a system of structures, view types, and interactions that made better use of the larger platform while still connecting back to the broader AppX model.",
+            "After the core mobile app structure was defined, iPad introduced a new design challenge. The app needed a system of structures, view types, and interactions that made better use of the larger platform while still connecting back to the broader USAA Mobile model.",
             "This work helped extend the app from a phone-first experience into a flexible native ecosystem."
           ],
           "bullets": [
@@ -1428,14 +1428,14 @@
       ],
       "demonstratesTitle": "What this project demonstrates",
       "demonstrates": [
-        "AppX demonstrates my ability to simplify a large consumer-facing product without ignoring business complexity. The work required platform thinking, native mobile interaction design, cross-platform taxonomy alignment, personalization strategy, product-card information architecture, and collaboration across a complex enterprise environment.",
+        "USAA Mobile demonstrates my ability to simplify a large consumer-facing product without ignoring business complexity. The work required platform thinking, native mobile interaction design, cross-platform taxonomy alignment, personalization strategy, product-card information architecture, and collaboration across a complex enterprise environment.",
         "It also shows how product design often depends on disciplined tradeoffs. The strongest solution was not simply the cleanest screen or the most minimal first level. It was the structure that best matched member expectations, supported business needs, preserved valuable existing behaviors, and created a scalable foundation for future app experiences."
       ],
       "confidentiality": "Because this work involved USAA's internal product strategy, member data, and unreleased or proprietary design decisions, sensitive details and visuals have been anonymized or recreated for public portfolio use."
     },
     "footerCta": {
       "titleLead": "Want to talk about",
-      "titleHighlight": "AppX",
+      "titleHighlight": "USAA Mobile",
       "titleRest": "or native mobile design?",
       "getInTouch": "Get in Touch",
       "backToProjects": "Back to Projects"
