@@ -67,7 +67,8 @@
           "Keyboard",
           "Translation"
         ],
-        "link": "#/arcatext"
+        "link": "#/arcatext",
+        "timeframe": "1 year"
       },
       {
         "id": 2,
@@ -79,7 +80,8 @@
           "Desktop Platform",
           "Design Systems"
         ],
-        "link": "#/conversant"
+        "link": "#/conversant",
+        "timeframe": "3 years"
       },
       {
         "id": 3,
@@ -90,7 +92,8 @@
           "Native Mobile",
           "Financial Services"
         ],
-        "link": "#/usaa"
+        "link": "#/usaa",
+        "timeframe": "3 years"
       },
       {
         "id": 4,
@@ -101,7 +104,8 @@
           "Web",
           "Financial Services"
         ],
-        "link": "#"
+        "link": "#",
+        "timeframe": "2 years"
       }
     ]
   },
