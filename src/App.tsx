@@ -11,6 +11,7 @@ import About from '@/sections/About';
 import Contact from '@/sections/Contact';
 import Footer from '@/sections/Footer';
 import Arcatext from '@/pages/Arcatext';
+import { ProjectGate } from '@/components/ProjectGate';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,7 +60,9 @@ function App() {
       <ContentProvider isAdmin={isAdmin}>
         <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
           {route === 'arcatext' ? (
-            <Arcatext />
+            <ProjectGate bypass={isAdmin}>
+              <Arcatext />
+            </ProjectGate>
           ) : (
             <>
               <Navigation />
