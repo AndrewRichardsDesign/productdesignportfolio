@@ -15,6 +15,7 @@ export interface ProjectItem {
   image: string;
   tags: string[];
   link: string;
+  timeframe: string;
 }
 
 export interface CaseStudyStat {
