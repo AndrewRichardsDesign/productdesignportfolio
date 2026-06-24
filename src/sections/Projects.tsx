@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
 import { EditableImage } from '@/content/EditableImage';
+import { PasswordModal } from '@/components/PasswordModal';
+import { isProjectUnlocked } from '@/lib/projectAuth';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +16,20 @@ export default function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  // Link the visitor is trying to open while the password modal is shown.
+  const [pendingLink, setPendingLink] = useState<string | null>(null);
+
+  const handleProjectClick = (e: React.MouseEvent, link: string) => {
+    // Inline editing mode never navigates away.
+    if (isAdmin) {
+      e.preventDefault();
+      return;
+    }
+    // Already unlocked this session — let the link navigate normally.
+    if (isProjectUnlocked()) return;
+    e.preventDefault();
+    setPendingLink(link);
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -100,7 +116,7 @@ export default function Projects() {
             >
               <a
                 href={project.link}
-                onClick={(e) => isAdmin && e.preventDefault()}
+                onClick={(e) => handleProjectClick(e, project.link)}
                 className="block relative overflow-hidden rounded-2xl lg:rounded-3xl bg-card border border-border/50 transition-all duration-500 ease-expo-out hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2"
                 style={{ transformStyle: 'preserve-3d' }}
               >
@@ -173,6 +189,17 @@ export default function Projects() {
           </a>
         </div>
       </div>
+
+      <PasswordModal
+        open={pendingLink !== null}
+        onOpenChange={(open) => {
+          if (!open) setPendingLink(null);
+        }}
+        onSuccess={() => {
+          if (pendingLink) window.location.href = pendingLink;
+          setPendingLink(null);
+        }}
+      />
     </section>
   );
 }
