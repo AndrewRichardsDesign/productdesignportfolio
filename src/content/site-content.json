@@ -72,12 +72,14 @@
       {
         "id": 2,
         "title": "Conversant",
-        "description": "Coming soon.",
+        "description": "Enterprise desktop platform for USAA call center and back-office servicing.",
         "image": "/project-conversant-placeholder.svg",
         "tags": [
-          "Product Design"
+          "Enterprise UX",
+          "Desktop Platform",
+          "Design Systems"
         ],
-        "link": "#"
+        "link": "#/conversant"
       },
       {
         "id": 3,
@@ -885,6 +887,289 @@
       "titleLead": "Want to talk about",
       "titleHighlight": "Arcatext",
       "titleRest": "or language-learning design?",
+      "getInTouch": "Get in Touch",
+      "backToProjects": "Back to Projects"
+    }
+  },
+  "conversant": {
+    "backToPortfolio": "Back to portfolio",
+    "brand": "Conversant",
+    "toc": [
+      "Context",
+      "Goals",
+      "Users",
+      "Problem",
+      "Solution",
+      "System structure",
+      "Selected work",
+      "Role & strategy",
+      "Process & impact"
+    ],
+    "hero": {
+      "status": "USAA · Enterprise platform",
+      "title": "Conversant",
+      "subtitle": "Enterprise desktop platform for call center and back-office servicing",
+      "intro": "Conversant was a mission-critical internal desktop platform for USAA employees who supported members through phone calls, chat, account servicing, and back-office workflows. The platform unified member context, communication tools, servicing alerts, product information, and internal applications into one workspace.",
+      "typeTags": ["Enterprise UX", "Desktop platform", "Design systems", "Research-led strategy"],
+      "roleLabel": "Role",
+      "roleValue": "Design research, UX/UI & product strategy",
+      "platformLabel": "Platform",
+      "platformValue": "Enterprise desktop application",
+      "surfaceLabel": "Users",
+      "surfaceValue": "USAA call center & back-office employees"
+    },
+    "context": {
+      "eyebrow": "Context",
+      "titleLead": "One workspace for",
+      "titleHighlight": "complex servicing work",
+      "intro": [
+        "Before Conversant, USAA employees relied on a fragmented set of tools to access member data and service accounts. A typical desktop could have 10–15 applications open at the same time, forcing representatives to move between disconnected systems while speaking with members or completing back-office work.",
+        "The main tool for accessing member data had not been meaningfully updated in roughly 20 years. It carried severe UX and technical performance issues, making the system difficult to learn, slow to navigate, and inconsistent with the needs of modern servicing work.",
+        "This created two very different user problems. New employees struggled to learn the system because the workflows were fragmented and hard to understand. Veteran employees could move faster, but often only because they had developed countless workarounds, memorized non-obvious pathways, and learned how to compensate for the system's limitations.",
+        "Conversant existed within that environment as a unified desktop workspace intended to help representatives stay oriented, access member context, and complete complex servicing tasks with more consistency and less fragmentation."
+      ],
+      "calloutEyebrow": "Designed for",
+      "calloutLead": "Repeated daily use under time pressure — not",
+      "calloutHighlight": "quick, occasional visits."
+    },
+    "goals": {
+      "eyebrow": "Goals",
+      "titleLead": "Replace, consolidate,",
+      "titleHighlight": "and stay flexible",
+      "intro": [
+        "The product goal was to completely replace the previous internal member-data tool and consolidate as many fragmented secondary tools as possible into a simpler, more unified servicing environment.",
+        "Conversant needed to become the single launch point for employee workflows. Instead of asking representatives to know which separate system to open, where to find the right data, or how to move between disconnected tools, the platform needed to provide one consistent entry point for member servicing work.",
+        "At the same time, the system could not become rigid. Conversant was used for a wide variety of purposes depending on the employee's role and the reason for the member's call. A simple request like updating personal information might mean a quick visit to the information panel and an edit app, while opening a new account might mean using the product panel as a guided servicing or acquisition flow loaded in the center workspace.",
+        "This was the core idea behind Conversant supporting non-linear workflows. Representatives needed to move fluidly between member context, communication controls, documentation, product information, and task-specific tools without being forced through one rigid sequence."
+      ],
+      "designGoalsTitle": "Design goals",
+      "designGoals": [
+        "Replace the old member-data experience with a modern, unified workspace.",
+        "Consolidate fragmented tools and reduce unnecessary system-switching.",
+        "Create an intuitive layout and information architecture so employees could rely less on training, workarounds, and memorized paths.",
+        "Preserve the speed veteran employees had developed while introducing new efficiencies.",
+        "Support flexible, non-linear workflows across different employee roles and servicing scenarios.",
+        "Design for the 50th use, not just first-time comprehension — where long-term efficiency justifies the learning tradeoff.",
+        "Create reusable patterns that helped new Conversant experiences feel consistent with the larger platform."
+      ]
+    },
+    "users": {
+      "eyebrow": "Users",
+      "titleLead": "Many roles,",
+      "titleHighlight": "one coherent product",
+      "intro": [
+        "Conversant supported a wide range of USAA employee roles, including frontline phone representatives, banking reps, insurance reps, claims reps, specialists, back-office processors, managers, supervisors, chat employees, and employees who worked across multiple products or departments.",
+        "That range of roles created a major design challenge. Different employee groups had different workflows, priorities, and expectations for which information and tools needed to be immediately available. A banking representative, an insurance specialist, a claims employee, and a back-office processor might all need member context, but not always the same context, in the same order, or with the same level of urgency.",
+        "Because of that, Conversant needed to be highly configurable. The platform could not rely on one fixed layout or one universal set of tools. It needed to support role-specific experiences while still feeling like a coherent product. Part of that flexibility came through an admin tool that allowed representative managers to control aspects of the experience for their teams."
+      ],
+      "rolesLabel": "Roles supported",
+      "roles": [
+        "Phone reps",
+        "Banking reps",
+        "Insurance reps",
+        "Claims reps",
+        "Specialists",
+        "Back-office processors",
+        "Managers",
+        "Supervisors",
+        "Chat employees",
+        "Cross-product employees"
+      ]
+    },
+    "problem": {
+      "eyebrow": "Problem",
+      "titleLead": "Friction at every",
+      "titleHighlight": "level of the experience",
+      "intro": [
+        "The previous servicing environment created friction at nearly every level of the employee experience. Tools were slow, workflows required too many clicks, and representatives often did not know where to find the information they needed. Data could be duplicated across systems, labels and navigation were inconsistent, and important member context could be difficult to read or missing from a given representative's view.",
+        "These issues created both usability and operational risks. New representatives struggled to onboard because the system did not clearly teach its own structure. Veteran representatives could often work faster, but only because they had built up informal institutional knowledge, memorized paths, and personal workarounds that were difficult to transfer to others."
+      ],
+      "problemsTitle": "Where it broke down",
+      "problems": [
+        { "title": "Slow, click-heavy tools", "desc": "Workflows required too many clicks, and representatives often didn't know where to find the information they needed." },
+        { "title": "Fragmented & duplicated data", "desc": "Data was duplicated across systems, and labels and navigation were inconsistent from tool to tool." },
+        { "title": "Hard to onboard", "desc": "New representatives struggled because the system did not clearly teach its own structure." },
+        { "title": "Tribal knowledge", "desc": "Veterans worked fast only through memorized paths and personal workarounds that were difficult to transfer to others." },
+        { "title": "Accessibility gaps", "desc": "The old environment introduced accessibility problems across information architecture, color usage, and keyboard interaction — used repeatedly all day during live conversations." }
+      ],
+      "closing": [
+        "The product problem was not simply that employees needed \"more information.\" They needed clearer, more complete, and more accessible information in a structure that supported accurate decisions, reduced unnecessary effort, and made complex servicing workflows easier to learn and execute."
+      ],
+      "challengeLabel": "The product challenge",
+      "challengeLead": "Replace a fragmented legacy toolset and support many nonlinear workflows — while protecting the speed",
+      "challengeHighlight": "veterans had built over years.",
+      "challenge": [
+        "Conversant had to support employees doing cognitively demanding work under time pressure. Representatives needed to speak with members, understand account context, navigate multiple tools, manage phone or chat states, document outcomes, and complete servicing tasks without losing their place.",
+        "The design challenge was not simply to make the interface look cleaner. It was to make dense, operational workflows easier to understand and safer to execute across long work sessions."
+      ]
+    },
+    "solution": {
+      "eyebrow": "Solution",
+      "titleLead": "A unified workspace for",
+      "titleHighlight": "member servicing",
+      "intro": [
+        "Conversant created a unified desktop application for member servicing. It brought together member personal information, member product line-up, servicing alerts, phone and chat features, and a center app browser for launching both native apps and web apps within the same workspace.",
+        "Instead of forcing representatives to treat each tool as a separate experience, Conversant gave them a shared frame for work: member context stayed accessible, applications opened inside a consistent container, and common controls behaved predictably across workflows."
+      ],
+      "highlightsTitle": "What the solution delivered",
+      "highlights": [
+        { "title": "Unified servicing desktop", "desc": "Member info, product line-up, servicing alerts, phone/chat, and a center app browser for native and web apps — all in one workspace." },
+        { "title": "Role-specific configuration", "desc": "Panel views could be toggled or rearranged by managers so teams worked from a focused, optimized view rather than one fixed layout." },
+        { "title": "A transition platform", "desc": "Reps kept access to tools through the integrated app browser while older internal apps were gradually migrated to run natively inside Conversant." },
+        { "title": "Efficiency over time", "desc": "Migration reduced load times, simplified workflows, and created a more consistent UX/UI across experiences that had previously felt fragmented." },
+        { "title": "Accessibility & keyboard support", "desc": "Improved accessibility and keyboard interaction for representatives using the app repeatedly throughout long work sessions." }
+      ]
+    },
+    "system": {
+      "eyebrow": "System structure",
+      "titleLead": "A multi-panel",
+      "titleHighlight": "desktop workspace",
+      "intro": [
+        "Conversant used a multi-panel desktop structure designed to keep member context, servicing tools, and communication controls available inside one workspace."
+      ],
+      "panels": [
+        { "title": "Member tabs", "desc": "The top of the app supported multiple open member profiles through tabs." },
+        { "title": "Member information row", "desc": "Below the tabs, a high-level context row let reps quickly confirm who they were helping and see essential profile details." },
+        { "title": "Left member panel", "desc": "Detailed member information, notifications, member details, and contact information." },
+        { "title": "Left rail", "desc": "Access to historical documents, previous activity, member settings, phone directory, and launch points for supporting tools." },
+        { "title": "Right product panel", "desc": "The member's product line-up, new product acquisition entry points, and help or knowledge content." },
+        { "title": "Center workspace", "desc": "The main launch point for native and web apps — edit experiences, servicing flows, acquisition workflows — and apps could pop out into separate windows." },
+        { "title": "Communication tools", "desc": "Phone and chat were collapsed by default and expandable when needed; the Phone Tool could move to a separate window when it blocked critical info." },
+        { "title": "Notes", "desc": "Notes could open inside the app or move to a separate window, supporting multitasking and documentation without leaving the environment." },
+        { "title": "Configurable rails & panels", "desc": "Side rails and panel views were configurable so managers could tailor the experience for different teams and roles." }
+      ],
+      "closing": [
+        "This structure created a recurring product design tension: every new feature needed to be useful in its own context, but it also had to behave coherently inside the larger platform. Much of my work focused on designing patterns that could scale beyond a single feature."
+      ]
+    },
+    "selectedWork": {
+      "eyebrow": "Selected work",
+      "titleLead": "Two stories from",
+      "titleHighlight": "inside the platform",
+      "intro": [
+        "The strongest stories to feature are the Product Panel redesign and Phone Tool interactions. These two areas show different dimensions of the work: one focused on information architecture, role-specific servicing needs, and product navigation; the other focused on high-pressure communication workflows, technical constraints, and interaction clarity during live member conversations."
+      ],
+      "features": [
+        {
+          "title": "Product Panel redesign",
+          "tag": "Information architecture",
+          "desc": [
+            "The Product Panel helped representatives understand the member's relationship with USAA, review product line-up, and move into servicing or acquisition workflows. Because different employee roles needed different product information and entry points, the panel had to balance consistency with configurability.",
+            "This work shows how information architecture, role-specific needs, manager-controlled configuration, and product acquisition flows came together inside a dense enterprise workspace. It also shows how Conversant supported nonlinear workflows: sometimes the panel was only a reference point, while other times it became the launch point for a central servicing or acquisition app."
+          ]
+        },
+        {
+          "title": "Phone Tool interactions",
+          "tag": "High-pressure workflows",
+          "desc": [
+            "The Phone Tool supported live member conversations inside Conversant. It included call controls, caller-specific actions, collapsed and expanded states, and the ability to move the tool into a separate window when the expanded state blocked information needed during a call.",
+            "This work shows how design decisions reduced ambiguity in a high-pressure workflow. It also shows how the team designed around an AWS-based backend rather than assuming every ideal interaction was technically possible."
+          ]
+        }
+      ]
+    },
+    "role": {
+      "eyebrow": "Role & strategy",
+      "titleLead": "Research-led design",
+      "titleHighlight": "and product direction",
+      "intro": [
+        "I worked across design research, UX/UI design, and product design. My role often extended beyond interface design into shaping scope and direction based on research findings.",
+        "I led generative research, usability testing, interviews, focus groups, research synthesis, product requirement creation, and shareouts with business and development partners. For each feature, I helped translate user needs and operational constraints into design direction, documentation, and implementation guidance.",
+        "Because Conversant served as a platform for many internal tools, I also coordinated with multiple teams designing web apps that lived inside the environment. I often served as an employee-user expert, helping teams adapt their designs for USAA employees rather than members and ensuring each app fit the workflows and usability needs of the internal servicing environment."
+      ],
+      "initiativesLabel": "Initiatives I led",
+      "initiatives": [
+        "Product Panel redesign",
+        "Profile Alerts",
+        "Reason for Call Notifications",
+        "Keyboard Shortcuts strategy",
+        "Phone Tool interactions",
+        "Component Library"
+      ],
+      "deliverablesLabel": "Deliverables",
+      "deliverables": [
+        "UX flows",
+        "UI designs",
+        "Research synthesis",
+        "Product shareouts",
+        "Functional guidance",
+        "Specifications",
+        "Dev handoff docs"
+      ],
+      "strategyTitle": "Additional strategic work — digital fax tool",
+      "strategy": [
+        "I also led the research and strategy for a digital fax tool integrated into the Conversant center app browser. This work included user interviews, research synthesis, product requirement recommendations, and journey maps that showed each step in the workflow for different user types and tasks.",
+        "The journey maps extended beyond the fax tool itself. They included the additional systems users needed to complete the broader workflow, which revealed that building a new standalone tool would not solve the real complexity employees faced. After mapping the full ecosystem, I recommended a different strategy: partner with the team that owned the main file-processing software and add our requirements as new features within their existing tool.",
+        "That strategy gave users a more streamlined workflow with less app switching and fewer repeated steps. It also helped USAA avoid the cost of standing up a new development team for a separate tool that would have added another application to an already complex ecosystem."
+      ],
+      "constraintsTitle": "Constraints",
+      "constraints": [
+        { "title": "An existing, undocumented system", "desc": "The base app was already designed and developed. I had to work within an existing structure and an undocumented design system that was in use but not yet consistent." },
+        { "title": "Interconnected decisions", "desc": "A change that improved one workflow could affect another feature, role, or use case. Part of the work was identifying downstream impacts and judging acceptable compromises." },
+        { "title": "A large, diverse user base", "desc": "Many employee groups with nonlinear workflows and different priorities — sometimes needing a balanced default, other times customization so managers could tailor views." },
+        { "title": "Technical & timeline limits", "desc": "Timeline pressure and existing infrastructure shaped what could ship. Stronger solutions sometimes required backup plans and phased improvements." },
+        { "title": "AWS-based phone backend", "desc": "The Phone Tool had to work within the capabilities and limits of an AWS-based backend rather than a custom phone system designed from scratch." },
+        { "title": "Compliance & redaction", "desc": "Some user groups couldn't see complete member information, so the design had to support simplified or redacted views while preserving enough context to work accurately." }
+      ]
+    },
+    "impact": {
+      "eyebrow": "Process & impact",
+      "titleLead": "Modular process,",
+      "titleHighlight": "measurable confidence",
+      "processTitle": "Velocity & process",
+      "process": [
+        "The pace of work on Conversant was fast and highly variable. Some features moved from intake to development handoff within a two-week sprint. Others took about a month from start to finish, including research, UX exploration, UI design, documentation, and handoff.",
+        "That velocity shaped how I approached the work. I had to quickly determine how much discovery was necessary, where research would reduce risk, when existing patterns could be reused, and when a feature needed deeper exploration before implementation.",
+        "The result was a modular design process. Not every project needed the same level of research or iteration, but every project still needed enough clarity for product, development, accessibility, and business partners to move forward with confidence."
+      ],
+      "processSteps": [
+        "Intake",
+        "Kickoff & alignment",
+        "Work plan",
+        "Competitive analysis",
+        "User testing",
+        "Synthesis",
+        "UX/UI iteration",
+        "Validation",
+        "Documentation",
+        "Shareout"
+      ],
+      "measuringTitle": "Measuring success",
+      "measuring": [
+        "When testing data was available, I evaluated design decisions through current-state vs. redesigned usability scores, representative confidence, task clarity, and qualitative feedback. The goal was to connect results to specific design decisions rather than simply claim that a redesign \"tested better.\"",
+        "For a complex enterprise platform, success was not only visual polish. Success meant reducing confusion, improving confidence, supporting faster workflows, improving accessibility, and helping representatives complete complex servicing tasks with fewer unnecessary steps or workarounds."
+      ],
+      "collaborationTitle": "Collaboration",
+      "collaboration": [
+        "Conversant required collaboration across a large enterprise product ecosystem. I worked with the core Conversant design team, product teams, development teams, outside design teams building tools inside Conversant, MSR Labs for user testing coordination, accessibility partners, and design system partners.",
+        "Because many internal tools were being migrated or built into Conversant, collaboration often meant more than handing off screens. It meant helping other teams understand employee workflows, adapt member-facing patterns for internal users, and align their work with the larger Conversant platform experience."
+      ],
+      "collaborators": [
+        "Core Conversant design",
+        "Product teams",
+        "Development teams",
+        "Outside design teams",
+        "MSR Labs",
+        "Accessibility team",
+        "Design system team"
+      ],
+      "designSystemsTitle": "Design systems",
+      "designSystems": [
+        "Conversant had its own design system for native desktop experiences, but that system was inherited, undocumented in places, and not always applied consistently when I joined. Part of the work involved identifying reusable patterns, clarifying component behavior, and helping the product become more consistent over time.",
+        "Web apps loaded inside the center browser used the standard USAA design system because it was more robust for web-based application patterns. This created a dual design-system environment: native Conversant patterns needed to feel consistent with the desktop shell, while embedded web apps needed to align with broader USAA standards.",
+        "The design challenge was knowing when to use existing patterns, when to adapt them, and when to create new platform-specific guidance for the needs of employee users."
+      ],
+      "demonstratesTitle": "What this project demonstrates",
+      "demonstrates": [
+        "Conversant demonstrates my ability to design inside complexity. The project required platform thinking, enterprise UX judgment, research-led product strategy, systems-level consistency, and practical collaboration across product, engineering, accessibility, and research partners.",
+        "It also shows that impactful design is not always a blank-slate redesign. In mature enterprise systems, the most valuable work often comes from improving specific workflows, strengthening patterns, reducing inconsistency, and helping teams move faster without making the user experience more fragmented."
+      ],
+      "confidentiality": "Because Conversant was an internal enterprise platform, sensitive details, member data, and internal workflows have been anonymized or recreated for public portfolio use."
+    },
+    "footerCta": {
+      "titleLead": "Want to talk about",
+      "titleHighlight": "Conversant",
+      "titleRest": "or enterprise product design?",
       "getInTouch": "Get in Touch",
       "backToProjects": "Back to Projects"
     }
