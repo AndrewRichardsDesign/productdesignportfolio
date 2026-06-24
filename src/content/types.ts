@@ -138,6 +138,7 @@ export interface SiteContent {
   };
   arcatext: ArcatextContent;
   conversant: ConversantContent;
+  usaa: UsaaContent;
 }
 
 export interface TitledItem {
@@ -405,6 +406,123 @@ export interface ConversantContent {
     collaborators: string[];
     designSystemsTitle: string;
     designSystems: string[];
+    demonstratesTitle: string;
+    demonstrates: string[];
+    confidentiality: string;
+  };
+  footerCta: {
+    titleLead: string;
+    titleHighlight: string;
+    titleRest: string;
+    getInTouch: string;
+    backToProjects: string;
+  };
+}
+
+export interface UsaaFeature {
+  title: string;
+  desc: string[];
+  bullets: string[];
+}
+
+export interface UsaaContent {
+  backToPortfolio: string;
+  brand: string;
+  toc: string[];
+  hero: {
+    status: string;
+    title: string;
+    subtitle: string;
+    intro: string;
+    roleIntro: string;
+    typeTags: string[];
+    roleLabel: string;
+    roleValue: string;
+    platformLabel: string;
+    platformValue: string;
+    surfaceLabel: string;
+    surfaceValue: string;
+  };
+  context: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    calloutEyebrow: string;
+    calloutLead: string;
+    calloutHighlight: string;
+  };
+  goals: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    designGoalsTitle: string;
+    designGoals: string[];
+  };
+  needs: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    memberLabel: string;
+    memberNeeds: string[];
+    businessLabel: string;
+    businessNeeds: string[];
+  };
+  problem: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    problemsTitle: string;
+    problems: TitledItem[];
+    closing: string[];
+  };
+  solution: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    highlightsTitle: string;
+    highlights: TitledItem[];
+    structureTitle: string;
+    structure: string[];
+    contentRoles: TitledItem[];
+  };
+  challenge: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    approachesTitle: string;
+    approaches: TitledItem[];
+    closing: string[];
+  };
+  selectedWork: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    features: UsaaFeature[];
+  };
+  role: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    workLabel: string;
+    work: string[];
+    closing: string;
+  };
+  impact: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    processTitle: string;
+    process: string[];
+    measuringTitle: string;
+    measuring: string[];
     demonstratesTitle: string;
     demonstrates: string[];
     confidentiality: string;
