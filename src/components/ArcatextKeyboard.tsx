@@ -31,6 +31,15 @@ const C = {
 
 const DOT = '#0040DD';
 
+// Which side of the phone each note opens on.
+const NOTE_SIDE: Record<string, 'left' | 'right'> = {
+  config: 'left', // menu
+  paste: 'left',
+  check: 'right',
+  reword: 'right',
+  options: 'right',
+};
+
 type Anno = { id: string; eyebrow: string; title: string; desc: string };
 
 const ANNOTATIONS: Anno[] = [
@@ -66,8 +75,12 @@ const ANNOTATIONS: Anno[] = [
   },
 ];
 
-// Design width the keyboard is laid out at (scaled down to fit narrow screens).
-const DESIGN_W = 360;
+// iPhone 17 logical screen size (points), used as the design space.
+const SCREEN_W = 402;
+const SCREEN_H = 874;
+const BEZEL = 12; // black frame thickness
+const OUTER_W = SCREEN_W + BEZEL * 2; // 426
+const OUTER_H = SCREEN_H + BEZEL * 2; // 898
 
 /** ellipsis.circle SF Symbol, recreated as a vector (ToolbarIconColor). */
 function EllipsisCircle() {
@@ -198,11 +211,15 @@ export default function ArcatextKeyboard() {
 
     const c = container.getBoundingClientRect();
     const W = c.width;
-    const isStacked = W < 760;
+    // Reserve room on BOTH sides so the centered phone never shifts when a note
+    // opens. Scale the phone down to keep both note columns; if it gets too
+    // tight (mobile), fall back to stacking the note beneath the phone.
+    const reserve = NOTE_W + 28;
+    let s = Math.min(1, (W - 2 * reserve) / OUTER_W);
+    const isStacked = s < 0.5;
+    if (isStacked) s = Math.min(1, (W - 32) / OUTER_W);
     setStacked(isStacked);
-    // Scale the phone down only when it can't fit at natural size.
-    const avail = isStacked ? W - 32 : Math.min(DESIGN_W, W - 2 * (NOTE_W + 40));
-    setScale(Math.min(1, Math.max(0.62, avail / DESIGN_W)));
+    setScale(s);
 
     if (!active) {
       setLine(null);
@@ -226,20 +243,20 @@ export default function ArcatextKeyboard() {
       return;
     }
 
-    const side = dotX < W / 2 ? 'left' : 'right';
-    const useRight = side === 'right' ? W - phoneRight >= NOTE_W + 24 : phoneLeft < NOTE_W + 24;
+    // Fixed sides: Paste + Menu on the left, Reword + Check (+ options) right.
+    const side = NOTE_SIDE[active] ?? 'right';
     let left: number;
     let endX: number;
-    if (useRight) {
+    if (side === 'right') {
       left = phoneRight + 28;
       endX = left;
     } else {
       left = phoneLeft - 28 - NOTE_W;
       endX = left + NOTE_W;
     }
-    const top = Math.min(Math.max(dotY - 60, 8), c.height - 150);
+    const top = Math.min(Math.max(dotY - 64, 8), c.height - 168);
     setNotePos({ left, top });
-    setLine({ x1: dotX, y1: dotY, x2: endX, y2: top + 60 });
+    setLine({ x1: dotX, y1: dotY, x2: endX, y2: top + 64 });
   }, [active]);
 
   useLayoutEffect(() => {
@@ -310,7 +327,7 @@ export default function ArcatextKeyboard() {
 
       <div
         ref={containerRef}
-        className="relative mx-auto w-full max-w-5xl rounded-3xl border border-border/40 bg-muted/30 px-4 py-10 sm:px-8"
+        className="relative mx-auto w-full max-w-6xl rounded-3xl border border-border/40 bg-muted/30 px-4 py-10 sm:px-8"
         onClick={() => setActive(null)}
       >
         {/* Leader line from active dot to its note */}
@@ -345,22 +362,30 @@ export default function ArcatextKeyboard() {
           </div>
         )}
 
-        {/* iPhone (scaled to fit) */}
+        {/* iPhone 17 — 402×874pt screen, scaled to fit */}
         <div
           className="mx-auto"
-          style={{ width: DESIGN_W * scale, height: 'auto' }}
+          style={{ width: OUTER_W * scale, height: OUTER_H * scale }}
           onClick={(e) => e.stopPropagation()}
         >
           <div
             ref={phoneRef}
-            style={{ width: DESIGN_W, transform: `scale(${scale})`, transformOrigin: 'top center' }}
+            className="relative bg-black"
+            style={{
+              width: OUTER_W,
+              height: OUTER_H,
+              padding: BEZEL,
+              borderRadius: 56,
+              transform: `scale(${scale})`,
+              transformOrigin: 'top center',
+              boxShadow: '0 30px 60px -20px rgba(20,10,40,0.5)',
+            }}
           >
             <div
-              className="relative overflow-hidden rounded-[48px] bg-black p-[11px]"
-              style={{ boxShadow: '0 30px 60px -20px rgba(20,10,40,0.5)' }}
+              className="relative flex flex-col overflow-hidden bg-white"
+              style={{ width: SCREEN_W, height: SCREEN_H, borderRadius: 44 }}
             >
-              <div className="relative overflow-hidden rounded-[38px] bg-white">
-                {/* Status bar */}
+              {/* Status bar */}
                 <div className="relative flex h-11 items-center justify-between px-7 pt-1 text-black">
                   <span className="text-[15px] font-semibold">6:01</span>
                   <div className="absolute left-1/2 top-2 h-7 w-[100px] -translate-x-1/2 rounded-full bg-black" />
@@ -402,8 +427,8 @@ export default function ArcatextKeyboard() {
                   </div>
                 </div>
 
-                {/* Conversation area */}
-                <div className="h-24 bg-white" />
+                {/* Conversation area — grows to push the keyboard to the bottom */}
+                <div className="min-h-[40px] flex-1 bg-white" />
 
                 {/* Input bar */}
                 <div className="flex items-center gap-2 px-3 pb-2 pt-1">
@@ -421,8 +446,10 @@ export default function ArcatextKeyboard() {
 
                 {/* ── Keyboard (ToolbarColor background) ── */}
                 <div style={{ backgroundColor: C.toolbarBar }} className="px-[5px] pb-2 pt-2">
-                  {/* Arcatext toolbar — frames/paddings from StandardToolbar.swift */}
-                  <div className="mb-2 flex items-center" style={{ height: 50 }}>
+                  {/* Arcatext toolbar — frames/paddings from StandardToolbar.swift.
+                      gap:8 reproduces SwiftUI's default HStack spacing, which the
+                      explicit .padding(.trailing,3) values add on top of. */}
+                  <div className="mb-2 flex items-center" style={{ height: 50, gap: 8 }}>
                     {/* Config — frame 57×50, radius 12, padding leading 8 / trailing 3 */}
                     <div className="relative ml-2 mr-[3px]">
                       <div
@@ -533,8 +560,6 @@ export default function ArcatextKeyboard() {
               </div>
             </div>
           </div>
-        </div>
-
         {/* Stacked note (mobile) */}
         {anno && stacked && (
           <div className="relative z-40 mx-auto mt-6 w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
