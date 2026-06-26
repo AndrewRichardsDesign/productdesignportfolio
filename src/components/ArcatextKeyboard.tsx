@@ -414,6 +414,9 @@ export default function ArcatextKeyboard() {
   // ── derived ──
   const hasText = text.length > 0;
   const showChat = sent.length > 0 || received !== null;
+  // View panel heights (pt in the 874-tall design space). The views are taller
+  // than the keyboard and push the input field up, matching the real app.
+  const viewHeight = view === 'check' ? 486 : view === 'paste' ? 472 : view === 'menu' ? 486 : view === 'options' ? 486 : 0;
 
   // ── keyboard rows ──
   const lower = view !== 'options' && text === ''; // show lowercase look while typing iMessage start
@@ -563,8 +566,9 @@ export default function ArcatextKeyboard() {
                   )}
                 </div>
 
-                {/* Keyboard region (relative — view overlays cover it) */}
-                <div style={{ backgroundColor: C.toolbarBar }} className="relative px-[5px] pb-1 pt-2">
+                {/* Keyboard — replaced by the active view panel when one is open */}
+                {view === 'none' && (
+                <div style={{ backgroundColor: C.toolbarBar }} className="px-[5px] pb-1 pt-2">
                   {/* Toolbar */}
                   <div className="mb-2 flex items-center" style={{ height: 50, gap: 8 }}>
                     <button onClick={() => jump('menu')} className="relative ml-2 mr-[3px]" aria-label="Open menu">
@@ -644,10 +648,12 @@ export default function ArcatextKeyboard() {
                       ↵
                     </Key>
                   </div>
+                </div>
+                )}
 
-                  {/* ── View overlays cover toolbar + keys (not the bottom strip) ── */}
-                  {view !== 'none' && (
-                    <div className="absolute inset-0 z-20 flex flex-col" style={{ background: C.viewBg }}>
+                {/* ── Active view panel — taller than the keyboard, pushes the field up ── */}
+                {view !== 'none' && (
+                    <div className="relative flex flex-col" style={{ height: viewHeight, background: C.viewBg }}>
                       {/* Header */}
                       <div className="relative flex h-[56px] items-center justify-center px-3">
                         {view === 'paste' && (
@@ -975,7 +981,6 @@ export default function ArcatextKeyboard() {
                       )}
                     </div>
                   )}
-                </div>
 
                 {/* Bottom utility strip (stays visible under overlays) */}
                 <div style={{ backgroundColor: C.toolbarBar }} className="flex items-center justify-between px-5 pb-2 pt-1">
