@@ -18,7 +18,6 @@ import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
-import ArcatextKeyboardDiagram from '@/components/ArcatextKeyboardDiagram';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -278,13 +277,6 @@ export default function Arcatext() {
               <Editable as="dd" path="arcatext.hero.surfaceValue" className="text-sm text-foreground/90" />
             </div>
           </dl>
-        </div>
-      </section>
-
-      {/* Interactive keyboard diagram */}
-      <section className="py-12 sm:py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ArcatextKeyboardDiagram />
         </div>
       </section>
 
