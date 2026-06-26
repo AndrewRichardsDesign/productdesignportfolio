@@ -82,6 +82,12 @@ const BEZEL = 12; // black frame thickness
 const OUTER_W = SCREEN_W + BEZEL * 2; // 426
 const OUTER_H = SCREEN_H + BEZEL * 2; // 898
 
+const BASE_SCALE = 0.8; // render the phone at 80%
+const NOTE_W = 280;
+const GAP = 10; // gap between the arrow tip and the card edge
+const DRAW_MS = 520; // leader-curve draw duration
+const CARD_MS = 420; // card grow duration
+
 /** ellipsis.circle SF Symbol, recreated as a vector (ToolbarIconColor). */
 function EllipsisCircle() {
   return (
@@ -193,15 +199,23 @@ function Key({
 export default function ArcatextKeyboard() {
   const [active, setActive] = useState<string | null>(null);
   const [stacked, setStacked] = useState(false);
-  const [scale, setScale] = useState(1);
-  const [notePos, setNotePos] = useState<{ left: number; top: number } | null>(null);
-  const [line, setLine] = useState<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
+  const [scale, setScale] = useState(BASE_SCALE);
+  const [notePos, setNotePos] = useState<{
+    left: number;
+    top: number;
+    originX: number;
+    originY: number;
+  } | null>(null);
+  const [leader, setLeader] = useState<{ d: string; x1: number; y1: number } | null>(null);
+  const [phase, setPhase] = useState<'hidden' | 'draw' | 'done'>('hidden');
+  const [pathLen, setPathLen] = useState(1);
+  const [arrow, setArrow] = useState<{ x: number; y: number; ang: number } | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
   const dotRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const pathRef = useRef<SVGPathElement>(null);
 
-  const NOTE_W = 280;
   const anno = ANNOTATIONS.find((a) => a.id === active) ?? null;
 
   const recompute = useCallback(() => {
@@ -215,14 +229,14 @@ export default function ArcatextKeyboard() {
     // opens. Scale the phone down to keep both note columns; if it gets too
     // tight (mobile), fall back to stacking the note beneath the phone.
     const reserve = NOTE_W + 28;
-    let s = Math.min(1, (W - 2 * reserve) / OUTER_W);
-    const isStacked = s < 0.5;
-    if (isStacked) s = Math.min(1, (W - 32) / OUTER_W);
+    const sideScale = Math.min(BASE_SCALE, (W - 2 * reserve) / OUTER_W);
+    const isStacked = sideScale < 0.5;
+    const s = isStacked ? Math.min(BASE_SCALE, (W - 32) / OUTER_W) : sideScale;
     setStacked(isStacked);
     setScale(s);
 
     if (!active) {
-      setLine(null);
+      setLeader(null);
       setNotePos(null);
       return;
     }
@@ -237,26 +251,42 @@ export default function ArcatextKeyboard() {
     const phoneRight = p.right - c.left;
     const phoneBottom = p.bottom - c.top;
 
+    // Smooth cubic-bezier leader (industrial-style curve). The tangents leave
+    // the dot and arrive at the card along the axis pointing at the card, so
+    // the arrowhead lines up with the card edge.
+    const curve = (x1: number, y1: number, x2: number, y2: number, vertical: boolean) => {
+      const k = 0.5;
+      const [c1x, c1y, c2x, c2y] = vertical
+        ? [x1, y1 + (y2 - y1) * k, x2, y2 - (y2 - y1) * k]
+        : [x1 + (x2 - x1) * k, y1, x2 - (x2 - x1) * k, y2];
+      return `M ${x1} ${y1} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${x2} ${y2}`;
+    };
+
     if (isStacked) {
-      setNotePos(null);
-      setLine({ x1: dotX, y1: dotY, x2: W / 2, y2: phoneBottom + 24 });
+      const tipY = phoneBottom + 22;
+      setNotePos({ left: 0, top: tipY + GAP, originX: 0, originY: 0 });
+      setLeader({ d: curve(dotX, dotY, W / 2, tipY, true), x1: dotX, y1: dotY });
       return;
     }
 
     // Fixed sides: Paste + Menu on the left, Reword + Check (+ options) right.
     const side = NOTE_SIDE[active] ?? 'right';
-    let left: number;
-    let endX: number;
-    if (side === 'right') {
-      left = phoneRight + 28;
-      endX = left;
-    } else {
-      left = phoneLeft - 28 - NOTE_W;
-      endX = left + NOTE_W;
-    }
     const top = Math.min(Math.max(dotY - 64, 8), c.height - 168);
-    setNotePos({ left, top });
-    setLine({ x1: dotX, y1: dotY, x2: endX, y2: top + 64 });
+    let left: number;
+    let tipX: number;
+    let originX: number;
+    if (side === 'right') {
+      tipX = phoneRight + 28;
+      left = tipX + GAP;
+      originX = 0; // card grows from its left edge
+    } else {
+      tipX = phoneLeft - 28;
+      left = tipX - GAP - NOTE_W;
+      originX = NOTE_W; // card grows from its right edge
+    }
+    const tipY = top + 64;
+    setNotePos({ left, top, originX, originY: 64 });
+    setLeader({ d: curve(dotX, dotY, tipX, tipY, false), x1: dotX, y1: dotY });
   }, [active]);
 
   useLayoutEffect(() => {
@@ -274,6 +304,34 @@ export default function ArcatextKeyboard() {
     };
   }, [recompute]);
 
+  // Measure the leader path so the draw animation knows its length, and capture
+  // the end-tangent so the arrowhead points the right way.
+  useLayoutEffect(() => {
+    const el = pathRef.current;
+    if (!el || !leader) return;
+    const len = el.getTotalLength();
+    setPathLen(len);
+    const end = el.getPointAtLength(len);
+    const prev = el.getPointAtLength(Math.max(0, len - 2));
+    setArrow({ x: end.x, y: end.y, ang: (Math.atan2(end.y - prev.y, end.x - prev.x) * 180) / Math.PI });
+  }, [leader]);
+
+  // Sequence the open animation: draw the curve, then grow the card. Keyed on
+  // `active` only, so resizing while a note is open doesn't replay it.
+  useEffect(() => {
+    if (!active) {
+      setPhase('hidden');
+      return;
+    }
+    setPhase('hidden');
+    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setPhase('draw')));
+    const t = setTimeout(() => setPhase('done'), DRAW_MS + 30);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t);
+    };
+  }, [active]);
+
   const toggle = (id: string) => setActive((cur) => (cur === id ? null : id));
 
   const row1 = [
@@ -283,13 +341,29 @@ export default function ArcatextKeyboard() {
   const row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
   const row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
 
-  const NoteCard = (
+  // The card morphs from a small circle at the arrow tip into the full note,
+  // revealing its content as it grows. `originCss` aims the growth at the tip.
+  const renderCard = (originCss: string) => (
     <div
-      className="w-full overflow-hidden rounded-2xl border border-primary/25 bg-card shadow-xl"
+      className="w-full overflow-hidden border border-primary/25 bg-card shadow-xl"
       onClick={(e) => e.stopPropagation()}
+      style={{
+        transformOrigin: originCss,
+        transform: phase === 'done' ? 'scale(1)' : 'scale(0.12)',
+        opacity: phase === 'done' ? 1 : 0,
+        borderRadius: phase === 'done' ? 18 : 9999,
+        transition: `transform ${CARD_MS}ms cubic-bezier(.34,1.4,.5,1), opacity 240ms ease, border-radius ${CARD_MS}ms ease`,
+      }}
     >
       <div className="h-1 w-full gradient-bg" />
-      <div className="p-5">
+      <div
+        className="p-5"
+        style={{
+          opacity: phase === 'done' ? 1 : 0,
+          transform: phase === 'done' ? 'translateY(0)' : 'translateY(6px)',
+          transition: `opacity 260ms ease ${Math.round(CARD_MS * 0.35)}ms, transform 260ms ease ${Math.round(CARD_MS * 0.35)}ms`,
+        }}
+      >
         <div className="flex items-start justify-between gap-3">
           <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
             {anno?.eyebrow}
@@ -330,35 +404,47 @@ export default function ArcatextKeyboard() {
         className="relative mx-auto w-full max-w-6xl rounded-3xl border border-border/40 bg-muted/30 px-4 py-10 sm:px-8"
         onClick={() => setActive(null)}
       >
-        {/* Leader line from active dot to its note */}
-        {line && (
+        {/* Leader curve — drawn from the dot, then the card grows from its tip */}
+        {leader && (
           <svg
             className="pointer-events-none absolute inset-0 z-30 h-full w-full"
             style={{ overflow: 'visible' }}
           >
-            <defs>
-              <marker id="arc-arrow" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto">
-                <path d="M0,0 L9,4.5 L0,9 Z" fill={DOT} />
-              </marker>
-            </defs>
-            <line
-              x1={line.x1}
-              y1={line.y1}
-              x2={line.x2}
-              y2={line.y2}
+            <path
+              ref={pathRef}
+              d={leader.d}
+              fill="none"
               stroke={DOT}
               strokeWidth={2}
-              strokeDasharray="5 4"
-              markerEnd="url(#arc-arrow)"
+              strokeLinecap="round"
+              style={{
+                strokeDasharray: phase === 'done' ? undefined : pathLen,
+                strokeDashoffset: phase === 'hidden' ? pathLen : 0,
+                transition: phase === 'draw' ? `stroke-dashoffset ${DRAW_MS}ms cubic-bezier(.16,1,.3,1)` : 'none',
+              }}
             />
-            <circle cx={line.x1} cy={line.y1} r={3.5} fill={DOT} />
+            <circle
+              cx={leader.x1}
+              cy={leader.y1}
+              r={3.5}
+              fill={DOT}
+              style={{ opacity: phase === 'hidden' ? 0 : 1, transition: 'opacity 200ms ease' }}
+            />
+            {arrow && (
+              <g
+                transform={`translate(${arrow.x},${arrow.y}) rotate(${arrow.ang})`}
+                style={{ opacity: phase === 'done' ? 1 : 0, transition: 'opacity 180ms ease' }}
+              >
+                <path d="M0,0 L-9,-5 L-9,5 Z" fill={DOT} />
+              </g>
+            )}
           </svg>
         )}
 
         {/* Side-placed note (desktop) */}
         {anno && !stacked && notePos && (
           <div className="absolute z-40" style={{ left: notePos.left, top: notePos.top, width: NOTE_W }}>
-            {NoteCard}
+            {renderCard(`${notePos.originX}px ${notePos.originY}px`)}
           </div>
         )}
 
@@ -560,10 +646,10 @@ export default function ArcatextKeyboard() {
               </div>
             </div>
           </div>
-        {/* Stacked note (mobile) */}
+        {/* Stacked note (mobile) — grows from its top, under the arrow tip */}
         {anno && stacked && (
           <div className="relative z-40 mx-auto mt-6 w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
-            {NoteCard}
+            {renderCard('50% 0')}
           </div>
         )}
       </div>
