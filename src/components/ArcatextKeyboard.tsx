@@ -441,10 +441,10 @@ export default function ArcatextKeyboard() {
         </p>
       </div>
 
-      <div className="relative mx-auto w-full max-w-6xl rounded-3xl border border-border/40 bg-muted/30 px-4 py-10 sm:px-8">
-        <div className="flex flex-col items-center gap-8 xl:flex-row xl:items-center xl:justify-center xl:gap-16">
+      <div className="relative w-full">
+        <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:gap-8">
           {/* iPhone */}
-          <div className="mx-auto" style={{ width: OUTER_W * BASE_SCALE, height: OUTER_H * BASE_SCALE }}>
+          <div style={{ width: OUTER_W * BASE_SCALE, height: OUTER_H * BASE_SCALE }}>
             <div
               className="relative bg-black"
               style={{
@@ -996,7 +996,7 @@ export default function ArcatextKeyboard() {
           </div>
 
           {/* Blurb */}
-          <div className="w-full max-w-sm xl:w-[300px]">
+          <div className="w-full max-w-sm lg:w-[300px]">
             <div
               className="overflow-hidden rounded-2xl border border-primary/25 bg-card shadow-lg transition-opacity duration-300"
               style={{ opacity: blurb ? 1 : 0 }}
@@ -1024,8 +1024,8 @@ export default function ArcatextKeyboard() {
           </div>
         </div>
 
-        {/* Controls */}
-        <div className="mt-8 flex items-center justify-center gap-3">
+        {/* Controls — under the phone */}
+        <div style={{ width: OUTER_W * BASE_SCALE }} className="mt-6 flex items-center justify-center gap-3">
           <button
             onClick={togglePlay}
             className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white gradient-bg"
