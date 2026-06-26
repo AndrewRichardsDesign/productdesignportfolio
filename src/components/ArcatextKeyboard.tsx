@@ -1042,6 +1042,14 @@ export default function ArcatextKeyboard() {
             Restart
           </button>
         </div>
+
+        {/* Helper hint — under the controls */}
+        <p
+          style={{ width: OUTER_W * BASE_SCALE }}
+          className="mt-3 text-center text-xs leading-relaxed text-muted-foreground"
+        >
+          Explore the prototype by clicking any button in the toolbar! You can also close any view.
+        </p>
       </div>
     </div>
   );
