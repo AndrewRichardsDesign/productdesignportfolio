@@ -414,6 +414,9 @@ export default function ArcatextKeyboard() {
   // ── derived ──
   const hasText = text.length > 0;
   const showChat = sent.length > 0 || received !== null;
+  // View panel heights (pt in the 874-tall design space). The views are taller
+  // than the keyboard and push the input field up, matching the real app.
+  const viewHeight = view === 'check' ? 486 : view === 'paste' ? 472 : view === 'menu' ? 486 : view === 'options' ? 486 : 0;
 
   // ── keyboard rows ──
   const lower = view !== 'options' && text === ''; // show lowercase look while typing iMessage start
@@ -438,10 +441,10 @@ export default function ArcatextKeyboard() {
         </p>
       </div>
 
-      <div className="relative mx-auto w-full max-w-6xl rounded-3xl border border-border/40 bg-muted/30 px-4 py-10 sm:px-8">
-        <div className="flex flex-col items-center gap-8 xl:flex-row xl:items-center xl:justify-center xl:gap-16">
+      <div className="relative w-full">
+        <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:gap-8">
           {/* iPhone */}
-          <div className="mx-auto" style={{ width: OUTER_W * BASE_SCALE, height: OUTER_H * BASE_SCALE }}>
+          <div style={{ width: OUTER_W * BASE_SCALE, height: OUTER_H * BASE_SCALE }}>
             <div
               className="relative bg-black"
               style={{
@@ -563,8 +566,9 @@ export default function ArcatextKeyboard() {
                   )}
                 </div>
 
-                {/* Keyboard region (relative — view overlays cover it) */}
-                <div style={{ backgroundColor: C.toolbarBar }} className="relative px-[5px] pb-1 pt-2">
+                {/* Keyboard — replaced by the active view panel when one is open */}
+                {view === 'none' && (
+                <div style={{ backgroundColor: C.toolbarBar }} className="px-[5px] pb-1 pt-2">
                   {/* Toolbar */}
                   <div className="mb-2 flex items-center" style={{ height: 50, gap: 8 }}>
                     <button onClick={() => jump('menu')} className="relative ml-2 mr-[3px]" aria-label="Open menu">
@@ -644,10 +648,12 @@ export default function ArcatextKeyboard() {
                       ↵
                     </Key>
                   </div>
+                </div>
+                )}
 
-                  {/* ── View overlays cover toolbar + keys (not the bottom strip) ── */}
-                  {view !== 'none' && (
-                    <div className="absolute inset-0 z-20 flex flex-col" style={{ background: C.viewBg }}>
+                {/* ── Active view panel — taller than the keyboard, pushes the field up ── */}
+                {view !== 'none' && (
+                    <div className="relative flex flex-col" style={{ height: viewHeight, background: C.viewBg }}>
                       {/* Header */}
                       <div className="relative flex h-[56px] items-center justify-center px-3">
                         {view === 'paste' && (
@@ -975,7 +981,6 @@ export default function ArcatextKeyboard() {
                       )}
                     </div>
                   )}
-                </div>
 
                 {/* Bottom utility strip (stays visible under overlays) */}
                 <div style={{ backgroundColor: C.toolbarBar }} className="flex items-center justify-between px-5 pb-2 pt-1">
@@ -991,7 +996,7 @@ export default function ArcatextKeyboard() {
           </div>
 
           {/* Blurb */}
-          <div className="w-full max-w-sm xl:w-[300px]">
+          <div className="w-full max-w-sm lg:w-[300px]">
             <div
               className="overflow-hidden rounded-2xl border border-primary/25 bg-card shadow-lg transition-opacity duration-300"
               style={{ opacity: blurb ? 1 : 0 }}
@@ -1019,8 +1024,8 @@ export default function ArcatextKeyboard() {
           </div>
         </div>
 
-        {/* Controls */}
-        <div className="mt-8 flex items-center justify-center gap-3">
+        {/* Controls — under the phone */}
+        <div style={{ width: OUTER_W * BASE_SCALE }} className="mt-6 flex items-center justify-center gap-3">
           <button
             onClick={togglePlay}
             className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white gradient-bg"
@@ -1037,6 +1042,14 @@ export default function ArcatextKeyboard() {
             Restart
           </button>
         </div>
+
+        {/* Helper hint — under the controls */}
+        <p
+          style={{ width: OUTER_W * BASE_SCALE }}
+          className="mt-3 text-center text-xs leading-relaxed text-muted-foreground"
+        >
+          Explore the prototype by clicking any button in the toolbar! You can also close any view.
+        </p>
       </div>
     </div>
   );
