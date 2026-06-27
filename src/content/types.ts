@@ -141,6 +141,13 @@ export interface SiteContent {
   conversant: ConversantContent;
   usaa: UsaaContent;
   memberHome: MemberHomeContent;
+  /**
+   * Maps each project-page content key (e.g. "arcatext") to the Google Doc ID
+   * whose "Project Page" tab mirrors it. Consumed by the external doc-sync
+   * Apps Script (tools/sync-project-docs.gs), not the site itself. Add one
+   * entry per new project page so the sync picks it up automatically.
+   */
+  projectDocs?: Record<string, string>;
 }
 
 export interface TitledItem {
