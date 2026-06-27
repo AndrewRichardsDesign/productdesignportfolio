@@ -74,6 +74,34 @@ function latestContentSha_(branch) {
   return (arr && arr.length) ? arr[0].sha : null;
 }
 
+/**
+ * Web App endpoint. A GitHub Action POSTs here on push to main (see
+ * .github/workflows/sync-docs.yml) so the docs update within seconds.
+ * Protected by a shared secret stored in the WEBHOOK_SECRET script property,
+ * sent by the caller as a "secret" form/query parameter.
+ *
+ * Deploy: Deploy -> New deployment -> Web app -> Execute as: Me,
+ * Who has access: Anyone. Re-deploy a NEW VERSION after editing this file.
+ */
+function doPost(e) {
+  const expected = PropertiesService.getScriptProperties().getProperty('WEBHOOK_SECRET') || '';
+  const got = (e && e.parameter && e.parameter.secret) || '';
+  if (!expected || got !== expected) {
+    return json_({ ok: false, error: 'unauthorized' });
+  }
+  try {
+    syncIfChanged();
+    return json_({ ok: true });
+  } catch (err) {
+    return json_({ ok: false, error: String(err) });
+  }
+}
+
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
 /** RUN THIS FIRST to confirm each mapped doc has a "Project Page" tab. */
 function listTabs() {
   const content = fetchContent_();
