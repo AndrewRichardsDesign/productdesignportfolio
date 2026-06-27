@@ -30,11 +30,27 @@ jobs:
             echo "::error::Missing APPS_SCRIPT_URL and/or SYNC_SECRET repo secret."
             exit 1
           fi
-          # -L plus --post30x keeps the POST (and body) across Apps Script's
-          # 302 redirect; the secret travels in the body, not the URL.
-          resp=$(curl -sS -L --post301 --post302 --post303 \
-                      -X POST "$URL" \
-                      --data-urlencode "secret=$SECRET" \
-                      --max-time 120)
-          echo "Response: $resp"
-          echo "$resp" | grep -q '"ok":true' || { echo "::error::Sync failed"; exit 1; }
+          # Secret goes in the query string so it survives Apps Script's 302
+          # redirect to googleusercontent (POST bodies can be dropped there).
+          # Registered Actions secrets are auto-masked in logs. Use a URL-safe
+          # secret (e.g. `openssl rand -hex 24`).
+          code=$(curl -sS -L -o response.txt -w '%{http_code}' \
+                      -X POST "${URL}?secret=${SECRET}" --max-time 120)
+          echo "HTTP status: $code"
+          echo "Response body:"
+          cat response.txt 2>/dev/null || true
+          echo
+          if grep -q '"ok":true' response.txt 2>/dev/null; then
+            echo "Docs sync OK."
+            exit 0
+          fi
+          if grep -qiE 'accounts\.google\.com|sign in|<!DOCTYPE|<html' response.txt 2>/dev/null; then
+            echo "::error::Got an HTML/sign-in page, not JSON. The web app's access is not 'Anyone' — redeploy a NEW VERSION with Who-has-access: Anyone."
+          elif grep -qi 'unauthorized' response.txt 2>/dev/null; then
+            echo "::error::Web app returned 'unauthorized' — SYNC_SECRET must equal the WEBHOOK_SECRET script property."
+          elif grep -qi 'function not found' response.txt 2>/dev/null; then
+            echo "::error::doPost not found in the deployed version — paste the updated script, then deploy a NEW VERSION."
+          else
+            echo "::error::Sync did not return ok:true (see body above)."
+          fi
+          exit 1
