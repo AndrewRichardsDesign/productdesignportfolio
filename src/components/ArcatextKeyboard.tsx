@@ -89,6 +89,16 @@ const BLURB = {
 };
 
 type Scene = 'type' | 'reword' | 'check' | 'paste' | 'menu' | 'options';
+
+// Ordered steps with their context-card copy.
+const SCENES: { key: Scene; blurb: keyof typeof BLURB; eyebrow: string }[] = [
+  { key: 'type', blurb: 'type', eyebrow: 'Write' },
+  { key: 'reword', blurb: 'reword', eyebrow: 'Reword' },
+  { key: 'check', blurb: 'check', eyebrow: 'Check' },
+  { key: 'paste', blurb: 'paste', eyebrow: 'Paste' },
+  { key: 'menu', blurb: 'menu', eyebrow: 'Menu' },
+  { key: 'options', blurb: 'options', eyebrow: 'Reword options' },
+];
 type View = 'none' | 'check' | 'paste' | 'menu' | 'options';
 type Bubble = { id: number; text: string };
 
@@ -181,10 +191,11 @@ export default function ArcatextKeyboard() {
   const [sent, setSent] = useState<Bubble[]>([]);
   const [received, setReceived] = useState<Bubble | null>(null);
   const [view, setView] = useState<View>('none');
-  const [blurb, setBlurb] = useState<keyof typeof BLURB | null>('type');
   const [rewordLoading, setRewordLoading] = useState(false);
   const [pressed, setPressed] = useState<string | null>(null);
   const [playing, setPlaying] = useState(true);
+  const [step, setStep] = useState(0);
+  const [ended, setEnded] = useState(false);
   // check sub-state
   const [synShown, setSynShown] = useState(false);
   const [homoShown, setHomoShown] = useState(false);
@@ -204,6 +215,9 @@ export default function ArcatextKeyboard() {
   // engine refs
   const beatsRef = useRef<{ fn: () => void; ms: number }[]>([]);
   const startsRef = useRef<Record<Scene, number>>({} as Record<Scene, number>);
+  const stepRef = useRef(0);
+  const boundsRef = useRef<{ start: number; end: number }[]>([]);
+  const endedRef = useRef(false);
   const posRef = useRef(0);
   const playRef = useRef(true);
   const tRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -219,8 +233,16 @@ export default function ArcatextKeyboard() {
     clearTimeout(tRef.current);
     if (!playRef.current) return;
     const beats = beatsRef.current;
-    if (!beats.length) return;
-    if (posRef.current >= beats.length) posRef.current = 0;
+    const bounds = boundsRef.current[stepRef.current];
+    if (!beats.length || !bounds) return;
+    // Stop (auto-pause) at the end of the current step.
+    if (posRef.current >= bounds.end) {
+      playRef.current = false;
+      endedRef.current = true;
+      setPlaying(false);
+      setEnded(true);
+      return;
+    }
     const beat = beats[posRef.current];
     beat.fn();
     posRef.current += 1;
@@ -251,7 +273,6 @@ export default function ArcatextKeyboard() {
       setSent([]);
       setReceived(null);
       setText('');
-      setBlurb('type');
     }, 700);
     for (let i = 1; i <= EN.length; i++) {
       const s = EN.slice(0, i);
@@ -267,7 +288,6 @@ export default function ArcatextKeyboard() {
       setSent([]);
       setReceived(null);
       setText(EN);
-      setBlurb('reword');
     }, 700);
     b(() => {
       setPressed('reword');
@@ -287,7 +307,6 @@ export default function ArcatextKeyboard() {
       setReceived(null);
       setText(JA);
       setView('check');
-      setBlurb('check');
       requestAnimationFrame(() => scrollTo(checkScrollRef, 0));
     }, 1300);
     b(() => scrollToEl(checkScrollRef, synRef), 1200);
@@ -295,11 +314,6 @@ export default function ArcatextKeyboard() {
     b(() => scrollToEl(checkScrollRef, detectRef), 1200);
     b(() => setHomoShown(true), 1700);
     b(() => scrollTo(checkScrollRef, 99999), 1500);
-    b(() => {
-      setView('none');
-      setText('');
-      setSent([{ id: bubbleId.current++, text: JA }]);
-    }, 1000);
 
     // SCENE: paste
     starts.paste = beats.length;
@@ -309,7 +323,6 @@ export default function ArcatextKeyboard() {
       setText('');
       setReceived(null);
       setSent([{ id: bubbleId.current++, text: JA }]);
-      setBlurb('paste');
     }, 800);
     b(() => setReceived({ id: bubbleId.current++, text: RECV_JA }), 1400);
     b(() => {
@@ -321,19 +334,16 @@ export default function ArcatextKeyboard() {
       setPasteResult(true);
     }, 1300);
     b(() => {}, 2200);
-    b(() => setView('none'), 800);
 
     // SCENE: menu
     starts.menu = beats.length;
     b(() => {
       resetCommon();
       setView('menu');
-      setBlurb('menu');
       requestAnimationFrame(() => scrollTo(menuScrollRef, 0));
     }, 1000);
     b(() => scrollTo(menuScrollRef, 99999), 2400);
     b(() => scrollTo(menuScrollRef, 0), 1800);
-    b(() => setView('none'), 800);
 
     // SCENE: options
     starts.options = beats.length;
@@ -341,7 +351,6 @@ export default function ArcatextKeyboard() {
       resetCommon();
       setView('none');
       setText('');
-      setBlurb('options');
     }, 700);
     for (let i = 1; i <= EN2.length; i++) {
       const s = EN2.slice(0, i);
@@ -371,44 +380,72 @@ export default function ArcatextKeyboard() {
     b(() => {
       setSent((prev) => [...prev, { id: bubbleId.current++, text: ROMAJI2 }]);
       setText('');
-      setBlurb(null);
     }, 1500);
     b(() => {}, 1600);
 
     beatsRef.current = beats;
     startsRef.current = starts;
-    posRef.current = 0;
+    const order = SCENES.map((s) => s.key);
+    boundsRef.current = order.map((k, idx) => ({
+      start: starts[k],
+      end: idx < order.length - 1 ? starts[order[idx + 1]] : beats.length,
+    }));
+    // Autoplay the first step; it auto-pauses at its end.
+    stepRef.current = 0;
+    setStep(0);
+    endedRef.current = false;
+    posRef.current = boundsRef.current[0].start;
     playRef.current = true;
     schedule();
     return () => clearTimeout(tRef.current);
   }, [schedule]);
 
+  // Play step `i` from its start; it auto-pauses at its end.
+  const goToStep = (i: number) => {
+    clearTimeout(tRef.current);
+    const n = Math.max(0, Math.min(SCENES.length - 1, i));
+    stepRef.current = n;
+    setStep(n);
+    posRef.current = boundsRef.current[n]?.start ?? 0;
+    endedRef.current = false;
+    setEnded(false);
+    playRef.current = true;
+    setPlaying(true);
+    schedule();
+  };
+
   const togglePlay = () => {
     if (playRef.current) {
+      // pause within the current step
       playRef.current = false;
       setPlaying(false);
       clearTimeout(tRef.current);
     } else {
+      // if the step already finished, replay it from the start
+      if (endedRef.current) {
+        posRef.current = boundsRef.current[stepRef.current]?.start ?? 0;
+        endedRef.current = false;
+        setEnded(false);
+      }
       playRef.current = true;
       setPlaying(true);
       schedule();
     }
   };
 
-  const restart = () => {
-    clearTimeout(tRef.current);
-    posRef.current = startsRef.current.type ?? 0;
-    playRef.current = true;
-    setPlaying(true);
-    schedule();
-  };
+  const restart = () => goToStep(0);
+  const next = () => goToStep(stepRef.current + 1);
+  const back = () => goToStep(stepRef.current - 1);
+  const jump = (scene: Scene) => goToStep(SCENES.findIndex((s) => s.key === scene));
 
-  const jump = (scene: Scene) => {
+  // Close the active view: pause and mark the step finished so Play replays it.
+  const closeView = () => {
     clearTimeout(tRef.current);
-    posRef.current = startsRef.current[scene] ?? 0;
-    playRef.current = true;
-    setPlaying(true);
-    schedule();
+    playRef.current = false;
+    setPlaying(false);
+    endedRef.current = true;
+    setEnded(true);
+    setView('none');
   };
 
   // ── derived ──
@@ -436,8 +473,9 @@ export default function ArcatextKeyboard() {
           The keyboard, <span className="gradient-text">in motion</span>
         </h2>
         <p className="mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
-          A live, auto-playing walkthrough of the Arcatext keyboard, built from the iOS
-          source. Pause anytime, or tap a button to jump to that step.
+          An interactive walkthrough of the Arcatext keyboard, built from the iOS
+          source. The first step plays automatically, then pauses — step through it
+          with Back / Next, or tap any keyboard button to jump to that step.
         </p>
       </div>
 
@@ -669,7 +707,7 @@ export default function ArcatextKeyboard() {
                             : 'Reword Options'}
                         </span>
                         <button
-                          onClick={() => jump('type')}
+                          onClick={closeView}
                           aria-label="Close"
                           className="absolute right-3 grid h-[38px] w-[38px] place-items-center rounded-[12px]"
                           style={{ background: C.xBtnBg }}
@@ -995,30 +1033,40 @@ export default function ArcatextKeyboard() {
             </div>
           </div>
 
-          {/* Blurb */}
+          {/* Context card — explains the current step and steps through them */}
           <div className="w-full max-w-sm lg:w-[300px]">
-            <div
-              className="overflow-hidden rounded-2xl border border-primary/25 bg-card shadow-lg transition-opacity duration-300"
-              style={{ opacity: blurb ? 1 : 0 }}
-            >
+            <div className="overflow-hidden rounded-2xl border border-primary/25 bg-card shadow-lg">
               <div className="h-1 w-full gradient-bg" />
               <div className="p-5">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
-                  {blurb === 'type'
-                    ? 'Write'
-                    : blurb === 'reword'
-                    ? 'Reword'
-                    : blurb === 'check'
-                    ? 'Check'
-                    : blurb === 'paste'
-                    ? 'Paste'
-                    : blurb === 'menu'
-                    ? 'Menu'
-                    : 'Reword options'}
-                </span>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {blurb ? BLURB[blurb] : ''}
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+                    {SCENES[step].eyebrow}
+                  </span>
+                  <span className="font-mono text-[11px] text-muted-foreground">
+                    {String(step + 1).padStart(2, '0')} / {String(SCENES.length).padStart(2, '0')}
+                  </span>
+                </div>
+                <p className="mt-2 min-h-[6.5rem] text-sm leading-relaxed text-muted-foreground">
+                  {BLURB[SCENES[step].blurb]}
                 </p>
+                <div className="mt-4 flex items-center gap-2">
+                  <button
+                    onClick={back}
+                    disabled={step === 0}
+                    className="inline-flex items-center gap-1 rounded-full border border-border/60 px-3.5 py-2 text-xs font-medium text-foreground/80 transition-colors enabled:hover:bg-muted disabled:opacity-40"
+                  >
+                    <ChevronLeft className="h-3.5 w-3.5" />
+                    Back
+                  </button>
+                  <button
+                    onClick={next}
+                    disabled={step === SCENES.length - 1}
+                    className="inline-flex flex-1 items-center justify-center gap-1 rounded-full px-3.5 py-2 text-xs font-semibold text-white gradient-bg transition-opacity disabled:opacity-40"
+                  >
+                    Next
+                    <ChevronRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -1031,7 +1079,7 @@ export default function ArcatextKeyboard() {
             className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white gradient-bg"
           >
             {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-            {playing ? 'Pause' : 'Play'}
+            {playing ? 'Pause' : ended ? 'Replay step' : 'Play'}
           </button>
           <button
             onClick={restart}
