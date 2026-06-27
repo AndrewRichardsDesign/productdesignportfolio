@@ -42,7 +42,18 @@ finds in the content that isn't mapped yet, so nothing gets silently skipped.
 3. Run `listTabs` once (authorize when prompted) to confirm each doc has a
    `Project Page` tab.
 4. Run `syncAllProjects`.
-5. Optional: **Triggers** → add a time-driven trigger for `syncAllProjects`.
+5. Optional automation: **Triggers** → time-driven trigger for **`syncIfChanged`**
+   (not `syncAllProjects`). `syncIfChanged` only rewrites the docs when
+   `site-content.json` has a new commit, so it's cheap to run on a short
+   minutes timer (e.g. every 5–10 min) for near-real-time updates without
+   churning the docs when nothing changed. Use `syncAllProjects` to force a
+   full re-sync manually.
+
+## Functions
+
+- **`syncAllProjects`** — force-sync every mapped project now.
+- **`syncIfChanged`** — sync only if the content commit changed (trigger target).
+- **`listTabs`** — print each mapped doc's tab titles (verification).
 
 ## Notes
 
