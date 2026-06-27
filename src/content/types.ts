@@ -295,14 +295,13 @@ export interface ArcatextContent {
   };
 }
 
-export interface ConversantPanel {
-  title: string;
-  desc: string;
+export interface ConversantInsight {
+  insight: string;
+  response: string;
 }
 
-export interface ConversantFeature {
+export interface ConversantWork {
   title: string;
-  tag: string;
   desc: string[];
 }
 
@@ -314,7 +313,6 @@ export interface ConversantContent {
     status: string;
     title: string;
     subtitle: string;
-    intro: string;
     typeTags: string[];
     roleLabel: string;
     roleValue: string;
@@ -323,58 +321,56 @@ export interface ConversantContent {
     surfaceLabel: string;
     surfaceValue: string;
   };
-  context: {
+  overview: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
     intro: string[];
-    calloutEyebrow: string;
-    calloutLead: string;
-    calloutHighlight: string;
+    productTypeLabel: string;
+    productTypeList: string[];
+    roleTitle: string;
+    roleList: string[];
+    usersLabel: string;
+    usersList: string[];
+    workstreamsLabel: string;
+    workstreamsList: string[];
   };
-  goals: {
+  challenge: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
+    hmwLabel: string;
+    hmwLead: string;
+    hmwHighlight: string;
     intro: string[];
-    designGoalsTitle: string;
-    designGoals: string[];
+    contextTitle: string;
+    context: string[];
   };
-  users: {
+  discovery: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
     intro: string[];
-    rolesLabel: string;
-    roles: string[];
+    processLabel: string;
+    processSteps: string[];
+    responsesTitle: string;
+    responses: ConversantInsight[];
   };
-  problem: {
+  strategy: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
     intro: string[];
-    problemsTitle: string;
-    problems: TitledItem[];
-    closing: string[];
-    challengeLabel: string;
-    challengeLead: string;
-    challengeHighlight: string;
-    challenge: string[];
+    pillars: TitledItem[];
+    quoteLead: string;
+    quoteHighlight: string;
   };
-  solution: {
+  productSystem: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
     intro: string[];
-    highlightsTitle: string;
-    highlights: TitledItem[];
-  };
-  system: {
-    eyebrow: string;
-    titleLead: string;
-    titleHighlight: string;
-    intro: string[];
-    panels: ConversantPanel[];
+    models: UsaaFlowModel[];
     closing: string[];
   };
   selectedWork: {
@@ -382,38 +378,45 @@ export interface ConversantContent {
     titleLead: string;
     titleHighlight: string;
     intro: string[];
-    features: ConversantFeature[];
+    items: ConversantWork[];
   };
-  role: {
+  decisions: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
     intro: string[];
-    initiativesLabel: string;
-    initiatives: string[];
-    deliverablesLabel: string;
-    deliverables: string[];
-    strategyTitle: string;
-    strategy: string[];
+    items: UsaaDecision[];
+  };
+  constraints: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
     constraintsTitle: string;
-    constraints: TitledItem[];
+    items: TitledItem[];
+    collaborationTitle: string;
+    collaboration: string[];
+    collaboratorsLabel: string;
+    collaborators: string[];
+  };
+  validation: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    questionsTitle: string;
+    questions: UsaaQuestion[];
   };
   impact: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
-    processTitle: string;
-    process: string[];
-    processSteps: string[];
-    measuringTitle: string;
-    measuring: string[];
-    collaborationTitle: string;
-    collaboration: string[];
-    collaborators: string[];
-    designSystemsTitle: string;
-    designSystems: string[];
+    intro: string[];
+    highlights: string[];
     demonstratesTitle: string;
     demonstrates: string[];
+    caseStudiesTitle: string;
+    caseStudies: { title: string; question: string }[];
     confidentiality: string;
   };
   footerCta: {

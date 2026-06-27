@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowLeft, ArrowRight, Check, Users } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
@@ -82,6 +82,7 @@ const tocItems = [
   { id: 'sec-07', n: '07' },
   { id: 'sec-08', n: '08' },
   { id: 'sec-09', n: '09' },
+  { id: 'sec-10', n: '10' },
 ];
 
 function SideToc() {
@@ -243,13 +244,7 @@ export default function Conversant() {
             as="p"
             path="conversant.hero.subtitle"
             multiline
-            className="text-xl sm:text-2xl md:text-3xl text-foreground/80 max-w-3xl leading-snug mb-8 text-balance"
-          />
-          <Editable
-            as="p"
-            path="conversant.hero.intro"
-            multiline
-            className="text-base sm:text-lg text-muted-foreground max-w-3xl leading-relaxed mb-10"
+            className="text-xl sm:text-2xl md:text-3xl text-foreground/80 max-w-3xl leading-snug mb-10 text-balance"
           />
 
           <div className="flex flex-wrap gap-2 mb-10">
@@ -280,162 +275,140 @@ export default function Conversant() {
         </div>
       </section>
 
-      {/* 01 — Context */}
+      {/* 01 — Overview */}
       <section id="sec-01" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="01" eyebrowPath="conversant.context.eyebrow" titlePath="conversant.context.titleLead" highlightPath="conversant.context.titleHighlight" />
-          </div>
-
-          <div className="reveal">
-            <Prose>
-              <Paragraphs base="conversant.context.intro" items={c.context.intro} />
-            </Prose>
-
-            <div className="mt-10 rounded-2xl bg-primary/10 p-8 max-w-3xl">
-              <Editable as="p" path="conversant.context.calloutEyebrow" className="text-xs uppercase tracking-[0.2em] text-primary mb-3" />
-              <p className="text-xl sm:text-2xl font-semibold text-balance leading-snug">
-                <Editable as="span" path="conversant.context.calloutLead" multiline />{' '}
-                <Editable as="span" path="conversant.context.calloutHighlight" className="gradient-text" />
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 02 — Goals */}
-      <section id="sec-02" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="reveal">
-            <SectionHeader number="02" eyebrowPath="conversant.goals.eyebrow" titlePath="conversant.goals.titleLead" highlightPath="conversant.goals.titleHighlight" />
-          </div>
-
-          <div className="reveal">
-            <Prose>
-              <Paragraphs base="conversant.goals.intro" items={c.goals.intro} />
-            </Prose>
-          </div>
-
-          <div className="mt-16">
-            <Editable as="h3" path="conversant.goals.designGoalsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {c.goals.designGoals.map((_, i) => (
-                <div
-                  key={i}
-                  className="reveal flex gap-4 rounded-2xl bg-muted/40 p-6"
-                >
-                  <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
-                    <Check className="w-4 h-4 text-primary" />
-                  </div>
-                  <Editable as="p" path={`conversant.goals.designGoals.${i}`} multiline className="text-sm sm:text-base text-foreground/85 leading-relaxed" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 03 — Users */}
-      <section id="sec-03" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="reveal">
-            <SectionHeader number="03" eyebrowPath="conversant.users.eyebrow" titlePath="conversant.users.titleLead" highlightPath="conversant.users.titleHighlight" />
+            <SectionHeader number="01" eyebrowPath="conversant.overview.eyebrow" titlePath="conversant.overview.titleLead" highlightPath="conversant.overview.titleHighlight" />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             <div className="lg:col-span-7 reveal">
               <Prose>
-                <Paragraphs base="conversant.users.intro" items={c.users.intro} />
+                <Paragraphs base="conversant.overview.intro" items={c.overview.intro} />
               </Prose>
             </div>
 
             <aside className="lg:col-span-5 reveal">
               <div className="rounded-2xl bg-muted/40 p-8">
                 <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-primary mb-4">
-                  <Users className="w-4 h-4" />
-                  <Editable as="span" path="conversant.users.rolesLabel" />
+                  <Layers className="w-4 h-4" />
+                  <Editable as="span" path="conversant.overview.productTypeLabel" />
                 </div>
-                <Chips base="conversant.users.roles" items={c.users.roles} />
+                <ul className="space-y-3 text-foreground/90">
+                  {c.overview.productTypeList.map((_, i) => (
+                    <li key={i} className="flex items-center gap-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/70 shrink-0" />
+                      <Editable as="span" path={`conversant.overview.productTypeList.${i}`} />
+                    </li>
+                  ))}
+                </ul>
               </div>
             </aside>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="reveal">
+              <Editable as="h3" path="conversant.overview.roleTitle" className="text-xl sm:text-2xl font-semibold mb-6" />
+              <Chips base="conversant.overview.roleList" items={c.overview.roleList} />
+            </div>
+            <div className="reveal">
+              <Editable as="h3" path="conversant.overview.usersLabel" className="text-xl sm:text-2xl font-semibold mb-6" />
+              <Chips base="conversant.overview.usersList" items={c.overview.usersList} />
+            </div>
+          </div>
+
+          <div className="mt-12 reveal">
+            <Editable as="h3" path="conversant.overview.workstreamsLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-5" />
+            <Chips base="conversant.overview.workstreamsList" items={c.overview.workstreamsList} />
           </div>
         </div>
       </section>
 
-      {/* 04 — Problem */}
-      <section id="sec-04" className="py-20 sm:py-28 scroll-mt-24">
+      {/* 02 — Design Challenge */}
+      <section id="sec-02" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="04" eyebrowPath="conversant.problem.eyebrow" titlePath="conversant.problem.titleLead" highlightPath="conversant.problem.titleHighlight" />
+            <SectionHeader number="02" eyebrowPath="conversant.challenge.eyebrow" titlePath="conversant.challenge.titleLead" highlightPath="conversant.challenge.titleHighlight" />
+          </div>
+
+          <div className="reveal rounded-2xl bg-primary/10 p-8 lg:p-10 max-w-3xl">
+            <Editable as="p" path="conversant.challenge.hmwLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-3" />
+            <p className="text-xl sm:text-2xl font-semibold text-balance leading-snug">
+              <Editable as="span" path="conversant.challenge.hmwLead" multiline />{' '}
+              <Editable as="span" path="conversant.challenge.hmwHighlight" className="gradient-text" />
+            </p>
+          </div>
+
+          <div className="mt-12 reveal">
+            <Prose>
+              <Paragraphs base="conversant.challenge.intro" items={c.challenge.intro} />
+            </Prose>
+          </div>
+
+          <div className="mt-16 reveal">
+            <Editable as="h3" path="conversant.challenge.contextTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
+            <Prose>
+              <Paragraphs base="conversant.challenge.context" items={c.challenge.context} />
+            </Prose>
+          </div>
+        </div>
+      </section>
+
+      {/* 03 — Discovery & Research */}
+      <section id="sec-03" className="py-20 sm:py-28 scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="reveal">
+            <SectionHeader number="03" eyebrowPath="conversant.discovery.eyebrow" titlePath="conversant.discovery.titleLead" highlightPath="conversant.discovery.titleHighlight" />
           </div>
 
           <div className="reveal">
             <Prose>
-              <Paragraphs base="conversant.problem.intro" items={c.problem.intro} />
+              <Paragraphs base="conversant.discovery.intro" items={c.discovery.intro} />
             </Prose>
           </div>
 
-          <div className="mt-16">
-            <Editable as="h3" path="conversant.problem.problemsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {c.problem.problems.map((_, i) => (
-                <div
-                  key={i}
-                  className="reveal rounded-2xl bg-muted/40 p-6 hover:bg-muted/60 transition-colors"
-                >
-                  <Editable as="h4" path={`conversant.problem.problems.${i}.title`} className="font-semibold mb-2" />
-                  <Editable as="p" path={`conversant.problem.problems.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
-                </div>
+          <div className="mt-10 reveal">
+            <Editable as="h3" path="conversant.discovery.processLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-5" />
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-3">
+              {c.discovery.processSteps.map((_, i) => (
+                <span key={i} className="flex items-center gap-3">
+                  <Editable
+                    as="span"
+                    path={`conversant.discovery.processSteps.${i}`}
+                    className="px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 text-sm font-medium"
+                  />
+                  {i < c.discovery.processSteps.length - 1 && (
+                    <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                  )}
+                </span>
               ))}
             </div>
           </div>
 
-          <div className="mt-16 reveal">
-            <Prose>
-              <Paragraphs base="conversant.problem.closing" items={c.problem.closing} />
-            </Prose>
-          </div>
-
-          {/* Product challenge */}
-          <div className="mt-16 reveal rounded-2xl bg-gradient-to-br from-primary/10 to-primary/[0.03] p-8 lg:p-10">
-            <Editable as="p" path="conversant.problem.challengeLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-4" />
-            <p className="text-xl sm:text-2xl font-semibold leading-snug text-balance mb-6 max-w-3xl">
-              <Editable as="span" path="conversant.problem.challengeLead" multiline />{' '}
-              <Editable as="span" path="conversant.problem.challengeHighlight" className="gradient-text" />
-            </p>
-            <Prose>
-              <Paragraphs base="conversant.problem.challenge" items={c.problem.challenge} />
-            </Prose>
-          </div>
-        </div>
-      </section>
-
-      {/* 05 — Solution */}
-      <section id="sec-05" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="reveal">
-            <SectionHeader number="05" eyebrowPath="conversant.solution.eyebrow" titlePath="conversant.solution.titleLead" highlightPath="conversant.solution.titleHighlight" />
-          </div>
-
-          <div className="reveal">
-            <Prose>
-              <Paragraphs base="conversant.solution.intro" items={c.solution.intro} />
-            </Prose>
-          </div>
-
-          <div className="mt-16">
-            <Editable as="h3" path="conversant.solution.highlightsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {c.solution.highlights.map((_, i) => (
+          <div className="mt-20">
+            <Editable as="h3" path="conversant.discovery.responsesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {c.discovery.responses.map((_, i) => (
                 <div
                   key={i}
                   className="reveal rounded-2xl bg-muted/40 p-6 lg:p-7"
                 >
-                  <span className="text-xs font-mono text-primary/70">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <Editable as="h4" path={`conversant.solution.highlights.${i}.title`} className="font-semibold mt-2 mb-2 text-balance" />
-                  <Editable as="p" path={`conversant.solution.highlights.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-xs font-mono text-primary/70">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                      Insight
+                    </span>
+                  </div>
+                  <Editable as="h4" path={`conversant.discovery.responses.${i}.insight`} className="font-semibold mb-4 text-balance" />
+                  <div className="pt-4 border-t border-primary/15">
+                    <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">
+                      Product response
+                    </p>
+                    <Editable as="p" path={`conversant.discovery.responses.${i}.response`} multiline className="text-sm text-foreground/85 leading-relaxed" />
+                  </div>
                 </div>
               ))}
             </div>
@@ -443,47 +416,87 @@ export default function Conversant() {
         </div>
       </section>
 
-      {/* 06 — System structure */}
-      <section id="sec-06" className="py-20 sm:py-28 scroll-mt-24">
+      {/* 04 — Strategic Direction */}
+      <section id="sec-04" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="06" eyebrowPath="conversant.system.eyebrow" titlePath="conversant.system.titleLead" highlightPath="conversant.system.titleHighlight" />
+            <SectionHeader number="04" eyebrowPath="conversant.strategy.eyebrow" titlePath="conversant.strategy.titleLead" highlightPath="conversant.strategy.titleHighlight" />
           </div>
 
           <div className="reveal">
             <Prose>
-              <Paragraphs base="conversant.system.intro" items={c.system.intro} />
+              <Paragraphs base="conversant.strategy.intro" items={c.strategy.intro} />
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {c.system.panels.map((_, i) => (
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {c.strategy.pillars.map((_, i) => (
               <div
                 key={i}
-                className="reveal rounded-2xl bg-muted/40 p-6 flex flex-col gap-3"
+                className="reveal rounded-2xl bg-gradient-to-br from-primary/10 to-primary/[0.03] p-6 lg:p-7"
               >
-                <span className="text-xs font-mono text-muted-foreground">
+                <span className="text-xs font-mono text-primary/70">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <Editable as="h3" path={`conversant.system.panels.${i}.title`} className="font-semibold" />
-                <Editable as="p" path={`conversant.system.panels.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+                <Editable as="h4" path={`conversant.strategy.pillars.${i}.title`} className="text-lg font-semibold mt-2 mb-2" />
+                <Editable as="p" path={`conversant.strategy.pillars.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+              </div>
+            ))}
+          </div>
+
+          <figure className="mt-12 reveal max-w-3xl">
+            <blockquote className="text-2xl sm:text-3xl font-semibold leading-snug text-balance">
+              <Editable as="span" path="conversant.strategy.quoteLead" multiline />{' '}
+              <Editable as="span" path="conversant.strategy.quoteHighlight" className="gradient-text" />
+            </blockquote>
+          </figure>
+        </div>
+      </section>
+
+      {/* 05 — Product System */}
+      <section id="sec-05" className="py-20 sm:py-28 scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="reveal">
+            <SectionHeader number="05" eyebrowPath="conversant.productSystem.eyebrow" titlePath="conversant.productSystem.titleLead" highlightPath="conversant.productSystem.titleHighlight" />
+          </div>
+
+          <div className="reveal mb-12">
+            <Prose>
+              <Paragraphs base="conversant.productSystem.intro" items={c.productSystem.intro} />
+            </Prose>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+            {c.productSystem.models.map((_, i) => (
+              <div
+                key={i}
+                className="reveal rounded-2xl bg-muted/40 p-6 lg:p-8 flex flex-col gap-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <Editable as="h3" path={`conversant.productSystem.models.${i}.title`} className="text-lg font-semibold" />
+                  <span className="text-xs font-mono text-muted-foreground shrink-0">
+                    0{i + 1}
+                  </span>
+                </div>
+                <Editable as="p" path={`conversant.productSystem.models.${i}.flow`} className="inline-block self-start px-3 py-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20 text-sm font-medium font-mono" />
+                <Editable as="p" path={`conversant.productSystem.models.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
           </div>
 
           <div className="mt-12 reveal">
             <Prose>
-              <Paragraphs base="conversant.system.closing" items={c.system.closing} />
+              <Paragraphs base="conversant.productSystem.closing" items={c.productSystem.closing} />
             </Prose>
           </div>
         </div>
       </section>
 
-      {/* 07 — Selected work */}
-      <section id="sec-07" className="py-20 sm:py-28 scroll-mt-24">
+      {/* 06 — Selected Work */}
+      <section id="sec-06" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="07" eyebrowPath="conversant.selectedWork.eyebrow" titlePath="conversant.selectedWork.titleLead" highlightPath="conversant.selectedWork.titleHighlight" />
+            <SectionHeader number="06" eyebrowPath="conversant.selectedWork.eyebrow" titlePath="conversant.selectedWork.titleLead" highlightPath="conversant.selectedWork.titleHighlight" />
           </div>
 
           <div className="reveal">
@@ -493,21 +506,20 @@ export default function Conversant() {
           </div>
 
           <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {c.selectedWork.features.map((feature, i) => (
+            {c.selectedWork.items.map((work, i) => (
               <div
                 key={i}
                 className="reveal rounded-2xl bg-muted/40 p-8 lg:p-10 flex flex-col"
               >
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-baseline gap-4 mb-4">
                   <span className="text-sm font-mono text-primary/70">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <Editable as="span" path={`conversant.selectedWork.features.${i}.tag`} className="px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary" />
+                  <Editable as="h3" path={`conversant.selectedWork.items.${i}.title`} className="text-xl lg:text-2xl font-semibold" />
                 </div>
-                <Editable as="h3" path={`conversant.selectedWork.features.${i}.title`} className="text-xl lg:text-2xl font-semibold mb-4" />
                 <div className="space-y-4 text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  {feature.desc.map((_, j) => (
-                    <Editable key={j} as="p" multiline path={`conversant.selectedWork.features.${i}.desc.${j}`} />
+                  {work.desc.map((_, j) => (
+                    <Editable key={j} as="p" multiline path={`conversant.selectedWork.items.${i}.desc.${j}`} />
                   ))}
                 </div>
               </div>
@@ -516,49 +528,106 @@ export default function Conversant() {
         </div>
       </section>
 
-      {/* 08 — Role & strategy */}
+      {/* 07 — Key Design Decisions */}
+      <section id="sec-07" className="py-20 sm:py-28 scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="reveal">
+            <SectionHeader number="07" eyebrowPath="conversant.decisions.eyebrow" titlePath="conversant.decisions.titleLead" highlightPath="conversant.decisions.titleHighlight" />
+          </div>
+
+          <div className="reveal">
+            <Prose>
+              <Paragraphs base="conversant.decisions.intro" items={c.decisions.intro} />
+            </Prose>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {c.decisions.items.map((_, i) => (
+              <div
+                key={i}
+                className="reveal rounded-2xl bg-muted/40 p-6 lg:p-8 hover:bg-muted/60 transition-colors"
+              >
+                <span className="text-sm font-mono text-primary/70">{c.decisions.items[i].n}</span>
+                <Editable as="h3" path={`conversant.decisions.items.${i}.title`} className="text-lg lg:text-xl font-semibold mt-2 mb-3" />
+                <Editable as="p" path={`conversant.decisions.items.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+                <div className="mt-4 pt-4 border-t border-primary/15">
+                  <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">
+                    Tradeoff
+                  </p>
+                  <Editable as="p" path={`conversant.decisions.items.${i}.tradeoff`} multiline className="text-sm text-foreground/85 leading-relaxed" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 08 — Constraints & Collaboration */}
       <section id="sec-08" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="08" eyebrowPath="conversant.role.eyebrow" titlePath="conversant.role.titleLead" highlightPath="conversant.role.titleHighlight" />
+            <SectionHeader number="08" eyebrowPath="conversant.constraints.eyebrow" titlePath="conversant.constraints.titleLead" highlightPath="conversant.constraints.titleHighlight" />
           </div>
 
           <div className="reveal">
             <Prose>
-              <Paragraphs base="conversant.role.intro" items={c.role.intro} />
+              <Paragraphs base="conversant.constraints.intro" items={c.constraints.intro} />
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="reveal rounded-2xl bg-muted/40 p-8">
-              <Editable as="h4" path="conversant.role.initiativesLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-4" />
-              <Chips base="conversant.role.initiatives" items={c.role.initiatives} />
-            </div>
-            <div className="reveal rounded-2xl bg-muted/40 p-8">
-              <Editable as="h4" path="conversant.role.deliverablesLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-4" />
-              <Chips base="conversant.role.deliverables" items={c.role.deliverables} />
-            </div>
-          </div>
-
-          {/* Additional strategic work */}
-          <div className="mt-16 reveal rounded-2xl bg-gradient-to-br from-primary/10 to-primary/[0.03] p-8 lg:p-10">
-            <Editable as="h3" path="conversant.role.strategyTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
-            <Prose>
-              <Paragraphs base="conversant.role.strategy" items={c.role.strategy} />
-            </Prose>
-          </div>
-
-          {/* Constraints */}
-          <div className="mt-16">
-            <Editable as="h3" path="conversant.role.constraintsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
+          <div className="mt-12">
+            <Editable as="h3" path="conversant.constraints.constraintsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {c.role.constraints.map((_, i) => (
+              {c.constraints.items.map((_, i) => (
                 <div
                   key={i}
                   className="reveal rounded-2xl bg-muted/40 p-6 lg:p-7"
                 >
-                  <Editable as="h4" path={`conversant.role.constraints.${i}.title`} className="font-semibold mb-2 text-balance" />
-                  <Editable as="p" path={`conversant.role.constraints.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+                  <Editable as="h4" path={`conversant.constraints.items.${i}.title`} className="font-semibold mb-2 text-balance" />
+                  <Editable as="p" path={`conversant.constraints.items.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-20 reveal">
+            <Editable as="h3" path="conversant.constraints.collaborationTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
+            <Prose>
+              <Paragraphs base="conversant.constraints.collaboration" items={c.constraints.collaboration} />
+            </Prose>
+            <div className="mt-8">
+              <Editable as="h4" path="conversant.constraints.collaboratorsLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-4" />
+              <Chips base="conversant.constraints.collaborators" items={c.constraints.collaborators} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 09 — Validation & Measurement */}
+      <section id="sec-09" className="py-20 sm:py-28 scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="reveal">
+            <SectionHeader number="09" eyebrowPath="conversant.validation.eyebrow" titlePath="conversant.validation.titleLead" highlightPath="conversant.validation.titleHighlight" />
+          </div>
+
+          <div className="reveal">
+            <Prose>
+              <Paragraphs base="conversant.validation.intro" items={c.validation.intro} />
+            </Prose>
+          </div>
+
+          <div className="mt-16">
+            <Editable as="h3" path="conversant.validation.questionsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {c.validation.questions.map((item, i) => (
+                <div
+                  key={i}
+                  className="reveal rounded-2xl bg-muted/40 p-6 flex gap-5"
+                >
+                  <span className="text-sm font-mono text-primary/70 shrink-0">
+                    {item.n}
+                  </span>
+                  <Editable as="p" path={`conversant.validation.questions.${i}.q`} multiline className="text-base text-foreground/90 leading-snug" />
                 </div>
               ))}
             </div>
@@ -566,72 +635,65 @@ export default function Conversant() {
         </div>
       </section>
 
-      {/* 09 — Process & impact */}
-      <section id="sec-09" className="py-20 sm:py-28 scroll-mt-24">
+      {/* 10 — Impact */}
+      <section id="sec-10" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="09" eyebrowPath="conversant.impact.eyebrow" titlePath="conversant.impact.titleLead" highlightPath="conversant.impact.titleHighlight" />
+            <SectionHeader number="10" eyebrowPath="conversant.impact.eyebrow" titlePath="conversant.impact.titleLead" highlightPath="conversant.impact.titleHighlight" />
           </div>
 
-          {/* Velocity & process */}
           <div className="reveal">
-            <Editable as="h3" path="conversant.impact.processTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
             <Prose>
-              <Paragraphs base="conversant.impact.process" items={c.impact.process} />
+              <Paragraphs base="conversant.impact.intro" items={c.impact.intro} />
             </Prose>
           </div>
 
-          <div className="mt-10 reveal flex flex-wrap items-center gap-x-3 gap-y-3">
-            {c.impact.processSteps.map((_, i) => (
-              <span key={i} className="flex items-center gap-3">
-                <Editable
-                  as="span"
-                  path={`conversant.impact.processSteps.${i}`}
-                  className="px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 text-sm font-medium"
-                />
-                {i < c.impact.processSteps.length - 1 && (
-                  <ArrowRight className="w-4 h-4 text-muted-foreground" />
-                )}
-              </span>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {c.impact.highlights.map((_, i) => (
+              <div
+                key={i}
+                className="reveal flex gap-4 rounded-2xl bg-muted/40 p-6"
+              >
+                <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+                  <Check className="w-4 h-4 text-primary" />
+                </div>
+                <Editable as="p" path={`conversant.impact.highlights.${i}`} multiline className="text-sm sm:text-base text-foreground/85 leading-relaxed" />
+              </div>
             ))}
           </div>
 
-          {/* Measuring success */}
-          <div className="mt-20 reveal">
-            <Editable as="h3" path="conversant.impact.measuringTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
-            <Prose>
-              <Paragraphs base="conversant.impact.measuring" items={c.impact.measuring} />
-            </Prose>
-          </div>
-
-          {/* Collaboration */}
-          <div className="mt-20 reveal">
-            <Editable as="h3" path="conversant.impact.collaborationTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
-            <Prose>
-              <Paragraphs base="conversant.impact.collaboration" items={c.impact.collaboration} />
-            </Prose>
-            <div className="mt-6">
-              <Chips base="conversant.impact.collaborators" items={c.impact.collaborators} />
-            </div>
-          </div>
-
-          {/* Design systems */}
-          <div className="mt-20 reveal">
-            <Editable as="h3" path="conversant.impact.designSystemsTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
-            <Prose>
-              <Paragraphs base="conversant.impact.designSystems" items={c.impact.designSystems} />
-            </Prose>
-          </div>
-
-          {/* What this demonstrates */}
-          <div className="mt-20 reveal rounded-2xl bg-primary/10 p-8 lg:p-10">
+          <div className="mt-16 reveal rounded-2xl bg-primary/10 p-8 lg:p-10">
             <Editable as="h3" path="conversant.impact.demonstratesTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
             <Prose>
               <Paragraphs base="conversant.impact.demonstrates" items={c.impact.demonstrates} />
             </Prose>
           </div>
 
-          {/* Confidentiality note */}
+          <div className="mt-20">
+            <Editable as="h3" path="conversant.impact.caseStudiesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {c.impact.caseStudies.map((_, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  onClick={(e) => isAdmin && e.preventDefault()}
+                  className="reveal group rounded-2xl bg-muted/40 p-6 lg:p-8 hover:bg-muted/70 transition-all"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <span className="text-xs font-mono text-primary/70">
+                        Case {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <Editable as="h4" path={`conversant.impact.caseStudies.${i}.title`} className="text-lg lg:text-xl font-semibold mt-2 mb-3 group-hover:text-primary transition-colors" />
+                      <Editable as="p" path={`conversant.impact.caseStudies.${i}.question`} multiline className="text-sm text-muted-foreground leading-relaxed italic" />
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0 mt-1" />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
           <p className="mt-12 reveal text-xs text-muted-foreground/80 italic max-w-3xl">
             <Editable as="span" path="conversant.impact.confidentiality" multiline />
           </p>
