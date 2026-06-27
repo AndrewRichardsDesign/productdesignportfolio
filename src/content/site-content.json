@@ -98,13 +98,13 @@
       {
         "id": 4,
         "title": "USAA Member Home Page",
-        "description": "Coming soon.",
-        "image": "/project-usaa-placeholder.svg",
+        "description": "An authenticated homepage redesign that turned a cluttered legacy page into a scalable product system — organized around what members own, what needs attention, and what they can do next.",
+        "image": "/project-memberhome-placeholder.svg",
         "tags": [
           "Web",
           "Financial Services"
         ],
-        "link": "#",
+        "link": "#/memberhome",
         "timeframe": "2 years"
       }
     ]
@@ -914,276 +914,519 @@
     "backToPortfolio": "Back to portfolio",
     "brand": "Conversant",
     "toc": [
-      "Context",
-      "Goals",
-      "Users",
-      "Problem",
-      "Solution",
-      "System structure",
-      "Selected work",
-      "Role & strategy",
-      "Process & impact"
+      "Overview",
+      "Design Challenge",
+      "Discovery & Research",
+      "Strategy",
+      "Product System",
+      "Selected Work",
+      "Key Decisions",
+      "Constraints & Team",
+      "Validation",
+      "Impact"
     ],
     "hero": {
-      "status": "USAA · Enterprise platform",
+      "status": "USAA · Internal platform",
       "title": "Conversant",
       "subtitle": "Enterprise desktop platform for call center and back-office servicing",
-      "intro": "Conversant was a mission-critical internal desktop platform for USAA employees who supported members through phone calls, chat, account servicing, and back-office workflows. The platform unified member context, communication tools, servicing alerts, product information, and internal applications into one workspace.",
-      "typeTags": ["Enterprise UX", "Desktop platform", "Design systems", "Research-led strategy"],
+      "typeTags": [
+        "Enterprise desktop",
+        "Internal employee platform",
+        "Workflow & IA",
+        "Design system"
+      ],
       "roleLabel": "Role",
-      "roleValue": "Design research, UX/UI & product strategy",
+      "roleValue": "Product design & research",
       "platformLabel": "Platform",
-      "platformValue": "Enterprise desktop application",
+      "platformValue": "Native desktop application",
       "surfaceLabel": "Users",
-      "surfaceValue": "USAA call center & back-office employees"
+      "surfaceValue": "USAA service employees"
     },
-    "context": {
-      "eyebrow": "Context",
-      "titleLead": "One workspace for",
-      "titleHighlight": "complex servicing work",
+    "overview": {
+      "eyebrow": "Overview",
+      "titleLead": "A unified workspace for",
+      "titleHighlight": "member servicing.",
       "intro": [
-        "Before Conversant, USAA employees relied on a fragmented set of tools to access member data and service accounts. A typical desktop could have 10–15 applications open at the same time, forcing representatives to move between disconnected systems while speaking with members or completing back-office work.",
-        "The main tool for accessing member data had not been meaningfully updated in roughly 20 years. It carried severe UX and technical performance issues, making the system difficult to learn, slow to navigate, and inconsistent with the needs of modern servicing work.",
-        "This created two very different user problems. New employees struggled to learn the system because the workflows were fragmented and hard to understand. Veteran employees could move faster, but often only because they had developed countless workarounds, memorized non-obvious pathways, and learned how to compensate for the system's limitations.",
-        "Conversant existed within that environment as a unified desktop workspace intended to help representatives stay oriented, access member context, and complete complex servicing tasks with more consistency and less fragmentation."
+        "Conversant was a mission-critical internal desktop platform for USAA employees who supported members through phone calls, chat, account servicing, and back-office workflows. It unified member context, communication tools, servicing alerts, product information, documentation, and internal applications into one workspace.",
+        "I worked across design research, UX/UI design, interaction design, product strategy, and implementation guidance to improve high-value workflows inside the platform. My work helped Conversant become more consistent, flexible, accessible, and scalable while supporting the speed and accuracy employees needed during live servicing work.",
+        "This was not a blank-slate consumer redesign. Conversant was a mature enterprise platform with inherited patterns, legacy dependencies, technical constraints, and a wide range of employee roles. The design challenge was to improve specific workflows while strengthening the system around them."
       ],
-      "calloutEyebrow": "Designed for",
-      "calloutLead": "Repeated daily use under time pressure — not",
-      "calloutHighlight": "quick, occasional visits."
-    },
-    "goals": {
-      "eyebrow": "Goals",
-      "titleLead": "Replace, consolidate,",
-      "titleHighlight": "and stay flexible",
-      "intro": [
-        "The product goal was to completely replace the previous internal member-data tool and consolidate as many fragmented secondary tools as possible into a simpler, more unified servicing environment.",
-        "Conversant needed to become the single launch point for employee workflows. Instead of asking representatives to know which separate system to open, where to find the right data, or how to move between disconnected tools, the platform needed to provide one consistent entry point for member servicing work.",
-        "At the same time, the system could not become rigid. Conversant was used for a wide variety of purposes depending on the employee's role and the reason for the member's call. A simple request like updating personal information might mean a quick visit to the information panel and an edit app, while opening a new account might mean using the product panel as a guided servicing or acquisition flow loaded in the center workspace.",
-        "This was the core idea behind Conversant supporting non-linear workflows. Representatives needed to move fluidly between member context, communication controls, documentation, product information, and task-specific tools without being forced through one rigid sequence."
+      "productTypeLabel": "Project type",
+      "productTypeList": [
+        "Enterprise desktop application",
+        "Internal employee platform",
+        "Call center & back-office servicing",
+        "Workflow & information architecture",
+        "Design system & component strategy",
+        "Research-led product design"
       ],
-      "designGoalsTitle": "Design goals",
-      "designGoals": [
-        "Replace the old member-data experience with a modern, unified workspace.",
-        "Consolidate fragmented tools and reduce unnecessary system-switching.",
-        "Create an intuitive layout and information architecture so employees could rely less on training, workarounds, and memorized paths.",
-        "Preserve the speed veteran employees had developed while introducing new efficiencies.",
-        "Support flexible, non-linear workflows across different employee roles and servicing scenarios.",
-        "Design for the 50th use, not just first-time comprehension — where long-term efficiency justifies the learning tradeoff.",
-        "Create reusable patterns that helped new Conversant experiences feel consistent with the larger platform."
-      ]
-    },
-    "users": {
-      "eyebrow": "Users",
-      "titleLead": "Many roles,",
-      "titleHighlight": "one coherent product",
-      "intro": [
-        "Conversant supported a wide range of USAA employee roles, including frontline phone representatives, banking reps, insurance reps, claims reps, specialists, back-office processors, managers, supervisors, chat employees, and employees who worked across multiple products or departments.",
-        "That range of roles created a major design challenge. Different employee groups had different workflows, priorities, and expectations for which information and tools needed to be immediately available. A banking representative, an insurance specialist, a claims employee, and a back-office processor might all need member context, but not always the same context, in the same order, or with the same level of urgency.",
-        "Because of that, Conversant needed to be highly configurable. The platform could not rely on one fixed layout or one universal set of tools. It needed to support role-specific experiences while still feeling like a coherent product. Part of that flexibility came through an admin tool that allowed representative managers to control aspects of the experience for their teams."
+      "roleTitle": "My role",
+      "roleList": [
+        "UX/UI design",
+        "Interaction design",
+        "Design research",
+        "Usability testing & focus groups",
+        "Research synthesis",
+        "Product strategy recommendations",
+        "Feature requirements & acceptance criteria",
+        "Workflow mapping",
+        "Design-system pattern development",
+        "Functional documentation & developer handoff",
+        "Partner guidance for embedded teams"
       ],
-      "rolesLabel": "Roles supported",
-      "roles": [
-        "Phone reps",
+      "usersLabel": "Primary users",
+      "usersList": [
+        "Member Service Representatives",
         "Banking reps",
         "Insurance reps",
         "Claims reps",
         "Specialists",
         "Back-office processors",
-        "Managers",
-        "Supervisors",
+        "Managers & supervisors",
         "Chat employees",
         "Cross-product employees"
+      ],
+      "workstreamsLabel": "Selected workstreams",
+      "workstreamsList": [
+        "Product Panel redesign",
+        "Phone Tool interactions",
+        "Phone & chat agent-state management",
+        "Profile Alerts strategy",
+        "Reason for Call notifications",
+        "Keyboard Shortcuts strategy",
+        "Component Library patterns",
+        "Member tab bar, header, panels & rails",
+        "Digital fax workflow strategy"
       ]
     },
-    "problem": {
-      "eyebrow": "Problem",
-      "titleLead": "Friction at every",
-      "titleHighlight": "level of the experience",
+    "challenge": {
+      "eyebrow": "Design Challenge",
+      "titleLead": "Complex servicing work, under",
+      "titleHighlight": "time pressure.",
+      "hmwLabel": "The challenge",
+      "hmwLead": "How might we help employees complete complex servicing work faster and more accurately inside one unified workspace —",
+      "hmwHighlight": "while preserving flexibility for many roles, reducing dependency on legacy workarounds, and avoiding a rigid one-size-fits-all platform?",
       "intro": [
-        "The previous servicing environment created friction at nearly every level of the employee experience. Tools were slow, workflows required too many clicks, and representatives often did not know where to find the information they needed. Data could be duplicated across systems, labels and navigation were inconsistent, and important member context could be difficult to read or missing from a given representative's view.",
-        "These issues created both usability and operational risks. New representatives struggled to onboard because the system did not clearly teach its own structure. Veteran representatives could often work faster, but only because they had built up informal institutional knowledge, memorized paths, and personal workarounds that were difficult to transfer to others."
-      ],
-      "problemsTitle": "Where it broke down",
-      "problems": [
-        { "title": "Slow, click-heavy tools", "desc": "Workflows required too many clicks, and representatives often didn't know where to find the information they needed." },
-        { "title": "Fragmented & duplicated data", "desc": "Data was duplicated across systems, and labels and navigation were inconsistent from tool to tool." },
-        { "title": "Hard to onboard", "desc": "New representatives struggled because the system did not clearly teach its own structure." },
-        { "title": "Tribal knowledge", "desc": "Veterans worked fast only through memorized paths and personal workarounds that were difficult to transfer to others." },
-        { "title": "Accessibility gaps", "desc": "The old environment introduced accessibility problems across information architecture, color usage, and keyboard interaction — used repeatedly all day during live conversations." }
-      ],
-      "closing": [
-        "The product problem was not simply that employees needed \"more information.\" They needed clearer, more complete, and more accessible information in a structure that supported accurate decisions, reduced unnecessary effort, and made complex servicing workflows easier to learn and execute."
-      ],
-      "challengeLabel": "The product challenge",
-      "challengeLead": "Replace a fragmented legacy toolset and support many nonlinear workflows — while protecting the speed",
-      "challengeHighlight": "veterans had built over years.",
-      "challenge": [
         "Conversant had to support employees doing cognitively demanding work under time pressure. Representatives needed to speak with members, understand account context, navigate multiple tools, manage phone or chat states, document outcomes, and complete servicing tasks without losing their place.",
-        "The design challenge was not simply to make the interface look cleaner. It was to make dense, operational workflows easier to understand and safer to execute across long work sessions."
+        "The challenge was not simply to make the interface look cleaner. It was to make dense, operational workflows easier to understand, safer to execute, and more consistent across long work sessions."
+      ],
+      "contextTitle": "Context: fragmented tools, a 20-year-old core",
+      "context": [
+        "Before Conversant, USAA employees relied on a fragmented set of tools to access member data and service accounts. A typical desktop could have 10–15 applications open at the same time, forcing representatives to move between disconnected systems while speaking with members or completing back-office work.",
+        "The main internal tool for accessing member data had not been meaningfully updated in roughly 20 years. It carried severe UX and technical performance issues, making the system difficult to learn, slow to navigate, and inconsistent with the needs of modern servicing work.",
+        "This created two different user problems. New employees struggled to learn the system because workflows were fragmented and hard to understand. Veteran employees could move faster, but often only because they had developed workarounds, memorized non-obvious pathways, and learned to compensate for system limitations.",
+        "Conversant existed within that environment as a unified desktop workspace — a daily-use enterprise tool where speed, accuracy, confidence, information density, accessibility, and resilience under pressure mattered more than a lightweight first-use experience."
       ]
     },
-    "solution": {
-      "eyebrow": "Solution",
-      "titleLead": "A unified workspace for",
-      "titleHighlight": "member servicing",
+    "discovery": {
+      "eyebrow": "Discovery & Research",
+      "titleLead": "Right-sizing rigor to",
+      "titleHighlight": "decision risk.",
       "intro": [
-        "Conversant created a unified desktop application for member servicing. It brought together member personal information, member product line-up, servicing alerts, phone and chat features, and a center app browser for launching both native apps and web apps within the same workspace.",
-        "Instead of forcing representatives to treat each tool as a separate experience, Conversant gave them a shared frame for work: member context stayed accessible, applications opened inside a consistent container, and common controls behaved predictably across workflows."
+        "Conversant work moved at different speeds depending on feature risk, complexity, and timeline. Some initiatives moved from intake to development handoff within a two-week sprint. Others took a month or more and included deeper discovery, user testing, UX exploration, UI design, documentation, and handoff.",
+        "My process was modular. I had to quickly determine how much discovery was necessary, where research would reduce risk, when existing patterns could be reused, and when a feature needed deeper exploration before implementation. The goal was not to run the same process for every feature — it was to choose the right level of rigor for the risk of the decision."
       ],
-      "highlightsTitle": "What the solution delivered",
-      "highlights": [
-        { "title": "Unified servicing desktop", "desc": "Member info, product line-up, servicing alerts, phone/chat, and a center app browser for native and web apps — all in one workspace." },
-        { "title": "Role-specific configuration", "desc": "Panel views could be toggled or rearranged by managers so teams worked from a focused, optimized view rather than one fixed layout." },
-        { "title": "A transition platform", "desc": "Reps kept access to tools through the integrated app browser while older internal apps were gradually migrated to run natively inside Conversant." },
-        { "title": "Efficiency over time", "desc": "Migration reduced load times, simplified workflows, and created a more consistent UX/UI across experiences that had previously felt fragmented." },
-        { "title": "Accessibility & keyboard support", "desc": "Improved accessibility and keyboard interaction for representatives using the app repeatedly throughout long work sessions." }
+      "processLabel": "A typical project",
+      "processSteps": [
+        "Intake from product",
+        "Kickoff & alignment",
+        "Work plan by risk",
+        "Competitive analysis",
+        "Research planning",
+        "User testing (5–8 MSRs)",
+        "Synthesis & shareouts",
+        "UX & UI iteration",
+        "Validation testing",
+        "Documentation & handoff"
+      ],
+      "responsesTitle": "Research insights & product responses",
+      "responses": [
+        {
+          "insight": "Representatives needed one stable place to work.",
+          "response": "Conversant became the shared desktop shell for member context, communication controls, notes, and internal applications."
+        },
+        {
+          "insight": "Employees had to manage dense information while speaking with members.",
+          "response": "The interface used persistent panels, member tabs, a member header, and configurable information views to keep important context available."
+        },
+        {
+          "insight": "Different roles needed different context.",
+          "response": "The platform supported role-specific configuration through panel views, manager-controlled settings, and configurable side rails."
+        },
+        {
+          "insight": "Veteran speed depended on workarounds.",
+          "response": "Designs introduced clearer workflows without slowing down experienced users who had developed efficient habits."
+        },
+        {
+          "insight": "New users needed a system that taught its own structure.",
+          "response": "IA, labels, grouping, and component consistency became as important as individual feature screens."
+        },
+        {
+          "insight": "Phone and chat workflows carried high cognitive load.",
+          "response": "Communication controls needed clear states, safe actions, and predictable behavior across collapsed, expanded, and separate-window modes."
+        },
+        {
+          "insight": "Embedded tools risked increasing fragmentation.",
+          "response": "The center app browser became a transition strategy: older tools stayed accessible while applications were gradually migrated into native Conversant experiences."
+        },
+        {
+          "insight": "Some problems should not become new standalone apps.",
+          "response": "In the digital fax workflow, ecosystem mapping showed that partnering with an existing file-processing tool would create a better workflow than building a separate new tool."
+        }
       ]
     },
-    "system": {
-      "eyebrow": "System structure",
-      "titleLead": "A multi-panel",
-      "titleHighlight": "desktop workspace",
+    "strategy": {
+      "eyebrow": "Strategic Direction",
+      "titleLead": "One configurable workspace, not a collection of",
+      "titleHighlight": "disconnected tools.",
       "intro": [
-        "Conversant used a multi-panel desktop structure designed to keep member context, servicing tools, and communication controls available inside one workspace."
+        "The strategic direction was to turn Conversant into a unified, configurable servicing workspace rather than a collection of disconnected tools. The platform needed to do three things at once.",
+        "The strongest design work was not only the design of individual features. It was the work of making those features behave coherently inside the larger Conversant environment, through reusable patterns, configurable views, persistent context, and clear interaction rules."
       ],
-      "panels": [
-        { "title": "Member tabs", "desc": "The top of the app supported multiple open member profiles through tabs." },
-        { "title": "Member information row", "desc": "Below the tabs, a high-level context row let reps quickly confirm who they were helping and see essential profile details." },
-        { "title": "Left member panel", "desc": "Detailed member information, notifications, member details, and contact information." },
-        { "title": "Left rail", "desc": "Access to historical documents, previous activity, member settings, phone directory, and launch points for supporting tools." },
-        { "title": "Right product panel", "desc": "The member's product line-up, new product acquisition entry points, and help or knowledge content." },
-        { "title": "Center workspace", "desc": "The main launch point for native and web apps — edit experiences, servicing flows, acquisition workflows — and apps could pop out into separate windows." },
-        { "title": "Communication tools", "desc": "Phone and chat were collapsed by default and expandable when needed; the Phone Tool could move to a separate window when it blocked critical info." },
-        { "title": "Notes", "desc": "Notes could open inside the app or move to a separate window, supporting multitasking and documentation without leaving the environment." },
-        { "title": "Configurable rails & panels", "desc": "Side rails and panel views were configurable so managers could tailor the experience for different teams and roles." }
+      "pillars": [
+        {
+          "title": "Provide orientation",
+          "desc": "Representatives needed to know which member they were helping, what context mattered, what state they were in, and where they could act next."
+        },
+        {
+          "title": "Preserve flow",
+          "desc": "Representatives needed to move between communication, member data, product information, notes, and task-specific apps without losing context."
+        },
+        {
+          "title": "Support variation",
+          "desc": "Different employee groups needed different information and tools, but the platform still needed to feel coherent and learnable."
+        }
+      ],
+      "quoteLead": "“The strongest work wasn't designing features — it was making them behave coherently inside",
+      "quoteHighlight": "the larger platform.”"
+    },
+    "productSystem": {
+      "eyebrow": "Product System",
+      "titleLead": "A system of",
+      "titleHighlight": "interconnected workspaces.",
+      "intro": [
+        "Conversant was a system of interconnected workspaces, panels, controls, and embedded applications — each with a clear model for how representatives moved through it."
+      ],
+      "models": [
+        {
+          "title": "Desktop shell model",
+          "flow": "Member tabs → Header → Left panel → Center workspace → Right panel → Comms",
+          "desc": "The desktop shell gave employees a consistent structure for member context, servicing tools, communication, documentation, and task-specific applications."
+        },
+        {
+          "title": "Member context model",
+          "flow": "Member tab → Header → Profile → Alerts → Contact info → Activity/history",
+          "desc": "The platform kept member context visible and accessible so representatives could confirm who they were helping, understand the member's situation, and respond accurately during a live interaction."
+        },
+        {
+          "title": "Product relationship model",
+          "flow": "Product lineup → Product details → Servicing/acquisition → Center app workflow",
+          "desc": "The Product Panel helped representatives understand the member's relationship with USAA, review product lineup, and move into servicing or acquisition workflows."
+        },
+        {
+          "title": "Communication model",
+          "flow": "Collapsed tool → Expanded tool → Caller controls → Agent state → Separate window",
+          "desc": "Phone and chat tools needed to support live servicing without blocking critical information. The Phone Tool could be collapsed, expanded, or moved into a separate window when the expanded state interfered with the workspace."
+        },
+        {
+          "title": "Center app model",
+          "flow": "Task-specific app → Native or web app → Shared container → Optional separate window",
+          "desc": "The center workspace was the main launch point for internal applications. It supported both web apps and native Conversant apps, creating a migration path away from fragmented legacy tools."
+        },
+        {
+          "title": "Configuration model",
+          "flow": "Manager settings → Role-specific views → Panel order, visibility, content",
+          "desc": "The platform couldn't rely on one universal layout. Manager-controlled configuration tailored the experience to different teams while preserving a shared product structure."
+        },
+        {
+          "title": "Design-system model",
+          "flow": "Native Conversant patterns + USAA web patterns → Platform-specific guidance",
+          "desc": "Conversant had its own native desktop patterns while embedded web apps used the broader USAA design system — a dual environment where patterns had to be selected, adapted, or extended by context."
+        }
       ],
       "closing": [
-        "This structure created a recurring product design tension: every new feature needed to be useful in its own context, but it also had to behave coherently inside the larger platform. Much of my work focused on designing patterns that could scale beyond a single feature."
+        "Treating Conversant as a set of models rather than a fixed layout meant each workflow, role, and embedded app could plug into a shared structure that stayed coherent and learnable."
       ]
     },
     "selectedWork": {
-      "eyebrow": "Selected work",
-      "titleLead": "Two stories from",
-      "titleHighlight": "inside the platform",
+      "eyebrow": "Selected Work",
+      "titleLead": "Depth of",
+      "titleHighlight": "design craft.",
       "intro": [
-        "The strongest stories to feature are the Product Panel redesign and Phone Tool interactions. These two areas show different dimensions of the work: one focused on information architecture, role-specific servicing needs, and product navigation; the other focused on high-pressure communication workflows, technical constraints, and interaction clarity during live member conversations."
+        "Seven workstreams where I worked through the structure and detail of the platform — several of which could stand on their own as deeper case studies."
       ],
-      "features": [
+      "items": [
         {
           "title": "Product Panel redesign",
-          "tag": "Information architecture",
           "desc": [
-            "The Product Panel helped representatives understand the member's relationship with USAA, review product line-up, and move into servicing or acquisition workflows. Because different employee roles needed different product information and entry points, the panel had to balance consistency with configurability.",
-            "This work shows how information architecture, role-specific needs, manager-controlled configuration, and product acquisition flows came together inside a dense enterprise workspace. It also shows how Conversant supported nonlinear workflows: sometimes the panel was only a reference point, while other times it became the launch point for a central servicing or acquisition app."
+            "The Product Panel helped representatives understand the member's relationship with USAA, review product lineup, and move into servicing or acquisition workflows. Because different employee roles needed different product information and entry points, the panel had to balance consistency with configurability.",
+            "This work shows information architecture, role-specific servicing needs, manager-controlled configuration, and product navigation inside a dense enterprise workspace. It also shows how Conversant supported nonlinear workflows: sometimes the panel was only a reference point, while other times it became the launch point for a central servicing or acquisition app."
           ]
         },
         {
           "title": "Phone Tool interactions",
-          "tag": "High-pressure workflows",
           "desc": [
-            "The Phone Tool supported live member conversations inside Conversant. It included call controls, caller-specific actions, collapsed and expanded states, and the ability to move the tool into a separate window when the expanded state blocked information needed during a call.",
-            "This work shows how design decisions reduced ambiguity in a high-pressure workflow. It also shows how the team designed around an AWS-based backend rather than assuming every ideal interaction was technically possible."
+            "The Phone Tool supported live member conversations inside Conversant. It included call controls, caller-specific actions, collapsed and expanded states, multiple-caller handling, hold and end-call behavior, wrap-up states, and separate-window behavior.",
+            "This work shows interaction design in a high-pressure workflow. Phone controls had to be clear, safe, and predictable because mistakes could directly affect a live member conversation. The team also designed around an AWS-based backend rather than assuming every ideal interaction was technically possible."
+          ]
+        },
+        {
+          "title": "Phone & chat agent-state management",
+          "desc": [
+            "Agent-state management needed to work across contexts. Representatives needed to see their current state, understand what state changes meant, and select a new state without confusion. This required a treatment that could work for both phone and chat while supporting different operational states."
+          ]
+        },
+        {
+          "title": "Profile Alerts & Reason for Call notifications",
+          "desc": [
+            "These features were less about adding UI and more about deciding where important context should live. They required strategic placement so representatives could see relevant information at the right moment without adding more noise to an already dense workspace."
+          ]
+        },
+        {
+          "title": "Keyboard Shortcuts research & strategy",
+          "desc": [
+            "Keyboard shortcuts mattered because Conversant was a repeated-use desktop tool. For experienced employees, keyboard support could reduce repetitive friction and help preserve speed. The work required understanding which shortcuts would actually support workflow efficiency instead of adding another layer to memorize."
+          ]
+        },
+        {
+          "title": "Component Library",
+          "desc": [
+            "Conversant needed reusable patterns for member tabs, the member header, side panels, side rails, and panel information sections. Component work helped the platform become more consistent and helped other teams design experiences that fit inside the larger Conversant environment."
+          ]
+        },
+        {
+          "title": "Digital fax workflow strategy",
+          "desc": [
+            "I led research and strategy for a digital fax tool integrated into the Conversant center app browser. The work included interviews, research synthesis, product requirement recommendations, and journey maps that showed each step in the workflow for different user types and tasks.",
+            "The journey maps extended beyond the fax tool itself, including the additional systems employees needed to complete the broader workflow — which revealed that building a new standalone tool would not solve the real complexity. After mapping the full ecosystem, I recommended partnering with the team that owned the main file-processing software and adding our requirements as new features within their existing tool.",
+            "That recommendation gave users a more streamlined workflow with less app switching and fewer repeated steps. It also helped USAA avoid the cost of standing up a new development team for a separate tool that would have added another application to an already complex ecosystem."
           ]
         }
       ]
     },
-    "role": {
-      "eyebrow": "Role & strategy",
-      "titleLead": "Research-led design",
-      "titleHighlight": "and product direction",
+    "decisions": {
+      "eyebrow": "Key Design Decisions",
+      "titleLead": "Designing inside",
+      "titleHighlight": "real constraints.",
       "intro": [
-        "I worked across design research, UX/UI design, and product design. My role often extended beyond interface design into shaping scope and direction based on research findings.",
-        "I led generative research, usability testing, interviews, focus groups, research synthesis, product requirement creation, and shareouts with business and development partners. For each feature, I helped translate user needs and operational constraints into design direction, documentation, and implementation guidance.",
-        "Because Conversant served as a platform for many internal tools, I also coordinated with multiple teams designing web apps that lived inside the environment. I often served as an employee-user expert, helping teams adapt their designs for USAA employees rather than members and ensuring each app fit the workflows and usability needs of the internal servicing environment."
+        "Each decision balanced flexibility, density, safety, and buildability — the realities of a mature enterprise platform used all day, every day."
       ],
-      "initiativesLabel": "Initiatives I led",
-      "initiatives": [
-        "Product Panel redesign",
-        "Profile Alerts",
-        "Reason for Call Notifications",
-        "Keyboard Shortcuts strategy",
-        "Phone Tool interactions",
-        "Component Library"
-      ],
-      "deliverablesLabel": "Deliverables",
-      "deliverables": [
-        "UX flows",
-        "UI designs",
-        "Research synthesis",
-        "Product shareouts",
-        "Functional guidance",
-        "Specifications",
-        "Dev handoff docs"
-      ],
-      "strategyTitle": "Additional strategic work — digital fax tool",
-      "strategy": [
-        "I also led the research and strategy for a digital fax tool integrated into the Conversant center app browser. This work included user interviews, research synthesis, product requirement recommendations, and journey maps that showed each step in the workflow for different user types and tasks.",
-        "The journey maps extended beyond the fax tool itself. They included the additional systems users needed to complete the broader workflow, which revealed that building a new standalone tool would not solve the real complexity employees faced. After mapping the full ecosystem, I recommended a different strategy: partner with the team that owned the main file-processing software and add our requirements as new features within their existing tool.",
-        "That strategy gave users a more streamlined workflow with less app switching and fewer repeated steps. It also helped USAA avoid the cost of standing up a new development team for a separate tool that would have added another application to an already complex ecosystem."
-      ],
-      "constraintsTitle": "Constraints",
-      "constraints": [
-        { "title": "An existing, undocumented system", "desc": "The base app was already designed and developed. I had to work within an existing structure and an undocumented design system that was in use but not yet consistent." },
-        { "title": "Interconnected decisions", "desc": "A change that improved one workflow could affect another feature, role, or use case. Part of the work was identifying downstream impacts and judging acceptable compromises." },
-        { "title": "A large, diverse user base", "desc": "Many employee groups with nonlinear workflows and different priorities — sometimes needing a balanced default, other times customization so managers could tailor views." },
-        { "title": "Technical & timeline limits", "desc": "Timeline pressure and existing infrastructure shaped what could ship. Stronger solutions sometimes required backup plans and phased improvements." },
-        { "title": "AWS-based phone backend", "desc": "The Phone Tool had to work within the capabilities and limits of an AWS-based backend rather than a custom phone system designed from scratch." },
-        { "title": "Compliance & redaction", "desc": "Some user groups couldn't see complete member information, so the design had to support simplified or redacted views while preserving enough context to work accurately." }
+      "items": [
+        {
+          "n": "01",
+          "title": "Design for a unified workspace, not a single linear flow",
+          "desc": "Representatives needed to move between member context, communication, notes, product information, and task-specific tools in different orders depending on the situation.",
+          "tradeoff": "Nonlinear workflows are harder to structure than step-by-step flows. The benefit was flexibility for real servicing work, where employees often respond to what happens during a live interaction."
+        },
+        {
+          "n": "02",
+          "title": "Preserve persistent context",
+          "desc": "Conversant kept member identity, profile details, panels, and communication tools available around the central workspace.",
+          "tradeoff": "Persistent context increases interface density. The benefit was that representatives didn't have to leave a task-specific workflow to recover important member information."
+        },
+        {
+          "n": "03",
+          "title": "Use configurability where one default couldn't serve everyone",
+          "desc": "Different teams needed different information, tools, and panel setups.",
+          "tradeoff": "Configurability can create complexity and governance overhead. The benefit was a platform that could support many roles without forcing every team into the same fixed layout."
+        },
+        {
+          "n": "04",
+          "title": "Support veteran speed while improving learnability",
+          "desc": "The platform needed to reduce reliance on workarounds without making experienced employees feel slower.",
+          "tradeoff": "Designs that are immediately obvious aren't always fastest for expert repeated use. The goal was to design for the 50th use: patterns could be learned if they created long-term efficiency."
+        },
+        {
+          "n": "05",
+          "title": "Design communication controls around operational safety",
+          "desc": "Phone and chat interactions needed to be clear because they happened during live member interactions.",
+          "tradeoff": "Richer controls can create visual complexity. The benefit was safer, more explicit handling of call states, multiple callers, wrap-up, hold, end-call behavior, and agent status."
+        },
+        {
+          "n": "06",
+          "title": "Treat backend limitations as product constraints",
+          "desc": "The Phone Tool had to work within the capabilities of an AWS-based backend.",
+          "tradeoff": "Some ideal interactions weren't technically feasible. Designing inside real constraints let product, design, and engineering align on solutions that were usable and buildable."
+        },
+        {
+          "n": "07",
+          "title": "Avoid creating a new tool when improving an existing workflow was better",
+          "desc": "The digital fax research showed a standalone tool would add to ecosystem complexity rather than solve it.",
+          "tradeoff": "Partnering with an existing product team reduces direct control over the final experience. The benefit was a simpler workflow for employees and better strategic use of development resources."
+        },
+        {
+          "n": "08",
+          "title": "Balance native desktop patterns with embedded web-app patterns",
+          "desc": "Conversant included native desktop experiences and web apps loaded inside the center browser.",
+          "tradeoff": "Two design systems can create inconsistency if unmanaged. The benefit was using the right pattern set for each technical surface while establishing guidance for how experiences fit inside the platform."
+        },
+        {
+          "n": "09",
+          "title": "Design for compliance without removing useful context",
+          "desc": "Some user groups weren't allowed to see complete member information.",
+          "tradeoff": "Redacted or simplified data views can reduce context. The benefit was a compliant experience that still gave employees enough information to complete their work accurately."
+        }
       ]
     },
-    "impact": {
-      "eyebrow": "Process & impact",
-      "titleLead": "Modular process,",
-      "titleHighlight": "measurable confidence",
-      "processTitle": "Velocity & process",
-      "process": [
-        "The pace of work on Conversant was fast and highly variable. Some features moved from intake to development handoff within a two-week sprint. Others took about a month from start to finish, including research, UX exploration, UI design, documentation, and handoff.",
-        "That velocity shaped how I approached the work. I had to quickly determine how much discovery was necessary, where research would reduce risk, when existing patterns could be reused, and when a feature needed deeper exploration before implementation.",
-        "The result was a modular design process. Not every project needed the same level of research or iteration, but every project still needed enough clarity for product, development, accessibility, and business partners to move forward with confidence."
+    "constraints": {
+      "eyebrow": "Constraints & Collaboration",
+      "titleLead": "Working within an",
+      "titleHighlight": "existing system.",
+      "intro": [
+        "Conversant was a mature, interconnected platform with many stakeholders. The constraints below shaped what was possible — and collaboration was how the work moved forward."
       ],
-      "processSteps": [
-        "Intake",
-        "Kickoff & alignment",
-        "Work plan",
-        "Competitive analysis",
-        "User testing",
-        "Synthesis",
-        "UX/UI iteration",
-        "Validation",
-        "Documentation",
-        "Shareout"
-      ],
-      "measuringTitle": "Measuring success",
-      "measuring": [
-        "When testing data was available, I evaluated design decisions through current-state vs. redesigned usability scores, representative confidence, task clarity, and qualitative feedback. The goal was to connect results to specific design decisions rather than simply claim that a redesign \"tested better.\"",
-        "For a complex enterprise platform, success was not only visual polish. Success meant reducing confusion, improving confidence, supporting faster workflows, improving accessibility, and helping representatives complete complex servicing tasks with fewer unnecessary steps or workarounds."
+      "constraintsTitle": "Constraints",
+      "items": [
+        {
+          "title": "Existing platform structure",
+          "desc": "When I joined, the basic version of the application had already been designed and developed. I worked within an existing app structure and an undocumented design system that was in use but not yet consistent."
+        },
+        {
+          "title": "Interconnected workflows",
+          "desc": "Because the platform was complex and interconnected, each decision had to be evaluated against the rest of the application. A change that improved one workflow could affect another feature, role, or use case."
+        },
+        {
+          "title": "Diverse employee groups",
+          "desc": "Conversant served many employee groups with nonlinear workflows. Different roles often had different priorities and different opinions about what information or controls mattered most."
+        },
+        {
+          "title": "Technical limitations",
+          "desc": "Timeline pressure and existing infrastructure affected which designs could be accepted. Some stronger solutions required backup plans or phased improvements."
+        },
+        {
+          "title": "Backend constraints",
+          "desc": "The Phone Tool had to work within the capabilities and limitations of an AWS-based backend. The design had to reflect what the system could support."
+        },
+        {
+          "title": "Compliance requirements",
+          "desc": "Some users could not see complete member information. The design had to support simplified or redacted data views while still helping employees complete their work accurately."
+        },
+        {
+          "title": "Accessibility & keyboard support",
+          "desc": "Conversant had to support long work sessions, high-frequency interactions, and keyboard-heavy workflows. Accessibility was not a layer added at the end — it was part of the quality bar for dense operational work."
+        }
       ],
       "collaborationTitle": "Collaboration",
       "collaboration": [
-        "Conversant required collaboration across a large enterprise product ecosystem. I worked with the core Conversant design team, product teams, development teams, outside design teams building tools inside Conversant, MSR Labs for user testing coordination, accessibility partners, and design system partners.",
-        "Because many internal tools were being migrated or built into Conversant, collaboration often meant more than handing off screens. It meant helping other teams understand employee workflows, adapt member-facing patterns for internal users, and align their work with the larger Conversant platform experience."
+        "Conversant required collaboration across a large enterprise product ecosystem. I worked with the core Conversant design team, product teams, development teams, outside design teams building tools inside Conversant, MSR Labs for user testing coordination, accessibility partners, and design-system partners.",
+        "Because many internal tools were being migrated or built into Conversant, collaboration often meant more than handing off screens. It meant helping other teams understand employee workflows, adapt member-facing patterns for internal users, and align their work with the larger platform. I often served as an employee-user expert — helping teams design for USAA employees rather than external members, and ensuring their apps fit the workflows and usability needs of the internal servicing environment."
       ],
+      "collaboratorsLabel": "Partners",
       "collaborators": [
         "Core Conversant design",
         "Product teams",
         "Development teams",
-        "Outside design teams",
-        "MSR Labs",
-        "Accessibility team",
-        "Design system team"
+        "Embedded app teams",
+        "MSR Labs (research)",
+        "Accessibility partners",
+        "Design-system partners"
+      ]
+    },
+    "validation": {
+      "eyebrow": "Validation & Measurement",
+      "titleLead": "Connecting results to",
+      "titleHighlight": "specific decisions.",
+      "intro": [
+        "When testing data was available, I evaluated design decisions through current-state versus redesigned usability scores, representative confidence, task clarity, and qualitative feedback. The goal was to connect results to specific design decisions rather than simply claim that a redesign \"tested better.\"",
+        "For a complex enterprise platform, success was not only visual polish. It meant reducing confusion, improving confidence, supporting faster workflows, improving accessibility, and helping representatives complete complex servicing tasks with fewer unnecessary steps or workarounds."
       ],
-      "designSystemsTitle": "Design systems",
-      "designSystems": [
-        "Conversant had its own design system for native desktop experiences, but that system was inherited, undocumented in places, and not always applied consistently when I joined. Part of the work involved identifying reusable patterns, clarifying component behavior, and helping the product become more consistent over time.",
-        "Web apps loaded inside the center browser used the standard USAA design system because it was more robust for web-based application patterns. This created a dual design-system environment: native Conversant patterns needed to feel consistent with the desktop shell, while embedded web apps needed to align with broader USAA standards.",
-        "The design challenge was knowing when to use existing patterns, when to adapt them, and when to create new platform-specific guidance for the needs of employee users."
+      "questionsTitle": "Useful validation signals",
+      "questions": [
+        {
+          "n": "01",
+          "q": "Can representatives find the information they need during a live servicing task?"
+        },
+        {
+          "n": "02",
+          "q": "Can new employees understand the workflow without relying entirely on memorized paths?"
+        },
+        {
+          "n": "03",
+          "q": "Can veteran employees preserve or improve speed?"
+        },
+        {
+          "n": "04",
+          "q": "Do role-specific views reduce noise without hiding essential context?"
+        },
+        {
+          "n": "05",
+          "q": "Do phone and chat controls clearly communicate state, actions, and consequences?"
+        },
+        {
+          "n": "06",
+          "q": "Do users understand alerts and notifications at the moment they appear?"
+        },
+        {
+          "n": "07",
+          "q": "Do keyboard shortcuts reduce repeated friction for high-frequency actions?"
+        },
+        {
+          "n": "08",
+          "q": "Do embedded apps feel like part of Conversant rather than another disconnected tool?"
+        },
+        {
+          "n": "09",
+          "q": "Can development partners build the solution within real backend and timeline constraints?"
+        }
+      ]
+    },
+    "impact": {
+      "eyebrow": "Impact",
+      "titleLead": "Strengthening a complex",
+      "titleHighlight": "product ecosystem.",
+      "intro": [
+        "Conversant improved the servicing environment by creating a more unified workspace for member context, communication controls, notes, product information, and task-specific tools. The platform reduced the need for representatives to move constantly between disconnected systems and gave internal teams a shared frame for building employee-facing experiences.",
+        "The strongest impact story is not that Conversant made one screen cleaner. The stronger story is that the work improved a complex internal product ecosystem by strengthening workflows, reducing fragmentation, creating reusable patterns, and helping teams make better product decisions inside real enterprise constraints."
+      ],
+      "highlights": [
+        "A more unified servicing workspace for call center and back-office employees.",
+        "Reduced fragmentation across member data, product information, communication tools, and internal apps.",
+        "Clearer patterns for member tabs, member headers, panels, side rails, and information sections.",
+        "More flexible role-specific views through configuration and manager-controlled settings.",
+        "Improved support for nonlinear servicing workflows.",
+        "Improved research-driven decision-making for feature scope and direction.",
+        "Better alignment between design, product, development, accessibility, and business partners.",
+        "A migration path from fragmented legacy tools toward consistent Conversant-native experiences.",
+        "A strategic recommendation that avoided building a separate digital fax tool when improving an existing workflow was better."
       ],
       "demonstratesTitle": "What this project demonstrates",
       "demonstrates": [
-        "Conversant demonstrates my ability to design inside complexity. The project required platform thinking, enterprise UX judgment, research-led product strategy, systems-level consistency, and practical collaboration across product, engineering, accessibility, and research partners.",
-        "It also shows that impactful design is not always a blank-slate redesign. In mature enterprise systems, the most valuable work often comes from improving specific workflows, strengthening patterns, reducing inconsistency, and helping teams move faster without making the user experience more fragmented."
+        "Conversant demonstrates my ability to design inside complexity. The project required platform thinking, enterprise UX judgment, research-led product strategy, systems-level consistency, accessibility awareness, and practical collaboration across product, engineering, research, business, and design-system partners.",
+        "It also shows that impactful design is not always a blank-slate redesign. In mature enterprise systems, the most valuable work often comes from improving specific workflows, strengthening patterns, reducing inconsistency, and helping teams move faster without making the experience more fragmented.",
+        "The senior-level story is about judgment: knowing when to research, when to reuse patterns, when to create new component behavior, when to push for a stronger experience, when to accept implementation constraints, and when to recommend not building a new tool at all."
       ],
-      "confidentiality": "Because Conversant was an internal enterprise platform, sensitive details, member data, and internal workflows have been anonymized or recreated for public portfolio use."
+      "caseStudiesTitle": "Deeper case studies",
+      "caseStudies": [
+        {
+          "title": "Product Panel Redesign",
+          "question": "How might representatives quickly understand a member's product relationship and move into relevant servicing or acquisition workflows without overloading the workspace?"
+        },
+        {
+          "title": "Phone Tool Interactions",
+          "question": "How might phone controls support live conversations, multiple callers, agent states, wrap-up, and technical constraints without creating ambiguity?"
+        },
+        {
+          "title": "Agent State Management",
+          "question": "How might phone and chat states be represented consistently across contexts while helping representatives understand current state and next actions?"
+        },
+        {
+          "title": "Profile Alerts & Reason for Call",
+          "question": "How might important member context appear at the right moment without adding noise to an already dense workspace?"
+        },
+        {
+          "title": "Keyboard Shortcuts Strategy",
+          "question": "How might keyboard support improve speed for repeated-use expert workflows without adding unnecessary memorization burden?"
+        },
+        {
+          "title": "Component Library",
+          "question": "How might a mature internal platform become more consistent through shared patterns for tabs, headers, side panels, rails, and information sections?"
+        },
+        {
+          "title": "Digital Fax Workflow Strategy",
+          "question": "How might research reveal that the best solution is not a new product, but a better implementation strategy inside an existing workflow?"
+        }
+      ],
+      "confidentiality": "Because Conversant was an internal enterprise platform, sensitive details, member data, operational workflows, and proprietary design decisions have been anonymized or recreated for public portfolio use."
     },
     "footerCta": {
       "titleLead": "Want to talk about",
@@ -1197,23 +1440,26 @@
     "backToPortfolio": "Back to portfolio",
     "brand": "USAA Mobile App",
     "toc": [
-      "Context",
-      "Goals",
-      "Needs",
-      "Problem",
-      "Solution",
-      "Product challenge",
-      "Selected work",
-      "My role",
-      "Process & impact"
+      "Overview",
+      "Design Challenge",
+      "Discovery & Synthesis",
+      "Strategic Direction",
+      "Product System",
+      "Key Design Decisions",
+      "Execution",
+      "Validation",
+      "Impact"
     ],
     "hero": {
       "status": "USAA · Native mobile",
       "title": "USAA Mobile",
       "subtitle": "iOS, Android, and iPadOS redesign for USAA members",
-      "intro": "USAA Mobile was a three-year redesign of USAA's iOS, Android, and iPadOS apps — the primary digital access point for members to view accounts, manage policies, complete servicing actions, and receive automatically prioritized content. The work overhauled the app's information architecture, structure, and native interaction model while balancing platform conventions with USAA's brand presence.",
-      "roleIntro": "As a UX/UI Designer and Design Researcher, I worked across the full redesign — from research synthesis and product strategy to information architecture, interaction design, visual design, native platform patterns, and stakeholder communication. My work spanned the overall app organization, public and private homepage experiences, product cards, customization flows, iPadOS adaptation, loading states, and native design language exploration.",
-      "typeTags": ["Native mobile", "iOS · Android · iPadOS", "Information architecture", "Personalization"],
+      "typeTags": [
+        "Native mobile",
+        "iOS · Android · iPadOS",
+        "Information architecture",
+        "Personalization"
+      ],
       "roleLabel": "Role",
       "roleValue": "UX/UI design & design research",
       "platformLabel": "Platform",
@@ -1221,238 +1467,870 @@
       "surfaceLabel": "Users",
       "surfaceValue": "USAA members"
     },
-    "context": {
-      "eyebrow": "Context",
-      "titleLead": "A redesign",
-      "titleHighlight": "long overdue",
+    "overview": {
+      "eyebrow": "Overview",
+      "titleLead": "A multi-year redesign of",
+      "titleHighlight": "USAA Mobile.",
       "intro": [
-        "Besides minor updates, the USAA app had not been meaningfully redesigned since about 2007, even as member behavior was shifting toward mobile. Utilization of the app was rising quickly, app-only members were emerging, and mobile usage was overtaking the website, but the experience had not kept up with member expectations or business needs.",
-        "The old app was difficult to navigate, slow in terms of interaction and performance, and not structured around the information members needed most. It also underused USAA's understanding of individual member relationships. Product advertisements and advice were often irrelevant, which trained members to ignore content that could have been useful when presented with better timing and context.",
-        "At the same time, members still valued parts of the existing app. Quick access to servicing actions like transferring funds was useful, so the redesign could not simply discard everything. A critical part of the work was identifying what was already valuable and preserving that utility while rebuilding the surrounding structure."
+        "USAA Mobile was a multi-year redesign of USAA's iOS, Android, and iPadOS apps: the primary digital access point for members to view accounts, manage policies, complete servicing actions, receive personalized reminders, and discover relevant products and services.",
+        "I worked on the redesign as a UX/UI Designer and Design Researcher over a three-year effort. My role spanned research synthesis, product strategy, information architecture, interaction design, visual design, native platform patterns, design-system contribution, and stakeholder communication.",
+        "Although this was a large enterprise product with many teams involved, I worked across several core parts of the redesign: the overall app organization, the Home model, product cards, public and private homepage experiences, customization, iPadOS adaptation, loading states, native design language exploration, and synthesis of member feedback."
       ],
-      "calloutEyebrow": "The tension",
-      "calloutLead": "Rising mobile usage on an app that hadn't kept up — modernize without",
-      "calloutHighlight": "discarding what members already valued."
-    },
-    "goals": {
-      "eyebrow": "Goals",
-      "titleLead": "A simpler, more",
-      "titleHighlight": "modern app",
-      "intro": [
-        "The goal was to create a simpler, more modern app experience that helped members quickly understand and act on their relationship with USAA."
+      "productTypeLabel": "Product type",
+      "productTypeList": [
+        "Consumer mobile app",
+        "Financial services platform",
+        "Native iOS, Android & iPadOS redesign",
+        "Enterprise design-system & product architecture"
       ],
-      "designGoalsTitle": "Design goals",
-      "designGoals": [
-        "Give members top-level access to the accounts, policies, and products they owned.",
-        "Make common servicing actions easier to find and complete.",
-        "Reduce navigation confusion and avoidable call-center volume.",
-        "Align taxonomy, structure, and concepts across the app and website.",
-        "Use personalized content more effectively without creating banner blindness.",
-        "Support new product acquisition in a way that felt useful rather than intrusive.",
-        "Create native patterns that respected iOS, Android, and iPadOS conventions while expressing the USAA brand.",
-        "Build patterns that could scale across iOS, Android, and iPadOS as the design system matured."
-      ]
-    },
-    "needs": {
-      "eyebrow": "Needs",
-      "titleLead": "Balancing member",
-      "titleHighlight": "and business needs",
-      "intro": [
-        "The redesign had to balance direct member needs with business goals. Members needed fast access to balances, policies, account summaries, servicing actions, claims, search, chat, and personalized reminders. They also needed control over how their accounts and policies appeared, especially when they had many products, hidden accounts, custom names, or grouped financial relationships.",
-        "The business needed the app to support acquisition, engagement, personalized content, and cross-platform consistency, so marketing and recommendations could not disappear — but Home also could not become only a servicing dashboard. The experience had to align with the redesigned web app so members would not learn two different mental models, and it had to scale across iOS, Android, and iPadOS while USAA's design system was still being rebuilt. Leadership disagreement and executive pressure around prioritization and business visibility added another layer of complexity."
-      ],
-      "memberLabel": "Member needs",
-      "memberNeeds": [
-        "Account & policy balances",
-        "Common servicing actions",
-        "Account summaries",
-        "Acquiring new products",
-        "Syncing outside accounts",
-        "Search & chat",
-        "Custom names & arrangement",
-        "Personalized reminders"
-      ],
-      "businessLabel": "Business needs",
-      "businessNeeds": [
-        "Product acquisition",
-        "Engagement",
-        "Personalized content",
-        "Cross-platform consistency",
-        "Tasteful marketing"
-      ]
-    },
-    "problem": {
-      "eyebrow": "Problem",
-      "titleLead": "Trying to do too much",
-      "titleHighlight": "without structure",
-      "intro": [
-        "The old app was trying to do too much without a clear structure. Members had trouble finding basic account and policy information, navigation patterns increased reliance on call centers for avoidable servicing needs, personalized data was underused, and the rate of product acquisition in native was not keeping up with the broader shift toward mobile usage."
-      ],
-      "problemsTitle": "Where it broke down",
-      "problems": [
-        { "title": "Hard to find the basics", "desc": "Members had trouble finding basic account and policy information." },
-        { "title": "Avoidable call volume", "desc": "Navigation patterns increased reliance on call centers for avoidable servicing needs." },
-        { "title": "Underused personalization", "desc": "Personalized data was underused, so content often felt generic or irrelevant." },
-        { "title": "No single view of everything", "desc": "The structure did not fully support members who wanted to see everything they owned in one place." },
-        { "title": "Lagging native acquisition", "desc": "Native product acquisition was not keeping up with the broader shift toward mobile usage." }
-      ],
-      "closing": [
-        "The deeper design problem was not only visual modernization. It was helping members move through a complex financial relationship quickly, confidently, and with fewer unnecessary steps while still supporting business goals like acquisition, engagement, and personalized content."
-      ]
-    },
-    "solution": {
-      "eyebrow": "Solution",
-      "titleLead": "Home as the",
-      "titleHighlight": "center of gravity",
-      "intro": [
-        "The redesigned app centered the experience around Home as the member's primary place to understand and act on their relationship with USAA. Home organized owned products, common actions, acquisition opportunities, personalized reminders, and helpful content into a clearer structure.",
-        "We organized Home around product category cards for Banking, Insurance, Investing, and Advice & Services. Each card could contain related accounts, policies, actions, and product suggestions. This gave members a clearer model of their relationship with USAA while still giving the business a structured place for acquisition and engagement.",
-        "The broader app structure used a simple tab model: Home, Search, and Chat. Home carried the main product relationship and personalized content. Search gave members a direct path when they knew what they wanted. Chat created a persistent support path for help-oriented moments."
-      ],
-      "highlightsTitle": "The new Home model",
-      "highlights": [
-        { "title": "Product cards", "desc": "Banking, Insurance, Investing, and Advice & Services — each grouping related accounts, policies, actions, and suggestions." },
-        { "title": "Activity cards", "desc": "Timely, personalized content like upcoming bills and travel notices, prioritized by what's most likely to matter now." },
-        { "title": "Home · Search · Chat", "desc": "A simple three-tab model: Home for products and content, Search for direct paths, Chat for help-oriented moments." }
-      ],
-      "structureTitle": "System structure",
-      "structure": [
-        "The redesigned app used Home as the center of gravity. From Home, members could branch into lower-level account summaries, policy pages, the claims center, servicing flows, modals, and personalized content experiences.",
-        "Product cards provided a flexible structure for owned products, related actions, and product suggestions. Activity cards provided a separate pattern for timely, personalized content. Together, these patterns helped separate \"my stuff,\" \"things I can do,\" and \"things USAA thinks may matter now.\"",
-        "This separation was important because the old app blurred too many content types together. By giving each type of content a more specific role, the experience could be more predictable for members and more scalable for future business needs."
-      ],
-      "contentRoles": [
-        { "title": "My stuff", "desc": "Accounts, policies, and products the member owns." },
-        { "title": "Things I can do", "desc": "Servicing actions like transfers and deposits, near the products they relate to." },
-        { "title": "What may matter now", "desc": "Prioritized, personalized reminders and relevant suggestions." }
+      "roleTitle": "My role",
+      "roleList": [
+        "UX/UI Designer & Design Researcher",
+        "Research synthesis",
+        "Information architecture",
+        "Interaction design",
+        "Visual design",
+        "Native mobile pattern exploration",
+        "Design-system contribution",
+        "Stakeholder & executive communication",
+        "Developer handoff support"
       ]
     },
     "challenge": {
-      "eyebrow": "Product challenge",
-      "titleLead": "Equal access vs.",
-      "titleHighlight": "prioritization",
+      "eyebrow": "Design Challenge",
+      "titleLead": "Help members act on a complex",
+      "titleHighlight": "financial relationship.",
+      "hmwLabel": "The challenge",
+      "hmwLead": "How might we redesign a large, legacy financial app so members can quickly understand and act on their relationship with USAA —",
+      "hmwHighlight": "while still supporting acquisition, personalization, servicing, platform conventions, and enterprise constraints?",
       "intro": [
-        "The sharpest product tension was equal access versus prioritization.",
-        "Members had a wide variety of relationships with USAA, from a few accounts or policies to dozens of products, plus hidden accounts, groups, custom names, and aggregated accounts. The team explored several approaches for simplifying the first level of Home, including showing only a selection of accounts, placing the rest on a deeper page, expanding cards to view more, and showing everything by default."
+        "The challenge was not only to modernize the interface. The app had to help members move through a complex financial relationship with fewer unnecessary steps. A single member might have no products, a few products, or dozens of bank accounts, insurance policies, investments, external accounts, groups, hidden products, custom names, and balance-visibility preferences.",
+        "At the same time, USAA had business goals around product acquisition, personalized content, and cross-platform consistency. The redesign needed to reduce friction without turning Home into a generic dashboard that ignored business needs, marketing requirements, support paths, and future app experiences."
       ],
-      "approachesTitle": "Directions we explored",
-      "approaches": [
-        { "title": "Selection + deeper page", "desc": "Show only a selection of accounts on the first level, with everything else on a deeper page." },
-        { "title": "Expandable cards", "desc": "Let cards expand so members could view more without leaving Home." },
-        { "title": "Everything exposed", "desc": "The more controversial direction: expose everything by default on the first level of Home." }
-      ],
-      "closing": [
-        "Member feedback and testing showed that members preferred seeing all of their products in one place. Data and business reasoning also reduced concern that full product visibility would crowd out marketing or other business content, because most members had relatively few accounts.",
-        "The final direction created a clearer, more member-centered structure while still supporting acquisition, personalization, and engagement. It also simplified the integration of customization features, because the app could treat Home as the main place where members organized and accessed their products."
+      "contextTitle": "Context: a redesign long overdue",
+      "context": [
+        "The USAA app had not been meaningfully redesigned since around 2007, even as member behavior was shifting toward mobile. App usage was rising quickly, app-only members were emerging, and the mobile experience was increasingly becoming the primary way members interacted with USAA.",
+        "The legacy experience had several problems. Navigation was difficult, interaction and performance felt slow, product and policy information was not always easy to access, and member data was underused. Product advertisements and advice could feel irrelevant, which trained members to ignore content that might have been useful if it had appeared with better timing and context.",
+        "The existing app was not all bad. Members valued quick access to common servicing actions, such as transferring funds. A critical part of the redesign was identifying what still worked and preserving that utility while rebuilding the structure around clearer member needs."
       ]
     },
-    "selectedWork": {
-      "eyebrow": "Selected work",
-      "titleLead": "Where I worked",
-      "titleHighlight": "in the details",
+    "discovery": {
+      "eyebrow": "Discovery & Synthesis",
+      "titleLead": "What the",
+      "titleHighlight": "research surfaced.",
       "intro": [
-        "Four areas where I worked through the structure and details of the redesign — each of which could stand on its own as a deeper case study."
+        "The redesign was informed by app analytics, existing member feedback, usability testing, comparative testing, member interviews, competitive analysis, and heuristic review of the legacy app. The research and synthesis pointed to a few major patterns."
       ],
-      "features": [
+      "insights": [
         {
-          "title": "Organization and interaction model",
-          "desc": [
-            "We incorporated concepts and structures from the redesigned web homepage to create better alignment across platforms. This helped members build a more consistent mental model whether they were using the website or native app.",
-            "The app's top-level structure became Home, Search, and Chat. Home carried the main product relationship and personalized content. Search gave members a direct path when they knew what they wanted. Chat created a persistent support path for help-oriented moments.",
-            "This structure reduced the need for deep navigation and helped the app behave more like a task-oriented native experience."
-          ],
-          "bullets": []
+          "title": "Members wanted top-level access to what they owned",
+          "desc": "The strongest recurring need was simple: members wanted to see their accounts, policies, and products in one place without hunting through a confusing structure."
         },
         {
-          "title": "Home and product-card model",
-          "desc": [
-            "Home organized the member experience into product cards and activity cards.",
-            "Product cards grouped Banking, Insurance, Investing, and Advice & Services. These cards gave members a place to view accounts and policies, take related actions, and discover relevant product suggestions. Actions such as transferring funds or depositing money could live near the products they related to instead of being buried elsewhere.",
-            "Activity cards handled personalized reminders and relationship-based content, such as upcoming bills or travel notices. This helped create a more useful form of personalization because content appeared as part of the member's current context instead of as disconnected advertising."
-          ],
-          "bullets": []
+          "title": "Navigation friction created avoidable support needs",
+          "desc": "When members could not find basic information or common actions, they were more likely to rely on support channels for tasks the app should have made easier."
         },
         {
-          "title": "Customization",
-          "desc": [
-            "A major part of the work was integrating existing customization capabilities into the redesigned app. The customization experience needed to feel modern on native platforms while supporting a complex set of behaviors.",
-            "This work required interaction analysis because customization could easily conflict with the new Home structure. The goal was to give members control without making the main product experience harder to understand."
-          ],
-          "bullets": [
-            "Choosing where the customization entry point belonged on Home.",
-            "Determining the right view type for customization.",
-            "Rationalizing multiple isolated tools versus one unified experience.",
-            "Reordering accounts, policies, groups, and entire product categories.",
-            "Renaming accounts or policies.",
-            "Creating, deleting, and adding products to groups.",
-            "Hiding products and balances.",
-            "Migrating \"view all\" and \"show hidden\" into a cleaner interaction model."
-          ]
+          "title": "Personalization had potential, but poor relevance created banner blindness",
+          "desc": "USAA had meaningful member context, but poorly timed or irrelevant marketing and advice reduced trust in the content area. The opportunity was to make personalized content feel more like service and less like interruption."
         },
         {
-          "title": "iPadOS adaptation",
-          "desc": [
-            "After the core mobile app structure was defined, iPadOS introduced a new design challenge. The app needed a system of structures, view types, and interactions that made better use of the larger platform while still connecting back to the broader USAA Mobile model.",
-            "This work helped extend the app from a phone-first experience into a flexible native ecosystem spanning split view, fullscreen behavior, modal patterns, and simple column-width rules."
-          ],
-          "bullets": [
-            "A tab bar organization.",
-            "Split-view layout for Home.",
-            "Support for full-screen experiences.",
-            "SwiftUI-style modals.",
-            "Persistent full-screen controls across the navigation stack.",
-            "Compatibility with back navigation.",
-            "Column-width rules for a strong experience without complex logic."
-          ]
+          "title": "Mobile and web needed a shared mental model",
+          "desc": "Members should not have to learn one structure on the website and another in the app. The redesign needed to align taxonomy, concepts, and member relationship models across platforms while still respecting native conventions."
+        },
+        {
+          "title": "Member complexity needed flexible rules, not one-off screens",
+          "desc": "The app had to support members with very different product mixes: banking, insurance, investments, advice and services, external accounts, hidden accounts, groups, asset and liability totals, and custom organization preferences."
+        },
+        {
+          "title": "Native design had to balance platform conventions with brand expression",
+          "desc": "The app needed to feel modern and native on iOS, Android, and iPadOS, while still expressing USAA's brand and contributing to a broader native design language."
+        }
+      ],
+      "responsesTitle": "From insight to product response",
+      "responses": [
+        {
+          "insight": "Members wanted to see everything they owned in one place.",
+          "requirement": "Make the member relationship visible at the top level.",
+          "response": "A Home model centered on product cards for Banking, Insurance, Investing, and Advice & Services."
+        },
+        {
+          "insight": "Navigation confusion increased friction and avoidable support needs.",
+          "requirement": "Simplify the first-level structure and create clear routes for known tasks and help-seeking moments.",
+          "response": "A simplified tab model around Home, Search, and Chat, with Home acting as the center of gravity."
+        },
+        {
+          "insight": "The app needed to support both servicing and acquisition.",
+          "requirement": "Give members immediate access to owned products and actions while creating structured spaces for relevant product discovery.",
+          "response": "Product cards that combined accounts, policies, servicing actions, product suggestions, and acquisition entry points."
+        },
+        {
+          "insight": "Personalized content was easy to ignore when it felt generic.",
+          "requirement": "Make reminders, advice, and marketing more contextual.",
+          "response": "Activity cards for relevant moments such as upcoming bills, active claims, travel notices, and other member-specific prompts."
+        },
+        {
+          "insight": "Member product relationships were highly variable.",
+          "requirement": "Create flexible rules for long product lists, custom names, groups, hidden products, and balance visibility.",
+          "response": "A product-card system paired with a single Customize experience for renaming, hiding, grouping, and reordering."
+        },
+        {
+          "insight": "Tablet behavior could not simply stretch the phone app.",
+          "requirement": "Adapt the system to iPadOS interaction patterns.",
+          "response": "A split-view structure, persistent fullscreen behavior, platform-specific modal patterns, and simple column-width rules."
         }
       ]
     },
-    "role": {
-      "eyebrow": "My role",
-      "titleLead": "Shaping the model",
-      "titleHighlight": "and the details",
+    "strategy": {
+      "eyebrow": "Strategic Direction",
+      "titleLead": "Home as the member's",
+      "titleHighlight": "relationship hub.",
       "intro": [
-        "Over the three-year effort, I worked across the full USAA Mobile redesign rather than owning only one feature. As a UX/UI Designer and Design Researcher, I contributed to research synthesis, product strategy, information architecture, interaction design, visual design, native platform patterns, and stakeholder communication."
+        "The strategic direction was to make Home the member's relationship hub: a place where members could see what they owned, act on common needs, discover relevant next steps, and receive timely reminders.",
+        "Home was not treated as a marketing surface, a product list, or a generic dashboard alone. It had to be all of these in the right balance. The redesign organized Home around owned products first, then layered in actions, acquisition, activity cards, reminders, and support paths.",
+        "This strategy also let the app align with the redesigned Member Home Web experience. The goal was not to make mobile and web identical, but to make them conceptually familiar — the same member relationship model across platforms, while native app patterns shaped the interaction details."
       ],
-      "workLabel": "My work included",
-      "work": [
-        "Defining the app's organization and interaction model.",
-        "Designing Home concepts, product cards, activity-card logic, and destination patterns.",
-        "Translating customization features from Member Home Web and the legacy app into modern native patterns.",
-        "Working through platform-specific behavior for iOS, Android, and iPadOS.",
-        "Designing and evaluating loading states.",
-        "Communicating across multiple design teams, business partners, development partners, and executive stakeholders."
+      "quoteLead": "“Home had to be a product list, an action center, a personalization surface, and an acquisition space —",
+      "quoteHighlight": "all in the right balance.”"
+    },
+    "productSystem": {
+      "eyebrow": "Product System",
+      "titleLead": "Not one screen — a",
+      "titleHighlight": "system of flows.",
+      "intro": [
+        "The redesigned app was not one screen. It was a system of related flows that had to support different member needs while staying understandable at the first level."
       ],
-      "closing": "This work also influenced how USAA could embrace native platform conventions while developing a new native design language."
+      "models": [
+        {
+          "title": "Core app structure",
+          "flow": "Home → Search → Chat",
+          "desc": "A simple first-level organization. Home supported the member relationship and contextual content. Search supported direct navigation when members knew what they wanted. Chat provided a persistent support path for help-oriented moments."
+        },
+        {
+          "title": "Member relationship model",
+          "flow": "Home → Product card → Account or policy → Summary page",
+          "desc": "Home organized member-owned products into cards for Banking, Insurance, Investing, and Advice & Services. Tapping an account or policy led to a summary experience, creating a clear path from top-level overview to product detail."
+        },
+        {
+          "title": "Servicing model",
+          "flow": "Product card or summary → Action → Modal sheet or destination",
+          "desc": "Common actions such as Transfer, Pay Bills, Deposit, and Send were surfaced near the related product context. Many focused servicing actions used modal sheets to preserve a lightweight native feel while keeping members oriented."
+        },
+        {
+          "title": "Acquisition & connection model",
+          "flow": "Product card → Add account / Get quote → Menu or modal → Product path",
+          "desc": "The same product-card structure gave USAA a place for acquisition and external account connection without forcing generic marketing into unrelated areas. The challenge was making product discovery feel contextual rather than intrusive."
+        },
+        {
+          "title": "Personalized activity model",
+          "flow": "Member context → Activity card → Reminder, task, or next step",
+          "desc": "Activity cards created a place for personalized content such as upcoming bills, active claims, and travel notices. These cards helped shift personalization from generic promotion toward timely assistance."
+        },
+        {
+          "title": "Customization model",
+          "flow": "Home → Edit → Customize → Rename, hide, group, reorder → Done",
+          "desc": "Customization translated existing web and legacy-app functionality into modern native patterns. Members could rename accounts or policies, hide products or balances, create groups, reorder products, move items between groups, and rearrange entire sections."
+        },
+        {
+          "title": "iPadOS model",
+          "flow": "Home split view → Summary → Fullscreen toggle / back navigation",
+          "desc": "The iPadOS adaptation created a structure that could support Home and detail views at the same level. A persistent fullscreen toggle solved a legacy interaction problem by letting members move in and out of fullscreen even after navigating deeper."
+        }
+      ],
+      "closing": [
+        "The system needed to preserve simplicity at the first level while still scaling to a large number of products, actions, account states, support paths, acquisition needs, and platform-specific interaction patterns."
+      ]
+    },
+    "decisions": {
+      "eyebrow": "Key Design Decisions",
+      "titleLead": "Disciplined",
+      "titleHighlight": "tradeoffs.",
+      "intro": [
+        "The strongest solution was rarely the cleanest screen or the most minimal first level. Each decision balanced member expectations, business goals, existing behaviors, and platform constraints."
+      ],
+      "items": [
+        {
+          "n": "01",
+          "title": "Make Home the center of the app",
+          "desc": "Home became the primary place where members could understand their relationship with USAA — combining owned products, common actions, activity cards, acquisition paths, and personalized content.",
+          "tradeoff": "Home risked becoming overloaded. The answer wasn't to remove complexity but to organize it into clearer zones and cards members could parse quickly."
+        },
+        {
+          "n": "02",
+          "title": "Show member-owned products at the top level",
+          "desc": "The team explored showing only a selection of accounts, placing the rest on a deeper page, adding expand/collapse, and showing all products by default.",
+          "tradeoff": "Showing everything could make Home longer for members with many products. Research and business reasoning supported full visibility: members preferred seeing all products in one place, and most had relatively few accounts."
+        },
+        {
+          "n": "03",
+          "title": "Use product cards as a flexible container",
+          "desc": "Product cards let Banking, Insurance, Investing, and Advice & Services share a common model while supporting different content types, actions, states, and suggestions.",
+          "tradeoff": "A shared card model had to avoid becoming too generic — enough consistency to feel predictable, enough flexibility to support very different product categories."
+        },
+        {
+          "n": "04",
+          "title": "Balance servicing and acquisition",
+          "desc": "Members came to complete tasks and understand their accounts, but the business also needed to support product discovery and engagement.",
+          "tradeoff": "Too much marketing would create banner blindness; too little would weaken the business value. The answer was acquisition entry points in product-relevant contexts and personalized content that felt timely."
+        },
+        {
+          "n": "05",
+          "title": "Use modal sheets for focused native tasks",
+          "desc": "Servicing actions and acquisition menus often fit modal sheets well because they were focused, temporary, and task-oriented.",
+          "tradeoff": "Not every experience belonged in a modal. Complex areas like Profile were better suited to navigation views — requiring a view-type strategy rather than one pattern."
+        },
+        {
+          "n": "06",
+          "title": "Create one Customize experience, not many editors",
+          "desc": "Customization involved many related actions: rename, hide, hide balances, reorder, group, ungroup, and move items between sections. A single Customize space unified them.",
+          "tradeoff": "One shared experience increased the need for clear structure and rules, but let members manage their full relationship in one place rather than learning separate editing patterns per card."
+        },
+        {
+          "n": "07",
+          "title": "Respect native conventions while shaping a new design language",
+          "desc": "The app needed to feel native on iOS, Android, and iPadOS while USAA evolved its broader visual and interaction language.",
+          "tradeoff": "Over-customization could feel less native or harder to build; over-reliance on defaults could weaken brand and consistency. The redesign defined a middle path: native behavior with a recognizable USAA system."
+        },
+        {
+          "n": "08",
+          "title": "Treat iPadOS as an adaptation, not a resize",
+          "desc": "The iPad version needed a structure that made better use of screen space while supporting Home, summaries, Search, Chat, Profile, transfer, and other flows.",
+          "tradeoff": "The team explored custom patterns but leaned into familiar iPad conventions like split view and SwiftUI-style modals — easier to understand, scale, and build."
+        }
+      ]
+    },
+    "execution": {
+      "eyebrow": "Execution & Collaboration",
+      "titleLead": "Across teams, constraints,",
+      "titleHighlight": "and platforms.",
+      "intro": [
+        "The project required collaboration across multiple design teams, business partners, developers, and executives. My contribution spanned research framing through native execution."
+      ],
+      "blocks": [
+        {
+          "title": "Research synthesis & problem framing",
+          "desc": "I helped synthesize years of member feedback, app analytics, usability findings, competitive patterns, and legacy-app pain points into a clearer direction: members needed faster access to owned products, better servicing paths, and more useful personalized content."
+        },
+        {
+          "title": "Information architecture & app structure",
+          "desc": "I contributed to the app's overall organization, including the Home, Search, and Chat model; destination patterns for account and policy summaries; and the role of modal sheets versus navigation views."
+        },
+        {
+          "title": "Home & product-card design",
+          "desc": "I worked on the Home model and product-card system, including how Banking, Insurance, Investing, and Advice & Services could organize owned products, common actions, product suggestions, and contextual member content."
+        },
+        {
+          "title": "Customization flows",
+          "desc": "I worked through how existing customization functionality could translate into a modern native experience — entry points, view types, renaming, hiding products and balances, grouping, reordering, and returning members to Home."
+        },
+        {
+          "title": "iPadOS adaptation",
+          "desc": "I contributed to the tablet adaptation, including split-view behavior, fullscreen interactions, modal decisions, and layout rules that could scale across iPad sizes."
+        },
+        {
+          "title": "Design-system & native language contribution",
+          "desc": "The redesign helped shape USAA's native design language. In many cases we weren't simply applying finished components — we were defining patterns and components other teams could later reuse."
+        },
+        {
+          "title": "Stakeholder communication",
+          "desc": "A major part of the work was explaining tradeoffs, aligning teams around member evidence, and balancing competing priorities without losing the core product direction."
+        }
+      ]
+    },
+    "validation": {
+      "eyebrow": "Validation & Measurement",
+      "titleLead": "Grounded in",
+      "titleHighlight": "member evidence.",
+      "intro": [
+        "The redesign was supported by both existing evidence and validation during the design process. Key signals included member preference for seeing all products in one place, reduced navigation confusion in comparative testing, and clearer understanding of the redesigned Home structure.",
+        "For a public portfolio version, exact performance numbers remain confidential, but the measurement story can still be framed around the right success signals."
+      ],
+      "inputsLabel": "Research & validation inputs",
+      "inputs": [
+        "App analytics",
+        "Existing member feedback",
+        "Usability testing",
+        "Comparative testing",
+        "Member interviews",
+        "Competitive analysis",
+        "Heuristic review"
+      ],
+      "questionsTitle": "Success signals",
+      "questions": [
+        {
+          "n": "01",
+          "q": "Can members find accounts and policies faster?"
+        },
+        {
+          "n": "02",
+          "q": "Can members complete common servicing tasks with fewer steps?"
+        },
+        {
+          "n": "03",
+          "q": "Does the redesigned Home reduce navigation confusion?"
+        },
+        {
+          "n": "04",
+          "q": "Do members use Search and Chat as intentional support paths rather than recovery from poor navigation?"
+        },
+        {
+          "n": "05",
+          "q": "Does contextual content perform better than generic promotional content?"
+        },
+        {
+          "n": "06",
+          "q": "Do product-card acquisition paths drive engagement without increasing banner blindness?"
+        },
+        {
+          "n": "07",
+          "q": "Do members understand and use customization features?"
+        },
+        {
+          "n": "08",
+          "q": "Does the iPadOS structure improve navigation and multitasking versus the legacy model?"
+        },
+        {
+          "n": "09",
+          "q": "Can the design system support other teams more efficiently after the redesign?"
+        }
+      ]
     },
     "impact": {
-      "eyebrow": "Process & impact",
-      "titleLead": "Tradeoffs, alignment",
-      "titleHighlight": "and outcomes",
-      "processTitle": "Process & collaboration",
-      "process": [
-        "The work required alignment across a large product organization. Multiple design teams were involved, and the project included conflicting viewpoints from business and development partners as well as direct executive involvement.",
-        "The process included understanding member feedback and data, identifying what was working in the old app, defining member needs and business goals, exploring competing structures, reviewing technical constraints, and iterating toward a model that could scale.",
-        "This was also a communication challenge. Because the redesign touched major parts of the app and overlapped with web strategy, design language, business goals, and technical implementation, success depended on making tradeoffs visible and helping stakeholders understand why the chosen model served both members and the business."
+      "eyebrow": "Impact",
+      "titleLead": "Beyond a",
+      "titleHighlight": "redesigned app.",
+      "intro": [
+        "The final shipped app reflected several of the project's major design decisions, including the Home structure, product-card model, customization patterns, native interaction direction, and iPadOS adaptation.",
+        "The work also influenced USAA beyond the mobile app itself. The redesigned app helped establish patterns for USAA's broader native design language, and many components and interaction models contributed to the design-system overhaul.",
+        "The strongest story is not simply that the app was redesigned. It's that the work shows how to simplify a large consumer-facing product while respecting business complexity, technical constraints, member evidence, platform conventions, and enterprise collaboration."
       ],
-      "measuringTitle": "Research & validation",
-      "measuring": [
-        "The redesign was informed by usability testing, comparative testing, member interviews, app analytics, existing member feedback, competitive analysis, and a heuristic review of the legacy app. App analytics and existing feedback helped identify pain points in the current experience, while interviews and testing helped validate which new structures were easier for members to understand and use.",
-        "Usability testing showed that members preferred seeing all of their USAA products on Home rather than only a partial or prioritized set at the top level. Comparative testing also showed that the redesigned structure reduced navigation confusion, giving the team evidence that the new model made it easier for members to move through the app."
-      ],
-      "demonstratesTitle": "Impact & what it demonstrates",
+      "demonstratesTitle": "What this project demonstrates",
       "demonstrates": [
-        "The final shipped app reflected our major design decisions, including the Home structure, product-card model, customization patterns, iOS and Android interaction direction, and iPadOS adaptation.",
-        "The work also had influence beyond USAA Mobile. Our designs served as a foundation for USAA's broader native design language, and many of the components we created were added directly into the USAA design system overhaul.",
-        "USAA Mobile demonstrates my ability to simplify a large consumer-facing product without ignoring business complexity. The work required research synthesis, platform thinking, native mobile interaction design, cross-platform taxonomy alignment, personalization strategy, product-card information architecture, design-system contribution, and collaboration across a complex enterprise environment.",
-        "It also shows how product design often depends on disciplined tradeoffs. The strongest solution was not the cleanest screen or the most minimal first level — it was the structure that best matched member expectations, supported business needs, preserved valuable existing behaviors, and created a scalable foundation for future app experiences."
+        "USAA Mobile demonstrates my ability to work inside a large, constrained, compliance-heavy enterprise environment while still thinking like a product designer. The work required connecting research, IA, interaction design, platform strategy, design systems, business priorities, and stakeholder alignment.",
+        "It also shows disciplined product judgment. The strongest solution was the structure that matched member expectations, supported business goals, preserved valuable existing behaviors, scaled across platforms, and gave future teams a reusable foundation."
       ],
-      "confidentiality": "Because this work involved USAA's internal product strategy, member data, and unreleased or proprietary design decisions, sensitive details and visuals have been anonymized or recreated for public portfolio use."
+      "caseStudiesTitle": "Deeper case studies",
+      "caseStudies": [
+        {
+          "title": "Home & Product-Card Model",
+          "question": "How might Home organize owned products, actions, acquisition, activity cards, and personalization without becoming overwhelming?"
+        },
+        {
+          "title": "Equal Access vs. Prioritization",
+          "question": "How might the team decide whether to show all member products at the first level or prioritize only a subset?"
+        },
+        {
+          "title": "Organization & Interaction Model",
+          "question": "How might Home, Search, Chat, account summaries, servicing actions, acquisition menus, Profile, and modal sheets fit into one app structure?"
+        },
+        {
+          "title": "Customization",
+          "question": "How might customization from Member Home Web and the legacy app translate into a modern native experience?"
+        },
+        {
+          "title": "iPadOS Adaptation",
+          "question": "How might a phone-first financial app become a tablet-optimized system with split view, fullscreen behavior, modal patterns, and simple layout rules?"
+        },
+        {
+          "title": "Design-System Contribution",
+          "question": "How might a major app redesign help define reusable native patterns for the broader organization?"
+        }
+      ],
+      "confidentiality": "Because this work involved USAA's internal product strategy, member data, and proprietary design decisions, sensitive details and visuals have been anonymized or recreated for public portfolio use."
     },
     "footerCta": {
       "titleLead": "Want to talk about",
       "titleHighlight": "USAA Mobile",
       "titleRest": "or native mobile design?",
+      "getInTouch": "Get in Touch",
+      "backToProjects": "Back to Projects"
+    }
+  },
+  "memberHome": {
+    "backToPortfolio": "Back to portfolio",
+    "brand": "USAA Member Home",
+    "toc": [
+      "Overview",
+      "Design Challenge",
+      "Discovery & Synthesis",
+      "Strategic Direction",
+      "Product System",
+      "Key Design Decisions",
+      "Execution",
+      "Validation",
+      "Impact"
+    ],
+    "hero": {
+      "status": "USAA · Authenticated web",
+      "title": "Member Home",
+      "subtitle": "Authenticated homepage redesign for USAA members",
+      "typeTags": [
+        "Responsive web",
+        "Information architecture",
+        "Personalization",
+        "Design system"
+      ],
+      "roleLabel": "Role",
+      "roleValue": "UX/UI & interaction design",
+      "platformLabel": "Platform",
+      "platformValue": "Responsive web (authenticated)",
+      "surfaceLabel": "Users",
+      "surfaceValue": "USAA members"
+    },
+    "overview": {
+      "eyebrow": "Overview",
+      "titleLead": "USAA's authenticated",
+      "titleHighlight": "homepage.",
+      "intro": [
+        "Member Home was USAA's authenticated homepage: the first page members saw after signing in to view accounts, manage policies, complete common servicing actions, track activity, and discover relevant products and services.",
+        "I contributed to the redesign as a UX/UI Designer, working across research synthesis, product strategy, information architecture, interaction design, visual design, design-system contribution, implementation detail, and stakeholder collaboration. The work transformed a cluttered legacy homepage into a scalable product system built around what members own, what needs attention, and what they can do next.",
+        "This was not only a visual refresh. Member Home had accumulated years of business requests, product-line complexity, legacy interaction patterns, and underperforming content. The redesign required a stronger page strategy, clearer governance, reusable component behavior, and a more disciplined way to balance member needs with business priorities."
+      ],
+      "productTypeLabel": "Product type",
+      "productTypeList": [
+        "Authenticated web experience",
+        "Financial services homepage",
+        "Enterprise product system",
+        "Responsive web redesign",
+        "Design-system contribution"
+      ],
+      "roleTitle": "My role",
+      "roleList": [
+        "UX/UI design",
+        "Interaction design",
+        "Research synthesis",
+        "Information architecture",
+        "Product strategy contribution",
+        "Design-system alignment & component extension",
+        "Activity card design",
+        "Account & policy card exploration",
+        "Customize mode interactions",
+        "Developer-ready component details",
+        "Custom icon design",
+        "Stakeholder & business partner collaboration"
+      ],
+      "statsLabel": "Scale & impact",
+      "stats": [
+        {
+          "value": "~6M",
+          "label": "members in early rollout (≈ half of USAA)"
+        },
+        {
+          "value": "4.3×",
+          "label": "increase in marketing click-through"
+        },
+        {
+          "value": "2.4×",
+          "label": "increase in quote starts"
+        }
+      ]
+    },
+    "challenge": {
+      "eyebrow": "Design Challenge",
+      "titleLead": "A high-traffic homepage that couldn't become a",
+      "titleHighlight": "dumping ground.",
+      "hmwLabel": "The challenge",
+      "hmwLead": "How might we redesign a high-traffic authenticated homepage so members can quickly understand their relationship with USAA, act on timely needs, and find relevant products —",
+      "hmwHighlight": "without letting the page become a dumping ground for every business priority?",
+      "intro": [
+        "The previous Member Home mixed accounts, policies, marketing, servicing actions, status updates, and legacy content without a strong organizing model. Members had to scan unrelated information to understand what they owned, what needed attention, and where they could act.",
+        "The deeper challenge was governance. A homepage like this carries pressure from every line of business — each team has something to promote, surface, or maintain. The redesign needed a decision system for what belonged on Member Home, what should move deeper, and how the page could stay useful over time."
+      ],
+      "contextTitle": "Context: a redesign long overdue",
+      "context": [
+        "Member Home had not meaningfully evolved in years. It was one of USAA's most important authenticated surfaces, but it was weighed down by difficult navigation, irrelevant information, cluttered marketing, low content engagement, limited responsive behavior, and slow technical performance.",
+        "The page also had to support many member situations at once: checking balances, viewing insurance policies, paying bills, transferring funds, reviewing claims, continuing applications, managing external accounts, finding products, and customizing account visibility.",
+        "The redesign had to preserve what was useful while removing or restructuring what created noise. The work was not about simplifying by stripping everything away — it was about simplifying with purpose: keeping what helped members understand, decide, or act."
+      ]
+    },
+    "discovery": {
+      "eyebrow": "Discovery & Synthesis",
+      "titleLead": "What the",
+      "titleHighlight": "research surfaced.",
+      "intro": [
+        "The team started by understanding the existing page: what members used, what they ignored, where they struggled, and what business partners needed it to support. Research and synthesis spanned member feedback, usage data, stakeholder input, IA exploration, co-design interviews, qualitative and quantitative testing, and analysis of current page elements."
+      ],
+      "insights": [
+        {
+          "title": "Members needed a clearer way to understand their relationship with USAA",
+          "desc": "The page had to make owned accounts, policies, and products easier to scan, organize, and act on."
+        },
+        {
+          "title": "The page had too much undifferentiated content",
+          "desc": "Many elements competed for attention without a clear hierarchy. Some had low utilization or negative feedback — a sign of poor implementation or limited underlying value."
+        },
+        {
+          "title": "Business priorities needed structure, not unlimited space",
+          "desc": "Marketing and acquisition couldn't simply be removed, but they needed to appear in ways that felt relevant, contextual, and respectful of the member's task."
+        },
+        {
+          "title": "Personalization had to feel helpful, not intrusive",
+          "desc": "USAA could surface timely content, but the value depended on relevance, timing, and clarity."
+        },
+        {
+          "title": "The experience needed a durable organizing model",
+          "desc": "The redesign couldn't depend on one-off layout decisions. It needed a system that could scale across products, activity, marketing, servicing actions, responsive breakpoints, and future content requests."
+        },
+        {
+          "title": "Design-system constraints were part of the product problem",
+          "desc": "The design language system was evolving, so the team worked with existing components while extending or creating new component behavior where the experience required it."
+        }
+      ],
+      "responsesTitle": "From insight to product response",
+      "responses": [
+        {
+          "insight": "Members needed to quickly understand what they owned.",
+          "requirement": "Make the member's relationship with USAA visible and scannable.",
+          "response": "A Products section organized around durable categories: Banking, Insurance, Investments, and Advice & Services."
+        },
+        {
+          "insight": "The homepage was overloaded with competing priorities.",
+          "requirement": "Create a clear content model and governance standard.",
+          "response": "A decision framework around whether content helped members understand, decide, or act."
+        },
+        {
+          "insight": "Timely tasks and updates were buried or scattered.",
+          "requirement": "Surface relevant activity at the moment it mattered.",
+          "response": "A prioritized Activity feed for claims updates, bill reminders, recent transactions, credit score content, tax reminders, and other contextual prompts."
+        },
+        {
+          "insight": "Servicing actions needed to be easier to find but not generic.",
+          "requirement": "Show actions only when relevant to the member's products.",
+          "response": "Contextual servicing actions within product categories, such as Transfer, Pay Bills, Auto Proof, Claims, Auto Invest, and Buy/Sell."
+        },
+        {
+          "insight": "Product acquisition needed to support the business without feeling intrusive.",
+          "requirement": "Integrate acquisition into the member's existing relationship context.",
+          "response": "Contextual product acquisition inside product categories, replacing broad mega-menu behavior with focused entry points."
+        },
+        {
+          "insight": "Marketing was being ignored when it felt irrelevant.",
+          "requirement": "Make marketing fewer, more relevant, and visually connected to the product relationship.",
+          "response": "Product-adjacent marketing cards designed to feel like they could become owned products."
+        },
+        {
+          "insight": "Existing customization features had value but were difficult to use.",
+          "requirement": "Preserve member control while simplifying the interaction model.",
+          "response": "A redesigned Customize mode for reordering, hiding, grouping, renaming, switching views, and temporarily showing hidden accounts or policies."
+        },
+        {
+          "insight": "External account aggregation created confusing states.",
+          "requirement": "Clarify third-party error, sign-in, and loading scenarios.",
+          "response": "Fifteen inherited scenarios organized into nine logical groups with clearer messages, treatments, and resolution paths."
+        }
+      ]
+    },
+    "strategy": {
+      "eyebrow": "Strategic Direction",
+      "titleLead": "From cluttered landing page to",
+      "titleHighlight": "relationship hub.",
+      "intro": [
+        "The strategic direction was to turn Member Home from a cluttered landing page into a relationship hub, organized around a simple mental model.",
+        "The Products section helped members understand and manage their relationship with USAA. The Activity feed surfaced timely information and next steps. Contextual actions and acquisition paths helped members act without turning the page into a generic shortcut directory or a marketing page.",
+        "The strategy also created a governance principle: new content or capabilities had to earn their place by helping members understand, decide, or act. That standard mattered because the long-term risk wasn't only the old page's clutter — it was the chance the redesigned page would slowly become cluttered again."
+      ],
+      "pillars": [
+        {
+          "title": "Products",
+          "desc": "What members own — accounts, policies, and products, grouped so they're easy to scan and manage."
+        },
+        {
+          "title": "Activity",
+          "desc": "What needs attention — reminders, statuses, and timely next steps surfaced by priority."
+        },
+        {
+          "title": "Actions",
+          "desc": "What members can do next — contextual servicing and acquisition tied to the products they hold."
+        }
+      ],
+      "quoteLead": "“New content had to earn its place by helping members",
+      "quoteHighlight": "understand, decide, or act.”"
+    },
+    "productSystem": {
+      "eyebrow": "Product System",
+      "titleLead": "A system of",
+      "titleHighlight": "related models.",
+      "intro": [
+        "Member Home was designed as a system of related models rather than a single static page — so it could scale across products, activity, marketing, servicing, responsive breakpoints, and future content requests while preserving simplicity."
+      ],
+      "models": [
+        {
+          "title": "Top-level page model",
+          "flow": "Products + Activity",
+          "desc": "The page split into two high-level sections. Products focused on what the member owned and could manage; Activity focused on what needed attention — reminders, updates, statuses, and timely next steps."
+        },
+        {
+          "title": "Product relationship model",
+          "flow": "Product category → Account or policy → Data, actions, messages",
+          "desc": "The Products section grouped accounts and policies into Banking, Insurance, Investments, and Advice & Services — helping members scan the page and giving teams a consistent structure for owned products, actions, marketing, and messaging."
+        },
+        {
+          "title": "Account & policy card model",
+          "flow": "Owned product → Key data → Status / message → Action",
+          "desc": "Cards had to show required data without overwhelming members across different product types, relationships, and account counts. Grid view offered modern scannability; list view offered a traditional tally with asset and liability totals."
+        },
+        {
+          "title": "Contextual servicing model",
+          "flow": "Product context → Relevant action → Destination owned by another team",
+          "desc": "Servicing actions appeared only when relevant. Pay Bills wouldn't show for a member with only a savings account in Banking, because savings accounts don't generate bills — keeping the page useful instead of a generic shortcut list."
+        },
+        {
+          "title": "Contextual acquisition model",
+          "flow": "Product category → Focused acquisition menu → Product page or service",
+          "desc": "Acquisition was integrated into the same category structure as owned products. Instead of a broad top-nav mega menu, members explored relevant products from the category where they made sense."
+        },
+        {
+          "title": "Product lifecycle model",
+          "flow": "Marketing → In-progress application → Owned product",
+          "desc": "The team coined a product lifecycle: a product could begin as marketing, become an in-progress application, and eventually an owned product — connecting acquisition to the member relationship rather than treating marketing as separate."
+        },
+        {
+          "title": "Activity feed model",
+          "flow": "Member context → Prioritized card → Reminder, status, shortcut, next step",
+          "desc": "The Activity feed was a prioritization system, not a static widget column. It ranked cards by member utilization, product lineup, and events like tax season, giving product teams a framework to surface useful content without equal prominence."
+        },
+        {
+          "title": "Customization model",
+          "flow": "Customize → Rename, hide, group, reorder, switch view → Return",
+          "desc": "Customize mode preserved member control over organization: reordering, hiding, grouping, renaming, switching between grid and list view, and temporarily showing hidden products outside customize mode."
+        },
+        {
+          "title": "External account state model",
+          "flow": "Third-party state → Clear message → Resolution path",
+          "desc": "External aggregation introduced confusing states because USAA relied on a third party to pull outside data. The redesign grouped inherited error, sign-in, and loading scenarios into clearer categories with resolution steps."
+        }
+      ],
+      "closing": [
+        "Treating the page as a set of models rather than a fixed layout meant each product team could plug into a shared structure — and the page could grow without sliding back into clutter."
+      ]
+    },
+    "decisions": {
+      "eyebrow": "Key Design Decisions",
+      "titleLead": "Disciplined",
+      "titleHighlight": "tradeoffs.",
+      "intro": [
+        "The best solution was rarely the page with the fewest elements. Each decision balanced member needs, business goals, personalization, component constraints, and long-term governance."
+      ],
+      "items": [
+        {
+          "n": "01",
+          "title": "Divide the page into Products and Activity",
+          "desc": "A two-part structure separated what members owned from what needed attention.",
+          "tradeoff": "A more structured page risks hiding cross-cutting content that could belong in multiple places. The benefit was a clearer mental model: look left for your relationship, right for timely next steps."
+        },
+        {
+          "n": "02",
+          "title": "Use durable product categories",
+          "desc": "Banking, Insurance, Investments, and Advice & Services became the permanent categories. IA testing showed members resonated with these labels.",
+          "tradeoff": "Permanent categories create consistency but require many product teams to fit a shared model. The benefit was stronger scanning and a foundation for contextual actions and acquisition."
+        },
+        {
+          "n": "03",
+          "title": "Support both grid and list views",
+          "desc": "Members could view accounts and policies in grid (modern, scannable) or list (traditional tally with asset and liability totals).",
+          "tradeoff": "Two views increased design and implementation complexity. The benefit was flexibility for different member mental models and account-management habits."
+        },
+        {
+          "n": "04",
+          "title": "Make actions contextual",
+          "desc": "Rather than every possible shortcut, the page surfaced servicing actions only when corresponding accounts or policies were present.",
+          "tradeoff": "Contextual actions require rules and coordination across product teams. The benefit was a cleaner page where actions felt relevant instead of generic."
+        },
+        {
+          "n": "05",
+          "title": "Integrate acquisition into the product relationship",
+          "desc": "Acquisition moved from broad mega-menu behavior into focused, category-based entry points.",
+          "tradeoff": "Acquisition had to be visible enough for business goals without disrupting servicing and account-management tasks. Placing it near relevant categories kept it contextual."
+        },
+        {
+          "n": "06",
+          "title": "Redesign marketing as product-adjacent",
+          "desc": "Marketing became a variant of the product component so it felt related to the member's financial relationship rather than a separate banner.",
+          "tradeoff": "Marketing needed to perform without taking over the page. The theory — fewer, more relevant placements reduce banner blindness — held: early rollout showed 4.3× click-through and 2.4× quote starts."
+        },
+        {
+          "n": "07",
+          "title": "Create a reusable activity-card framework",
+          "desc": "The Activity feed gave many product teams a shared framework for timely, personalized content.",
+          "tradeoff": "A feed can become noisy if everything is equally important. The prioritization model preserved usefulness by ranking content by member context, product lineup, utilization, and seasonal events."
+        },
+        {
+          "n": "08",
+          "title": "Preserve customization while redesigning the interactions",
+          "desc": "The existing customization was rooted in real needs but confusing to use; the redesign kept the capabilities and rebuilt the interaction model.",
+          "tradeoff": "Customization adds complexity to the page system. The benefit was member control: organizing, hiding, renaming, grouping, and viewing products to match a personal mental model."
+        },
+        {
+          "n": "09",
+          "title": "Simplify external account states",
+          "desc": "Third-party aggregation introduced multiple inherited error, sign-in, and loading scenarios.",
+          "tradeoff": "Detailed messages take more design and content work than a generic error. The benefit was clarity: members could understand exactly what was happening and what to do next."
+        }
+      ]
+    },
+    "execution": {
+      "eyebrow": "Execution & Collaboration",
+      "titleLead": "Research through",
+      "titleHighlight": "developer-ready detail.",
+      "intro": [
+        "The page touched many teams and business priorities, so collaboration was essential. My contribution ran from research synthesis through interaction detail, iconography, and developer-ready specifications."
+      ],
+      "blocks": [
+        {
+          "title": "Research synthesis & content audit",
+          "desc": "I helped analyze the existing page, member feedback, usage patterns, stakeholder needs, and the value of current page elements — identifying what should remain, move elsewhere, or be removed."
+        },
+        {
+          "title": "Information architecture & category model",
+          "desc": "I contributed to the category model organizing accounts and policies into Banking, Insurance, Investments, and Advice & Services, supporting owned products, servicing actions, acquisition, and marketing."
+        },
+        {
+          "title": "Account & policy card design",
+          "desc": "I worked on card hierarchy explorations — how required data should be represented across grid and list views while keeping the experience scannable."
+        },
+        {
+          "title": "Activity card design",
+          "desc": "I designed activity-card concepts including the Claims card and Real Estate Rewards Network card, requiring service-journey thinking, status design, prioritization, and constrained implementation decisions."
+        },
+        {
+          "title": "Customize mode interactions",
+          "desc": "I contributed to the redesign of customize mode: entry and exit points, transitions, drag-and-drop reordering, lightweight popovers, hiding and renaming, grouping, deleting groups, switching views, and temporarily showing hidden accounts."
+        },
+        {
+          "title": "Design-system & implementation details",
+          "desc": "I worked with evolving design-system components while developing new component behavior — interaction details, developer-ready specifications, responsive behavior, and iconography."
+        },
+        {
+          "title": "Custom icon design",
+          "desc": "I created custom icons for Insurance Bill, Auto Invest, and Buy/Sell. They aligned to the existing icon library and were used on the page and elsewhere in the app and website."
+        },
+        {
+          "title": "Stakeholder collaboration",
+          "desc": "The work required translating many teams' stakeholder needs into a coherent member-centered system rather than giving every request equal visual priority."
+        }
+      ]
+    },
+    "validation": {
+      "eyebrow": "Validation & Measurement",
+      "titleLead": "Grounded in",
+      "titleHighlight": "member evidence.",
+      "intro": [
+        "The redesign was shaped by qualitative and quantitative testing of common tasks, secondary tasks, and acquisition paths. The team also used usage data and member feedback to evaluate current-state problems and remove low-value or low-use content.",
+        "Validation focused on whether members could better understand the page structure, locate products, complete common actions, engage with relevant content, and respond to acquisition without feeling overwhelmed by marketing. The clearest measurable impact came from the marketing redesign: after rollout to roughly half of membership — about 6 million people — the experience saw a 4.3× increase in marketing click-through and a 2.4× increase in quote starts."
+      ],
+      "inputsLabel": "Research & validation inputs",
+      "inputs": [
+        "Member feedback",
+        "Usage data",
+        "Stakeholder input",
+        "IA exploration",
+        "Co-design interviews",
+        "Qualitative testing",
+        "Quantitative testing",
+        "Page-element analysis"
+      ],
+      "questionsTitle": "Success signals",
+      "questions": [
+        {
+          "n": "01",
+          "q": "Can members find owned accounts and policies more easily?"
+        },
+        {
+          "n": "02",
+          "q": "Can members distinguish what they own from what needs attention?"
+        },
+        {
+          "n": "03",
+          "q": "Are contextual actions easier to find and use?"
+        },
+        {
+          "n": "04",
+          "q": "Does relevant marketing perform better than broad promotional placement?"
+        },
+        {
+          "n": "05",
+          "q": "Does the Activity feed create a scalable framework for timely member content?"
+        },
+        {
+          "n": "06",
+          "q": "Do members understand external account states and resolution paths?"
+        },
+        {
+          "n": "07",
+          "q": "Can business teams add content without undermining page simplicity?"
+        },
+        {
+          "n": "08",
+          "q": "Can the component system support responsive layouts and future feature growth?"
+        }
+      ]
+    },
+    "impact": {
+      "eyebrow": "Impact",
+      "titleLead": "A sustainable",
+      "titleHighlight": "product system.",
+      "intro": [
+        "The redesign created a clearer and more purposeful Member Home experience. It clarified the relationship between products and activity, reduced unnecessary clutter, made servicing actions more contextual, improved marketing performance, and created a more scalable framework for future content.",
+        "The strongest story is not only that the page became cleaner. It's that the redesign created a sustainable product system for a complex enterprise homepage — one that balanced member needs, business goals, personalization, component constraints, and long-term governance."
+      ],
+      "highlights": [
+        "Rolled out to roughly half of USAA membership — about 6 million people.",
+        "4.3× increase in marketing click-through.",
+        "2.4× increase in quote starts.",
+        "Clearer governance for what belongs on Member Home.",
+        "Stronger structure for product teams to add content without undermining simplicity.",
+        "Reusable component behavior for product cards, activity cards, contextual messages, and responsive layouts."
+      ],
+      "demonstratesTitle": "What this project demonstrates",
+      "demonstrates": [
+        "Member Home demonstrates my ability to work on complex enterprise product systems where UX, business goals, design systems, and governance all intersect. The work required product judgment: deciding what belongs on a critical homepage, how to organize competing priorities, how to make personalization useful, and how to preserve simplicity over time.",
+        "It also shows senior-level design thinking through tradeoffs. The best solution was not the page with the fewest elements — it was the system that made the right elements easier to understand, act on, govern, and scale."
+      ],
+      "caseStudiesTitle": "Deeper case studies",
+      "caseStudies": [
+        {
+          "title": "Products + Activity System",
+          "question": "How might a complex authenticated homepage organize what members own, what needs attention, and what they can do next?"
+        },
+        {
+          "title": "Account & Policy Card System",
+          "question": "How might cards display required information while staying scannable across different product types and member relationships?"
+        },
+        {
+          "title": "Personalized Marketing",
+          "question": "How might marketing become fewer, more relevant, and more product-adjacent while improving business performance?"
+        },
+        {
+          "title": "Activity Feed Framework",
+          "question": "How might a prioritized feed surface claims updates, bill reminders, tax prompts, transaction activity, and other timely content?"
+        },
+        {
+          "title": "Claims Activity Card",
+          "question": "How might a card help members understand claim status, enter the claims center, and track messages from claims adjusters?"
+        },
+        {
+          "title": "Real Estate Rewards Network Card",
+          "question": "How might a larger home-buying reward journey be simplified into a constrained activity card while preserving member value?"
+        },
+        {
+          "title": "External Account States",
+          "question": "How might inherited third-party aggregation errors become clear, actionable messages with resolution paths?"
+        },
+        {
+          "title": "Customize Mode",
+          "question": "How might members reorder, hide, group, rename, and switch views without turning customization into a confusing separate product?"
+        },
+        {
+          "title": "Design-System Contribution",
+          "question": "How might a major homepage redesign extend component behavior, responsive rules, iconography, and developer-ready specs?"
+        }
+      ],
+      "confidentiality": "Because this work involved USAA's internal product strategy, member data, proprietary design decisions, and business performance, sensitive details and visuals have been anonymized or recreated for public portfolio use."
+    },
+    "footerCta": {
+      "titleLead": "Want to talk about",
+      "titleHighlight": "Member Home",
+      "titleRest": "or enterprise product systems?",
       "getInTouch": "Get in Touch",
       "backToProjects": "Back to Projects"
     }

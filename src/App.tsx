@@ -13,6 +13,7 @@ import Footer from '@/sections/Footer';
 import Arcatext from '@/pages/Arcatext';
 import Conversant from '@/pages/Conversant';
 import UsaaApp from '@/pages/UsaaApp';
+import MemberHome from '@/pages/MemberHome';
 import { ProjectGate } from '@/components/ProjectGate';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -72,6 +73,10 @@ function App() {
           ) : route === 'usaa' ? (
             <ProjectGate bypass={isAdmin}>
               <UsaaApp />
+            </ProjectGate>
+          ) : route === 'memberhome' ? (
+            <ProjectGate bypass={isAdmin}>
+              <MemberHome />
             </ProjectGate>
           ) : (
             <>
