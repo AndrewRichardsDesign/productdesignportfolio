@@ -140,6 +140,7 @@ export interface SiteContent {
   arcatext: ArcatextContent;
   conversant: ConversantContent;
   usaa: UsaaContent;
+  memberHome: MemberHomeContent;
 }
 
 export interface TitledItem {
@@ -539,6 +540,116 @@ export interface UsaaContent {
     titleLead: string;
     titleHighlight: string;
     intro: string[];
+    demonstratesTitle: string;
+    demonstrates: string[];
+    caseStudiesTitle: string;
+    caseStudies: { title: string; question: string }[];
+    confidentiality: string;
+  };
+  footerCta: {
+    titleLead: string;
+    titleHighlight: string;
+    titleRest: string;
+    getInTouch: string;
+    backToProjects: string;
+  };
+}
+
+export interface MemberHomeContent {
+  backToPortfolio: string;
+  brand: string;
+  toc: string[];
+  hero: {
+    status: string;
+    title: string;
+    subtitle: string;
+    typeTags: string[];
+    roleLabel: string;
+    roleValue: string;
+    platformLabel: string;
+    platformValue: string;
+    surfaceLabel: string;
+    surfaceValue: string;
+  };
+  overview: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    productTypeLabel: string;
+    productTypeList: string[];
+    roleTitle: string;
+    roleList: string[];
+    statsLabel: string;
+    stats: HeroStat[];
+  };
+  challenge: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    hmwLabel: string;
+    hmwLead: string;
+    hmwHighlight: string;
+    intro: string[];
+    contextTitle: string;
+    context: string[];
+  };
+  discovery: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    insights: TitledItem[];
+    responsesTitle: string;
+    responses: UsaaResponse[];
+  };
+  strategy: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    pillars: TitledItem[];
+    quoteLead: string;
+    quoteHighlight: string;
+  };
+  productSystem: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    models: UsaaFlowModel[];
+    closing: string[];
+  };
+  decisions: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    items: UsaaDecision[];
+  };
+  execution: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    blocks: TitledItem[];
+  };
+  validation: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    inputsLabel: string;
+    inputs: string[];
+    questionsTitle: string;
+    questions: UsaaQuestion[];
+  };
+  impact: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    highlights: string[];
     demonstratesTitle: string;
     demonstrates: string[];
     caseStudiesTitle: string;
