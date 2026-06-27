@@ -4,10 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   ArrowLeft,
   ArrowRight,
-  PenLine,
   Sparkles,
   ShieldCheck,
-  HelpCircle,
   GraduationCap,
   Languages,
   MessageSquareText,
@@ -22,13 +20,8 @@ import { Editable } from '@/content/Editable';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const loopIcons: Record<string, LucideIcon> = {
-  PenLine,
-  Sparkles,
-  ShieldCheck,
-  HelpCircle,
-  GraduationCap,
-};
+// Fixed icons for each Product System flow card, in order.
+const flowIcons: LucideIcon[] = [Sparkles, ShieldCheck, MessageSquareText, GraduationCap];
 
 // Fixed icons for the "Product type" list in the Overview section.
 const productTypeIcons: LucideIcon[] = [KeyboardIcon, GraduationCap, MessageSquareText, Bot];
@@ -453,6 +446,14 @@ export default function Arcatext() {
               <Paragraphs base="arcatext.strategy.artifact" items={arc.strategy.artifact} />
             </Prose>
           </div>
+
+          <div className="mt-6 reveal rounded-2xl bg-gradient-to-br from-primary/10 to-primary/[0.03] p-8 lg:p-10">
+            <Editable as="p" path="arcatext.strategy.aiEyebrow" className="text-xs uppercase tracking-[0.2em] text-primary mb-3" />
+            <Editable as="h3" path="arcatext.strategy.aiTitle" className="text-xl sm:text-2xl font-semibold mb-4" />
+            <Prose>
+              <Paragraphs base="arcatext.strategy.ai" items={arc.strategy.ai} />
+            </Prose>
+          </div>
         </div>
       </section>
 
@@ -464,38 +465,47 @@ export default function Arcatext() {
           </div>
 
           <div className="reveal mb-12">
-            <div className="flex flex-wrap items-center gap-3 text-lg sm:text-xl font-semibold">
-              {arc.productSystem.loop.map((_, i) => (
-                <span key={i} className="flex items-center gap-3">
-                  <Editable as="span" path={`arcatext.productSystem.loop.${i}.step`} className="px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20" />
-                  {i < arc.productSystem.loop.length - 1 && (
-                    <ArrowRight className="w-4 h-4 text-muted-foreground" />
-                  )}
-                </span>
-              ))}
-            </div>
+            <Prose>
+              <Paragraphs base="arcatext.productSystem.intro" items={arc.productSystem.intro} />
+            </Prose>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {arc.productSystem.loop.map((s, i) => {
-              const Icon = loopIcons[s.icon] ?? PenLine;
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+            {arc.productSystem.flows.map((flow, i) => {
+              const Icon = flowIcons[i] ?? Sparkles;
               return (
                 <div
                   key={i}
-                  className="reveal rounded-2xl bg-muted/40 p-6 flex flex-col gap-4"
+                  className="reveal rounded-2xl bg-muted/40 p-6 lg:p-8 flex flex-col gap-5"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Icon className="w-5 h-5 text-primary" />
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <Icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <Editable as="h3" path={`arcatext.productSystem.flows.${i}.title`} className="text-lg font-semibold" />
                     </div>
                     <span className="text-xs font-mono text-muted-foreground">
                       0{i + 1}
                     </span>
                   </div>
-                  <div>
-                    <Editable as="h3" path={`arcatext.productSystem.loop.${i}.step`} className="font-semibold mb-2" />
-                    <Editable as="p" path={`arcatext.productSystem.loop.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    {flow.steps.map((_, j) => (
+                      <span key={j} className="flex items-center gap-2">
+                        <Editable
+                          as="span"
+                          path={`arcatext.productSystem.flows.${i}.steps.${j}`}
+                          className="px-3 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 text-sm font-medium"
+                        />
+                        {j < flow.steps.length - 1 && (
+                          <ArrowRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                        )}
+                      </span>
+                    ))}
                   </div>
+
+                  <Editable as="p" path={`arcatext.productSystem.flows.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
                 </div>
               );
             })}

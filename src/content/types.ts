@@ -147,9 +147,9 @@ export interface TitledItem {
   desc: string;
 }
 
-export interface ArcatextLoopStep {
-  step: string;
-  icon: string;
+export interface ArcatextFlow {
+  title: string;
+  steps: string[];
   desc: string;
 }
 
@@ -231,12 +231,16 @@ export interface ArcatextContent {
     artifactEyebrow: string;
     artifactTitle: string;
     artifact: string[];
+    aiEyebrow: string;
+    aiTitle: string;
+    ai: string[];
   };
   productSystem: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
-    loop: ArcatextLoopStep[];
+    intro: string[];
+    flows: ArcatextFlow[];
     closing: string[];
   };
   decisions: {

@@ -612,41 +612,46 @@
       "artifactTitle": "A four-phase product strategy canvas",
       "artifact": [
         "To map the product beyond the MVP, I created a strategy canvas organizing Arcatext across four phases: an integrated translation keyboard, an AI conversation platform, data-driven learning insights, and teacher tools. The canvas mapped target users, competitive disruption, feature evolution, revenue streams, and long-term AI infrastructure — connecting near-term UX decisions to a scalable product strategy."
+      ],
+      "aiEyebrow": "AI infrastructure strategy",
+      "aiTitle": "Why LLMs instead of traditional machine translation",
+      "ai": [
+        "I chose to build Arcatext around LLMs instead of traditional machine translators like Google Translate or DeepL because the product needed more than direct translation. It needed contextual awareness, same-language correction, homograph detection, gender-aware translation, romanization, and alternate phrasing — nuance that LLMs handle across many languages while staying trainable and able to power future learning insights.",
+        "I compared ChatGPT models, Gemini, DeepSeek, Llama, and other options across translation quality, language coverage, reliability, latency, and cost. For the MVP, I chose GPT-4o mini through the ChatGPT API because it let me launch faster with strong quality and broad language support — supporting a competitive number of languages while keeping subscription cost and margins at my targets, even though the higher API cost meant accepting lower early margins.",
+        "The longer-term strategy is to reduce dependency on paid API calls by evaluating hosted open-source LLMs, reusable language-pair data, and eventually proprietary translation intelligence trained with anonymized, de-identified interaction data handled with appropriate privacy safeguards. Throughout, the goal was to differentiate from Apple and Google translation by adding the controls and learning value they are unlikely to prioritize."
       ]
     },
     "productSystem": {
       "eyebrow": "Product System",
-      "titleLead": "Built around a",
-      "titleHighlight": "simple loop.",
-      "loop": [
+      "titleLead": "Not one linear flow — a",
+      "titleHighlight": "system of flows.",
+      "intro": [
+        "Arcatext is not built around one linear feature flow. It is a system designed to support multiple communication needs while preserving the speed and familiarity of texting. The default path stays simple, and deeper support is revealed only when the user needs it."
+      ],
+      "flows": [
         {
-          "step": "Write",
-          "icon": "PenLine",
-          "desc": "Start with something the user actually wants to say — to a friend, a penpal, a class, or an AI."
+          "title": "Simple Translation",
+          "steps": ["Write", "Reword", "Send"],
+          "desc": "For low-risk messages, the flow stays lightweight. Users type what they want to say, generate a more natural target-language version, and send it without entering a separate learning task."
         },
         {
-          "step": "Reword",
-          "icon": "Sparkles",
-          "desc": "Translate or refine the message while preserving intent, tone, and language-specific nuance."
+          "title": "Context-Aware Translation",
+          "steps": ["Write", "Reword", "Check", "Clarify", "Send"],
+          "desc": "For higher-stakes messages, users can inspect the translation before sending. Check verifies intent through reverse translation, while Clarify handles ambiguity, alternate phrasing, homographs, tone, gender, and other context-sensitive meaning decisions."
         },
         {
-          "step": "Check",
-          "icon": "ShieldCheck",
-          "desc": "Inspect the result before sending. Reverse translation and alternates build trust in the output."
+          "title": "Handling Received Messages",
+          "steps": ["Copy a received message", "Paste to Translate", "Understand", "Reply"],
+          "desc": "Language support also has to work for incoming messages. Arcatext supports the comprehension side of conversation — understanding what was received, maintaining context, and replying from the same writing surface."
         },
         {
-          "step": "Clarify",
-          "icon": "HelpCircle",
-          "desc": "Resolve ambiguity — homographs, gender, formality, script — so meaning stays in the user’s control."
-        },
-        {
-          "step": "Learn",
-          "icon": "GraduationCap",
-          "desc": "Turn each interaction into vocabulary, grammar, and confidence the user can build on over time."
+          "title": "Learning Layer",
+          "steps": ["Repeated messages", "Patterns", "Insights", "Practice"],
+          "desc": "Over time, real communication becomes structured insight: recurring vocabulary, grammar gaps, confidence issues, topics of interest, and personalized recommendations — the bridge from MVP keyboard to broader learning platform."
         }
       ],
       "closing": [
-        "The product system is designed to make translation useful in the moment while also turning that moment into learning. The Reword experience supports context-aware translation, grammar correction, tone refinement, and language-specific options like speaker gender, recipient gender, group gender, and script preferences. The Check experience helps users verify meaning before sending, so they avoid blindly sending text they don’t understand."
+        "Keeping the default path simple while progressively disclosing depth lets Arcatext serve beginners who need help producing understandable messages, intermediate learners who want feedback, and advanced learners who need nuance. The Reword experience supports context-aware translation, grammar correction, tone refinement, and language-specific options like speaker gender, recipient gender, group gender, and script preferences. The Check experience helps users verify meaning before sending, so they avoid blindly sending text they don’t understand."
       ]
     },
     "decisions": {
@@ -679,11 +684,16 @@
         },
         {
           "n": "05",
+          "title": "Choose LLM flexibility over cheaper machine translation",
+          "desc": "Traditional machine translation would have lowered cost but limited the product to direct translation. LLMs enabled the broader vision — contextual rewording, same-language correction, homograph clarification, tone adjustment, and future learning insights. The tradeoff was latency, reliability, and token cost, so model choice became a product decision weighed across quality, coverage, speed, and margin."
+        },
+        {
+          "n": "06",
           "title": "Design for multiple fluency levels",
           "desc": "Beginner: a safe communication assistant. Intermediate: a feedback tool. Advanced: a nuance tool. The product reveals depth as the user grows."
         },
         {
-          "n": "06",
+          "n": "07",
           "title": "Use real conversations as the curriculum",
           "desc": "Instead of a fixed sequence, the user’s actual writing becomes the source of learning — making the path personal, relevant, and emotionally meaningful."
         }
@@ -823,7 +833,7 @@
       "launchLead": "Measurement as part of",
       "launchHighlight": "launch readiness.",
       "launch": [
-        "Since Arcatext had not yet launched publicly, I treated measurement as part of launch readiness. I defined success around four questions."
+        "Since Arcatext had not yet launched publicly, I treated measurement as part of launch readiness. I defined success around five questions."
       ],
       "launchQuestions": [
         {
@@ -832,7 +842,7 @@
         },
         {
           "n": "02",
-          "q": "Do they trust the output enough to send it?"
+          "q": "Do users trust the output enough to send it?"
         },
         {
           "n": "03",
@@ -840,7 +850,11 @@
         },
         {
           "n": "04",
-          "q": "Can usage patterns support the subscription model?"
+          "q": "Can the product support repeat keyboard usage and retention?"
+        },
+        {
+          "n": "05",
+          "q": "Can usage patterns support the subscription model and AI cost structure?"
         }
       ],
       "plannedSignalsLabel": "Planned signals",
@@ -850,6 +864,7 @@
         "Check view usage",
         "Send-after-check rate",
         "Edit / regenerate behavior",
+        "Paste-to-Translate usage",
         "Repeat keyboard usage",
         "Retention",
         "Language-pair activity",
