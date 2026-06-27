@@ -1,0 +1,40 @@
+name: Sync project docs
+
+# Fires the Google Apps Script doc-sync within seconds of site-content.json
+# changing on main (e.g. an admin-mode "Save to GitHub" commit). The script
+# itself only rewrites a doc when its content changed, so this is safe to fire
+# on every relevant push.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/site-content.json'
+  workflow_dispatch: {}   # allow manual run from the Actions tab
+
+# Don't pile up runs if several commits land quickly.
+concurrency:
+  group: sync-docs
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Apps Script web app
+        env:
+          URL: ${{ secrets.APPS_SCRIPT_URL }}
+          SECRET: ${{ secrets.SYNC_SECRET }}
+        run: |
+          if [ -z "$URL" ] || [ -z "$SECRET" ]; then
+            echo "::error::Missing APPS_SCRIPT_URL and/or SYNC_SECRET repo secret."
+            exit 1
+          fi
+          # -L plus --post30x keeps the POST (and body) across Apps Script's
+          # 302 redirect; the secret travels in the body, not the URL.
+          resp=$(curl -sS -L --post301 --post302 --post303 \
+                      -X POST "$URL" \
+                      --data-urlencode "secret=$SECRET" \
+                      --max-time 120)
+          echo "Response: $resp"
+          echo "$resp" | grep -q '"ok":true' || { echo "::error::Sync failed"; exit 1; }

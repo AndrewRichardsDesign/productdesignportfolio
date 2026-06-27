@@ -42,7 +42,58 @@ finds in the content that isn't mapped yet, so nothing gets silently skipped.
 3. Run `listTabs` once (authorize when prompted) to confirm each doc has a
    `Project Page` tab.
 4. Run `syncAllProjects`.
-5. Optional: **Triggers** → add a time-driven trigger for `syncAllProjects`.
+5. Optional automation: **Triggers** → time-driven trigger for **`syncIfChanged`**
+   (not `syncAllProjects`). `syncIfChanged` only rewrites the docs when
+   `site-content.json` has a new commit, so it's cheap to run on a short
+   minutes timer (e.g. every 5–10 min) for near-real-time updates without
+   churning the docs when nothing changed. Use `syncAllProjects` to force a
+   full re-sync manually.
+
+## Functions
+
+- **`syncAllProjects`** — force-sync every mapped project now.
+- **`syncIfChanged`** — sync only if the content commit changed (timer-trigger target).
+- **`doPost`** — web-app endpoint the GitHub Action calls (event-driven, see below).
+- **`listTabs`** — print each mapped doc's tab titles (verification).
+
+## Event-driven sync (instant, on push to `main`)
+
+Instead of (or alongside) a timer, a GitHub Action
+(`.github/workflows/sync-docs.yml`) fires the sync within seconds whenever
+`src/content/site-content.json` changes on `main`. Flow:
+
+`admin "Save to GitHub" → commit on main → Action → POST to the web app → syncIfChanged`
+
+### One-time setup
+
+1. **Add `doPost` to the script** — re-paste `sync-project-docs.gs` so it
+   includes the `doPost` function.
+2. **Pick a shared secret**, e.g. run locally: `openssl rand -hex 24`
+   (use URL-safe characters; the hex output is fine).
+3. **Script property:** add `WEBHOOK_SECRET` = that secret (Project Settings →
+   Script Properties).
+4. **Deploy the web app:** **Deploy → New deployment → Web app**, *Execute as:*
+   **Me**, *Who has access:* **Anyone** → **Deploy** → copy the
+   `…/exec` Web app URL.
+5. **GitHub repo secrets** (Settings → Secrets and variables → Actions → New
+   repository secret):
+   - `APPS_SCRIPT_URL` = the `…/exec` URL
+   - `SYNC_SECRET` = the same string as `WEBHOOK_SECRET`
+6. Done. Test it: **Actions** tab → **Sync project docs** → **Run workflow**
+   (manual `workflow_dispatch`), or just save content from admin mode.
+
+The web app is reachable by anyone with the URL, so the `WEBHOOK_SECRET` check
+is what protects it — keep both secrets private.
+
+### Important: re-deploying after edits
+
+A Web App deployment is **frozen at deploy time**. If you later edit the
+script, the `…/exec` URL keeps serving the old code until you publish a new
+version: **Deploy → Manage deployments → (edit, pencil) → Version: New version
+→ Deploy**. The URL stays the same.
+
+You can keep both the timer (`syncIfChanged`) and the Action — the
+change-detection guard makes double-firing harmless (the second run no-ops).
 
 ## Notes
 
