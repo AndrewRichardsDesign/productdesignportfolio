@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowLeft, Check, Smartphone, Building2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
@@ -243,19 +243,7 @@ export default function UsaaApp() {
             as="p"
             path="usaa.hero.subtitle"
             multiline
-            className="text-xl sm:text-2xl md:text-3xl text-foreground/80 max-w-3xl leading-snug mb-8 text-balance"
-          />
-          <Editable
-            as="p"
-            path="usaa.hero.intro"
-            multiline
-            className="text-base sm:text-lg text-muted-foreground max-w-3xl leading-relaxed mb-6"
-          />
-          <Editable
-            as="p"
-            path="usaa.hero.roleIntro"
-            multiline
-            className="text-base sm:text-lg text-muted-foreground max-w-3xl leading-relaxed mb-10"
+            className="text-xl sm:text-2xl md:text-3xl text-foreground/80 max-w-3xl leading-snug mb-10 text-balance"
           />
 
           <div className="flex flex-wrap gap-2 mb-10">
@@ -286,264 +274,226 @@ export default function UsaaApp() {
         </div>
       </section>
 
-      {/* 01 — Context */}
+      {/* 01 — Overview */}
       <section id="sec-01" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="01" eyebrowPath="usaa.context.eyebrow" titlePath="usaa.context.titleLead" highlightPath="usaa.context.titleHighlight" />
+            <SectionHeader number="01" eyebrowPath="usaa.overview.eyebrow" titlePath="usaa.overview.titleLead" highlightPath="usaa.overview.titleHighlight" />
           </div>
 
-          <div className="reveal">
-            <Prose>
-              <Paragraphs base="usaa.context.intro" items={u.context.intro} />
-            </Prose>
-
-            <div className="mt-10 rounded-2xl bg-primary/10 p-8 max-w-3xl">
-              <Editable as="p" path="usaa.context.calloutEyebrow" className="text-xs uppercase tracking-[0.2em] text-primary mb-3" />
-              <p className="text-xl sm:text-2xl font-semibold text-balance leading-snug">
-                <Editable as="span" path="usaa.context.calloutLead" multiline />{' '}
-                <Editable as="span" path="usaa.context.calloutHighlight" className="gradient-text" />
-              </p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div className="lg:col-span-7 reveal">
+              <Prose>
+                <Paragraphs base="usaa.overview.intro" items={u.overview.intro} />
+              </Prose>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* 02 — Goals */}
-      <section id="sec-02" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="reveal">
-            <SectionHeader number="02" eyebrowPath="usaa.goals.eyebrow" titlePath="usaa.goals.titleLead" highlightPath="usaa.goals.titleHighlight" />
-          </div>
-
-          <div className="reveal">
-            <Prose>
-              <Paragraphs base="usaa.goals.intro" items={u.goals.intro} />
-            </Prose>
-          </div>
-
-          <div className="mt-16">
-            <Editable as="h3" path="usaa.goals.designGoalsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {u.goals.designGoals.map((_, i) => (
-                <div
-                  key={i}
-                  className="reveal flex gap-4 rounded-2xl bg-muted/40 p-6"
-                >
-                  <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
-                    <Check className="w-4 h-4 text-primary" />
-                  </div>
-                  <Editable as="p" path={`usaa.goals.designGoals.${i}`} multiline className="text-sm sm:text-base text-foreground/85 leading-relaxed" />
+            <aside className="lg:col-span-5 reveal">
+              <div className="rounded-2xl bg-muted/40 p-8">
+                <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-primary mb-4">
+                  <Layers className="w-4 h-4" />
+                  <Editable as="span" path="usaa.overview.productTypeLabel" />
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 03 — Needs */}
-      <section id="sec-03" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="reveal">
-            <SectionHeader number="03" eyebrowPath="usaa.needs.eyebrow" titlePath="usaa.needs.titleLead" highlightPath="usaa.needs.titleHighlight" />
-          </div>
-
-          <div className="reveal">
-            <Prose>
-              <Paragraphs base="usaa.needs.intro" items={u.needs.intro} />
-            </Prose>
-          </div>
-
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="reveal rounded-2xl bg-muted/40 p-8">
-              <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-primary mb-5">
-                <Smartphone className="w-4 h-4" />
-                <Editable as="span" path="usaa.needs.memberLabel" />
+                <ul className="space-y-3 text-foreground/90">
+                  {u.overview.productTypeList.map((_, i) => (
+                    <li key={i} className="flex items-center gap-3">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/70 shrink-0" />
+                      <Editable as="span" path={`usaa.overview.productTypeList.${i}`} />
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <Chips base="usaa.needs.memberNeeds" items={u.needs.memberNeeds} />
-            </div>
-            <div className="reveal rounded-2xl bg-muted/40 p-8">
-              <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-primary mb-5">
-                <Building2 className="w-4 h-4" />
-                <Editable as="span" path="usaa.needs.businessLabel" />
-              </div>
-              <Chips base="usaa.needs.businessNeeds" items={u.needs.businessNeeds} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 04 — Problem */}
-      <section id="sec-04" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="reveal">
-            <SectionHeader number="04" eyebrowPath="usaa.problem.eyebrow" titlePath="usaa.problem.titleLead" highlightPath="usaa.problem.titleHighlight" />
-          </div>
-
-          <div className="reveal">
-            <Prose>
-              <Paragraphs base="usaa.problem.intro" items={u.problem.intro} />
-            </Prose>
-          </div>
-
-          <div className="mt-16">
-            <Editable as="h3" path="usaa.problem.problemsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {u.problem.problems.map((_, i) => (
-                <div
-                  key={i}
-                  className="reveal rounded-2xl bg-muted/40 p-6 hover:bg-muted/60 transition-colors"
-                >
-                  <Editable as="h4" path={`usaa.problem.problems.${i}.title`} className="font-semibold mb-2" />
-                  <Editable as="p" path={`usaa.problem.problems.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
-                </div>
-              ))}
-            </div>
+            </aside>
           </div>
 
           <div className="mt-16 reveal">
-            <Prose>
-              <Paragraphs base="usaa.problem.closing" items={u.problem.closing} />
-            </Prose>
+            <Editable as="h3" path="usaa.overview.roleTitle" className="text-xl sm:text-2xl font-semibold mb-6" />
+            <Chips base="usaa.overview.roleList" items={u.overview.roleList} />
           </div>
         </div>
       </section>
 
-      {/* 05 — Solution */}
-      <section id="sec-05" className="py-20 sm:py-28 scroll-mt-24">
+      {/* 02 — Design Challenge */}
+      <section id="sec-02" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="05" eyebrowPath="usaa.solution.eyebrow" titlePath="usaa.solution.titleLead" highlightPath="usaa.solution.titleHighlight" />
+            <SectionHeader number="02" eyebrowPath="usaa.challenge.eyebrow" titlePath="usaa.challenge.titleLead" highlightPath="usaa.challenge.titleHighlight" />
           </div>
 
-          <div className="reveal">
-            <Prose>
-              <Paragraphs base="usaa.solution.intro" items={u.solution.intro} />
-            </Prose>
+          <div className="reveal rounded-2xl bg-primary/10 p-8 lg:p-10 max-w-3xl">
+            <Editable as="p" path="usaa.challenge.hmwLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-3" />
+            <p className="text-xl sm:text-2xl font-semibold text-balance leading-snug">
+              <Editable as="span" path="usaa.challenge.hmwLead" multiline />{' '}
+              <Editable as="span" path="usaa.challenge.hmwHighlight" className="gradient-text" />
+            </p>
           </div>
 
-          <div className="mt-16">
-            <Editable as="h3" path="usaa.solution.highlightsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {u.solution.highlights.map((_, i) => (
-                <div
-                  key={i}
-                  className="reveal rounded-2xl bg-muted/40 p-6 lg:p-7"
-                >
-                  <span className="text-xs font-mono text-primary/70">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <Editable as="h4" path={`usaa.solution.highlights.${i}.title`} className="font-semibold mt-2 mb-2 text-balance" />
-                  <Editable as="p" path={`usaa.solution.highlights.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* System structure */}
-          <div className="mt-20 reveal">
-            <Editable as="h3" path="usaa.solution.structureTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
-            <Prose>
-              <Paragraphs base="usaa.solution.structure" items={u.solution.structure} />
-            </Prose>
-          </div>
-
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {u.solution.contentRoles.map((_, i) => (
-              <div
-                key={i}
-                className="reveal rounded-2xl bg-gradient-to-br from-primary/10 to-primary/[0.03] p-6"
-              >
-                <Editable as="h4" path={`usaa.solution.contentRoles.${i}.title`} className="font-semibold mb-2 text-balance" />
-                <Editable as="p" path={`usaa.solution.contentRoles.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 06 — Product challenge */}
-      <section id="sec-06" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="reveal">
-            <SectionHeader number="06" eyebrowPath="usaa.challenge.eyebrow" titlePath="usaa.challenge.titleLead" highlightPath="usaa.challenge.titleHighlight" />
-          </div>
-
-          <div className="reveal">
+          <div className="mt-12 reveal">
             <Prose>
               <Paragraphs base="usaa.challenge.intro" items={u.challenge.intro} />
             </Prose>
           </div>
 
-          <div className="mt-16">
-            <Editable as="h3" path="usaa.challenge.approachesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {u.challenge.approaches.map((_, i) => (
-                <div
-                  key={i}
-                  className="reveal rounded-2xl bg-muted/40 p-6 lg:p-7"
-                >
-                  <span className="text-xs font-mono text-primary/70">
-                    {String.fromCharCode(65 + i)}
-                  </span>
-                  <Editable as="h4" path={`usaa.challenge.approaches.${i}.title`} className="font-semibold mt-2 mb-2 text-balance" />
-                  <Editable as="p" path={`usaa.challenge.approaches.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-16 reveal rounded-2xl bg-primary/10 p-8 lg:p-10">
+          <div className="mt-16 reveal">
+            <Editable as="h3" path="usaa.challenge.contextTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
             <Prose>
-              <Paragraphs base="usaa.challenge.closing" items={u.challenge.closing} />
+              <Paragraphs base="usaa.challenge.context" items={u.challenge.context} />
             </Prose>
           </div>
         </div>
       </section>
 
-      {/* 07 — Selected work */}
-      <section id="sec-07" className="py-20 sm:py-28 scroll-mt-24">
+      {/* 03 — Discovery & Synthesis */}
+      <section id="sec-03" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="07" eyebrowPath="usaa.selectedWork.eyebrow" titlePath="usaa.selectedWork.titleLead" highlightPath="usaa.selectedWork.titleHighlight" />
+            <SectionHeader number="03" eyebrowPath="usaa.discovery.eyebrow" titlePath="usaa.discovery.titleLead" highlightPath="usaa.discovery.titleHighlight" />
           </div>
 
           <div className="reveal">
             <Prose>
-              <Paragraphs base="usaa.selectedWork.intro" items={u.selectedWork.intro} />
+              <Paragraphs base="usaa.discovery.intro" items={u.discovery.intro} />
             </Prose>
           </div>
 
-          <div className="mt-12 space-y-6">
-            {u.selectedWork.features.map((feature, i) => (
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {u.discovery.insights.map((_, i) => (
               <div
                 key={i}
-                className="reveal rounded-2xl bg-muted/40 p-8 lg:p-10"
+                className="reveal rounded-2xl bg-muted/40 p-6 lg:p-7"
               >
-                <div className="flex items-baseline gap-4 mb-5">
-                  <span className="text-sm font-mono text-primary/70">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <Editable as="h3" path={`usaa.selectedWork.features.${i}.title`} className="text-xl lg:text-2xl font-semibold" />
-                </div>
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                  <div className={feature.bullets.length > 0 ? 'lg:col-span-7' : 'lg:col-span-12'}>
-                    <div className="space-y-4 text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
-                      {feature.desc.map((_, j) => (
-                        <Editable key={j} as="p" multiline path={`usaa.selectedWork.features.${i}.desc.${j}`} />
-                      ))}
+                <Editable as="h4" path={`usaa.discovery.insights.${i}.title`} className="font-semibold mb-3 text-balance" />
+                <Editable as="p" path={`usaa.discovery.insights.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-20">
+            <Editable as="h3" path="usaa.discovery.responsesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {u.discovery.responses.map((_, i) => (
+                <div
+                  key={i}
+                  className="reveal rounded-2xl bg-muted/40 p-6 lg:p-7"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-xs font-mono text-primary/70">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                      Insight
+                    </span>
+                  </div>
+                  <Editable as="h4" path={`usaa.discovery.responses.${i}.insight`} className="font-semibold mb-4 text-balance" />
+                  <div className="pt-4 border-t border-primary/15 space-y-3">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground mb-1">
+                        Requirement
+                      </p>
+                      <Editable as="p" path={`usaa.discovery.responses.${i}.requirement`} multiline className="text-sm text-foreground/85 leading-relaxed" />
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.18em] text-primary mb-1">
+                        Response
+                      </p>
+                      <Editable as="p" path={`usaa.discovery.responses.${i}.response`} multiline className="text-sm text-foreground/85 leading-relaxed" />
                     </div>
                   </div>
-                  {feature.bullets.length > 0 && (
-                    <ul className="lg:col-span-5 space-y-3">
-                      {feature.bullets.map((_, j) => (
-                        <li key={j} className="flex gap-3 text-sm text-foreground/85 leading-relaxed">
-                          <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                          <Editable as="span" multiline path={`usaa.selectedWork.features.${i}.bullets.${j}`} />
-                        </li>
-                      ))}
-                    </ul>
-                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 04 — Strategic Direction */}
+      <section id="sec-04" className="py-20 sm:py-28 scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="reveal">
+            <SectionHeader number="04" eyebrowPath="usaa.strategy.eyebrow" titlePath="usaa.strategy.titleLead" highlightPath="usaa.strategy.titleHighlight" />
+          </div>
+
+          <div className="reveal">
+            <Prose>
+              <Paragraphs base="usaa.strategy.intro" items={u.strategy.intro} />
+            </Prose>
+          </div>
+
+          <figure className="mt-12 reveal max-w-3xl">
+            <blockquote className="text-2xl sm:text-3xl font-semibold leading-snug text-balance">
+              <Editable as="span" path="usaa.strategy.quoteLead" multiline />{' '}
+              <Editable as="span" path="usaa.strategy.quoteHighlight" className="gradient-text" />
+            </blockquote>
+          </figure>
+        </div>
+      </section>
+
+      {/* 05 — Product System */}
+      <section id="sec-05" className="py-20 sm:py-28 scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="reveal">
+            <SectionHeader number="05" eyebrowPath="usaa.productSystem.eyebrow" titlePath="usaa.productSystem.titleLead" highlightPath="usaa.productSystem.titleHighlight" />
+          </div>
+
+          <div className="reveal mb-12">
+            <Prose>
+              <Paragraphs base="usaa.productSystem.intro" items={u.productSystem.intro} />
+            </Prose>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+            {u.productSystem.models.map((_, i) => (
+              <div
+                key={i}
+                className="reveal rounded-2xl bg-muted/40 p-6 lg:p-8 flex flex-col gap-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <Editable as="h3" path={`usaa.productSystem.models.${i}.title`} className="text-lg font-semibold" />
+                  <span className="text-xs font-mono text-muted-foreground shrink-0">
+                    0{i + 1}
+                  </span>
+                </div>
+                <Editable as="p" path={`usaa.productSystem.models.${i}.flow`} className="inline-block self-start px-3 py-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20 text-sm font-medium font-mono" />
+                <Editable as="p" path={`usaa.productSystem.models.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 reveal">
+            <Prose>
+              <Paragraphs base="usaa.productSystem.closing" items={u.productSystem.closing} />
+            </Prose>
+          </div>
+        </div>
+      </section>
+
+      {/* 06 — Key Design Decisions */}
+      <section id="sec-06" className="py-20 sm:py-28 scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="reveal">
+            <SectionHeader number="06" eyebrowPath="usaa.decisions.eyebrow" titlePath="usaa.decisions.titleLead" highlightPath="usaa.decisions.titleHighlight" />
+          </div>
+
+          <div className="reveal">
+            <Prose>
+              <Paragraphs base="usaa.decisions.intro" items={u.decisions.intro} />
+            </Prose>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {u.decisions.items.map((_, i) => (
+              <div
+                key={i}
+                className="reveal rounded-2xl bg-muted/40 p-6 lg:p-8 hover:bg-muted/60 transition-colors"
+              >
+                <span className="text-sm font-mono text-primary/70">{u.decisions.items[i].n}</span>
+                <Editable as="h3" path={`usaa.decisions.items.${i}.title`} className="text-lg lg:text-xl font-semibold mt-2 mb-3" />
+                <Editable as="p" path={`usaa.decisions.items.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
+                <div className="mt-4 pt-4 border-t border-primary/15">
+                  <p className="text-xs uppercase tracking-[0.18em] text-primary mb-2">
+                    Tradeoff
+                  </p>
+                  <Editable as="p" path={`usaa.decisions.items.${i}.tradeoff`} multiline className="text-sm text-foreground/85 leading-relaxed" />
                 </div>
               </div>
             ))}
@@ -551,74 +501,120 @@ export default function UsaaApp() {
         </div>
       </section>
 
-      {/* 08 — My role */}
-      <section id="sec-08" className="py-20 sm:py-28 scroll-mt-24">
+      {/* 07 — Execution & Collaboration */}
+      <section id="sec-07" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
-            <SectionHeader number="08" eyebrowPath="usaa.role.eyebrow" titlePath="usaa.role.titleLead" highlightPath="usaa.role.titleHighlight" />
+            <SectionHeader number="07" eyebrowPath="usaa.execution.eyebrow" titlePath="usaa.execution.titleLead" highlightPath="usaa.execution.titleHighlight" />
           </div>
 
           <div className="reveal">
             <Prose>
-              <Paragraphs base="usaa.role.intro" items={u.role.intro} />
+              <Paragraphs base="usaa.execution.intro" items={u.execution.intro} />
             </Prose>
           </div>
 
-          <div className="mt-12 reveal">
-            <Editable as="h3" path="usaa.role.workLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-6" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {u.role.work.map((_, i) => (
-                <div
-                  key={i}
-                  className="flex gap-4 rounded-2xl bg-muted/40 p-6"
-                >
-                  <span className="text-sm font-mono text-primary/70 shrink-0 pt-0.5">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <Editable as="p" path={`usaa.role.work.${i}`} multiline className="text-sm sm:text-base text-foreground/85 leading-relaxed" />
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {u.execution.blocks.map((_, i) => (
+              <div
+                key={i}
+                className="reveal flex gap-5 rounded-2xl bg-muted/40 p-6 lg:p-7"
+              >
+                <span className="text-sm font-mono text-primary/70 shrink-0 pt-0.5">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <Editable as="h4" path={`usaa.execution.blocks.${i}.title`} className="font-semibold mb-2 text-balance" />
+                  <Editable as="p" path={`usaa.execution.blocks.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-12 reveal max-w-3xl">
-            <Editable as="p" path="usaa.role.closing" multiline className="text-base sm:text-lg text-muted-foreground leading-relaxed" />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 09 — Process & impact */}
+      {/* 08 — Validation & Measurement */}
+      <section id="sec-08" className="py-20 sm:py-28 scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="reveal">
+            <SectionHeader number="08" eyebrowPath="usaa.validation.eyebrow" titlePath="usaa.validation.titleLead" highlightPath="usaa.validation.titleHighlight" />
+          </div>
+
+          <div className="reveal">
+            <Prose>
+              <Paragraphs base="usaa.validation.intro" items={u.validation.intro} />
+            </Prose>
+          </div>
+
+          <div className="mt-12 reveal">
+            <Editable as="h3" path="usaa.validation.inputsLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-5" />
+            <Chips base="usaa.validation.inputs" items={u.validation.inputs} />
+          </div>
+
+          <div className="mt-16">
+            <Editable as="h3" path="usaa.validation.questionsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {u.validation.questions.map((item, i) => (
+                <div
+                  key={i}
+                  className="reveal rounded-2xl bg-muted/40 p-6 flex gap-5"
+                >
+                  <span className="text-sm font-mono text-primary/70 shrink-0">
+                    {item.n}
+                  </span>
+                  <Editable as="p" path={`usaa.validation.questions.${i}.q`} multiline className="text-base text-foreground/90 leading-snug" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 09 — Impact */}
       <section id="sec-09" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
             <SectionHeader number="09" eyebrowPath="usaa.impact.eyebrow" titlePath="usaa.impact.titleLead" highlightPath="usaa.impact.titleHighlight" />
           </div>
 
-          {/* Process & collaboration */}
           <div className="reveal">
-            <Editable as="h3" path="usaa.impact.processTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
             <Prose>
-              <Paragraphs base="usaa.impact.process" items={u.impact.process} />
+              <Paragraphs base="usaa.impact.intro" items={u.impact.intro} />
             </Prose>
           </div>
 
-          {/* Measuring success */}
-          <div className="mt-20 reveal">
-            <Editable as="h3" path="usaa.impact.measuringTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
-            <Prose>
-              <Paragraphs base="usaa.impact.measuring" items={u.impact.measuring} />
-            </Prose>
-          </div>
-
-          {/* What this demonstrates */}
-          <div className="mt-20 reveal rounded-2xl bg-primary/10 p-8 lg:p-10">
+          <div className="mt-16 reveal rounded-2xl bg-primary/10 p-8 lg:p-10">
             <Editable as="h3" path="usaa.impact.demonstratesTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
             <Prose>
               <Paragraphs base="usaa.impact.demonstrates" items={u.impact.demonstrates} />
             </Prose>
           </div>
 
-          {/* Confidentiality note */}
+          <div className="mt-20">
+            <Editable as="h3" path="usaa.impact.caseStudiesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {u.impact.caseStudies.map((_, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  onClick={(e) => isAdmin && e.preventDefault()}
+                  className="reveal group rounded-2xl bg-muted/40 p-6 lg:p-8 hover:bg-muted/70 transition-all"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <span className="text-xs font-mono text-primary/70">
+                        Case {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <Editable as="h4" path={`usaa.impact.caseStudies.${i}.title`} className="text-lg lg:text-xl font-semibold mt-2 mb-3 group-hover:text-primary transition-colors" />
+                      <Editable as="p" path={`usaa.impact.caseStudies.${i}.question`} multiline className="text-sm text-muted-foreground leading-relaxed italic" />
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0 mt-1" />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
           <p className="mt-12 reveal text-xs text-muted-foreground/80 italic max-w-3xl">
             <Editable as="span" path="usaa.impact.confidentiality" multiline />
           </p>

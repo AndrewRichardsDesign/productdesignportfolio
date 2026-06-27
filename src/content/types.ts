@@ -424,10 +424,28 @@ export interface ConversantContent {
   };
 }
 
-export interface UsaaFeature {
+export interface UsaaFlowModel {
   title: string;
-  desc: string[];
-  bullets: string[];
+  flow: string;
+  desc: string;
+}
+
+export interface UsaaDecision {
+  n: string;
+  title: string;
+  desc: string;
+  tradeoff: string;
+}
+
+export interface UsaaResponse {
+  insight: string;
+  requirement: string;
+  response: string;
+}
+
+export interface UsaaQuestion {
+  n: string;
+  q: string;
 }
 
 export interface UsaaContent {
@@ -438,8 +456,6 @@ export interface UsaaContent {
     status: string;
     title: string;
     subtitle: string;
-    intro: string;
-    roleIntro: string;
     typeTags: string[];
     roleLabel: string;
     roleValue: string;
@@ -448,88 +464,85 @@ export interface UsaaContent {
     surfaceLabel: string;
     surfaceValue: string;
   };
-  context: {
+  overview: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
     intro: string[];
-    calloutEyebrow: string;
-    calloutLead: string;
-    calloutHighlight: string;
-  };
-  goals: {
-    eyebrow: string;
-    titleLead: string;
-    titleHighlight: string;
-    intro: string[];
-    designGoalsTitle: string;
-    designGoals: string[];
-  };
-  needs: {
-    eyebrow: string;
-    titleLead: string;
-    titleHighlight: string;
-    intro: string[];
-    memberLabel: string;
-    memberNeeds: string[];
-    businessLabel: string;
-    businessNeeds: string[];
-  };
-  problem: {
-    eyebrow: string;
-    titleLead: string;
-    titleHighlight: string;
-    intro: string[];
-    problemsTitle: string;
-    problems: TitledItem[];
-    closing: string[];
-  };
-  solution: {
-    eyebrow: string;
-    titleLead: string;
-    titleHighlight: string;
-    intro: string[];
-    highlightsTitle: string;
-    highlights: TitledItem[];
-    structureTitle: string;
-    structure: string[];
-    contentRoles: TitledItem[];
+    productTypeLabel: string;
+    productTypeList: string[];
+    roleTitle: string;
+    roleList: string[];
   };
   challenge: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
+    hmwLabel: string;
+    hmwLead: string;
+    hmwHighlight: string;
     intro: string[];
-    approachesTitle: string;
-    approaches: TitledItem[];
+    contextTitle: string;
+    context: string[];
+  };
+  discovery: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    insights: TitledItem[];
+    responsesTitle: string;
+    responses: UsaaResponse[];
+  };
+  strategy: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    quoteLead: string;
+    quoteHighlight: string;
+  };
+  productSystem: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    models: UsaaFlowModel[];
     closing: string[];
   };
-  selectedWork: {
+  decisions: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
     intro: string[];
-    features: UsaaFeature[];
+    items: UsaaDecision[];
   };
-  role: {
+  execution: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
     intro: string[];
-    workLabel: string;
-    work: string[];
-    closing: string;
+    blocks: TitledItem[];
+  };
+  validation: {
+    eyebrow: string;
+    titleLead: string;
+    titleHighlight: string;
+    intro: string[];
+    inputsLabel: string;
+    inputs: string[];
+    questionsTitle: string;
+    questions: UsaaQuestion[];
   };
   impact: {
     eyebrow: string;
     titleLead: string;
     titleHighlight: string;
-    processTitle: string;
-    process: string[];
-    measuringTitle: string;
-    measuring: string[];
+    intro: string[];
     demonstratesTitle: string;
     demonstrates: string[];
+    caseStudiesTitle: string;
+    caseStudies: { title: string; question: string }[];
     confidentiality: string;
   };
   footerCta: {

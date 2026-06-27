@@ -1197,23 +1197,26 @@
     "backToPortfolio": "Back to portfolio",
     "brand": "USAA Mobile App",
     "toc": [
-      "Context",
-      "Goals",
-      "Needs",
-      "Problem",
-      "Solution",
-      "Product challenge",
-      "Selected work",
-      "My role",
-      "Process & impact"
+      "Overview",
+      "Design Challenge",
+      "Discovery & Synthesis",
+      "Strategic Direction",
+      "Product System",
+      "Key Design Decisions",
+      "Execution",
+      "Validation",
+      "Impact"
     ],
     "hero": {
       "status": "USAA · Native mobile",
       "title": "USAA Mobile",
       "subtitle": "iOS, Android, and iPadOS redesign for USAA members",
-      "intro": "USAA Mobile was a three-year redesign of USAA's iOS, Android, and iPadOS apps — the primary digital access point for members to view accounts, manage policies, complete servicing actions, and receive automatically prioritized content. The work overhauled the app's information architecture, structure, and native interaction model while balancing platform conventions with USAA's brand presence.",
-      "roleIntro": "As a UX/UI Designer and Design Researcher, I worked across the full redesign — from research synthesis and product strategy to information architecture, interaction design, visual design, native platform patterns, and stakeholder communication. My work spanned the overall app organization, public and private homepage experiences, product cards, customization flows, iPadOS adaptation, loading states, and native design language exploration.",
-      "typeTags": ["Native mobile", "iOS · Android · iPadOS", "Information architecture", "Personalization"],
+      "typeTags": [
+        "Native mobile",
+        "iOS · Android · iPadOS",
+        "Information architecture",
+        "Personalization"
+      ],
       "roleLabel": "Role",
       "roleValue": "UX/UI design & design research",
       "platformLabel": "Platform",
@@ -1221,233 +1224,376 @@
       "surfaceLabel": "Users",
       "surfaceValue": "USAA members"
     },
-    "context": {
-      "eyebrow": "Context",
-      "titleLead": "A redesign",
-      "titleHighlight": "long overdue",
+    "overview": {
+      "eyebrow": "Overview",
+      "titleLead": "A multi-year redesign of",
+      "titleHighlight": "USAA Mobile.",
       "intro": [
-        "Besides minor updates, the USAA app had not been meaningfully redesigned since about 2007, even as member behavior was shifting toward mobile. Utilization of the app was rising quickly, app-only members were emerging, and mobile usage was overtaking the website, but the experience had not kept up with member expectations or business needs.",
-        "The old app was difficult to navigate, slow in terms of interaction and performance, and not structured around the information members needed most. It also underused USAA's understanding of individual member relationships. Product advertisements and advice were often irrelevant, which trained members to ignore content that could have been useful when presented with better timing and context.",
-        "At the same time, members still valued parts of the existing app. Quick access to servicing actions like transferring funds was useful, so the redesign could not simply discard everything. A critical part of the work was identifying what was already valuable and preserving that utility while rebuilding the surrounding structure."
+        "USAA Mobile was a multi-year redesign of USAA's iOS, Android, and iPadOS apps: the primary digital access point for members to view accounts, manage policies, complete servicing actions, receive personalized reminders, and discover relevant products and services.",
+        "I worked on the redesign as a UX/UI Designer and Design Researcher over a three-year effort. My role spanned research synthesis, product strategy, information architecture, interaction design, visual design, native platform patterns, design-system contribution, and stakeholder communication.",
+        "Although this was a large enterprise product with many teams involved, I worked across several core parts of the redesign: the overall app organization, the Home model, product cards, public and private homepage experiences, customization, iPadOS adaptation, loading states, native design language exploration, and synthesis of member feedback."
       ],
-      "calloutEyebrow": "The tension",
-      "calloutLead": "Rising mobile usage on an app that hadn't kept up — modernize without",
-      "calloutHighlight": "discarding what members already valued."
-    },
-    "goals": {
-      "eyebrow": "Goals",
-      "titleLead": "A simpler, more",
-      "titleHighlight": "modern app",
-      "intro": [
-        "The goal was to create a simpler, more modern app experience that helped members quickly understand and act on their relationship with USAA."
+      "productTypeLabel": "Product type",
+      "productTypeList": [
+        "Consumer mobile app",
+        "Financial services platform",
+        "Native iOS, Android & iPadOS redesign",
+        "Enterprise design-system & product architecture"
       ],
-      "designGoalsTitle": "Design goals",
-      "designGoals": [
-        "Give members top-level access to the accounts, policies, and products they owned.",
-        "Make common servicing actions easier to find and complete.",
-        "Reduce navigation confusion and avoidable call-center volume.",
-        "Align taxonomy, structure, and concepts across the app and website.",
-        "Use personalized content more effectively without creating banner blindness.",
-        "Support new product acquisition in a way that felt useful rather than intrusive.",
-        "Create native patterns that respected iOS, Android, and iPadOS conventions while expressing the USAA brand.",
-        "Build patterns that could scale across iOS, Android, and iPadOS as the design system matured."
-      ]
-    },
-    "needs": {
-      "eyebrow": "Needs",
-      "titleLead": "Balancing member",
-      "titleHighlight": "and business needs",
-      "intro": [
-        "The redesign had to balance direct member needs with business goals. Members needed fast access to balances, policies, account summaries, servicing actions, claims, search, chat, and personalized reminders. They also needed control over how their accounts and policies appeared, especially when they had many products, hidden accounts, custom names, or grouped financial relationships.",
-        "The business needed the app to support acquisition, engagement, personalized content, and cross-platform consistency, so marketing and recommendations could not disappear — but Home also could not become only a servicing dashboard. The experience had to align with the redesigned web app so members would not learn two different mental models, and it had to scale across iOS, Android, and iPadOS while USAA's design system was still being rebuilt. Leadership disagreement and executive pressure around prioritization and business visibility added another layer of complexity."
-      ],
-      "memberLabel": "Member needs",
-      "memberNeeds": [
-        "Account & policy balances",
-        "Common servicing actions",
-        "Account summaries",
-        "Acquiring new products",
-        "Syncing outside accounts",
-        "Search & chat",
-        "Custom names & arrangement",
-        "Personalized reminders"
-      ],
-      "businessLabel": "Business needs",
-      "businessNeeds": [
-        "Product acquisition",
-        "Engagement",
-        "Personalized content",
-        "Cross-platform consistency",
-        "Tasteful marketing"
-      ]
-    },
-    "problem": {
-      "eyebrow": "Problem",
-      "titleLead": "Trying to do too much",
-      "titleHighlight": "without structure",
-      "intro": [
-        "The old app was trying to do too much without a clear structure. Members had trouble finding basic account and policy information, navigation patterns increased reliance on call centers for avoidable servicing needs, personalized data was underused, and the rate of product acquisition in native was not keeping up with the broader shift toward mobile usage."
-      ],
-      "problemsTitle": "Where it broke down",
-      "problems": [
-        { "title": "Hard to find the basics", "desc": "Members had trouble finding basic account and policy information." },
-        { "title": "Avoidable call volume", "desc": "Navigation patterns increased reliance on call centers for avoidable servicing needs." },
-        { "title": "Underused personalization", "desc": "Personalized data was underused, so content often felt generic or irrelevant." },
-        { "title": "No single view of everything", "desc": "The structure did not fully support members who wanted to see everything they owned in one place." },
-        { "title": "Lagging native acquisition", "desc": "Native product acquisition was not keeping up with the broader shift toward mobile usage." }
-      ],
-      "closing": [
-        "The deeper design problem was not only visual modernization. It was helping members move through a complex financial relationship quickly, confidently, and with fewer unnecessary steps while still supporting business goals like acquisition, engagement, and personalized content."
-      ]
-    },
-    "solution": {
-      "eyebrow": "Solution",
-      "titleLead": "Home as the",
-      "titleHighlight": "center of gravity",
-      "intro": [
-        "The redesigned app centered the experience around Home as the member's primary place to understand and act on their relationship with USAA. Home organized owned products, common actions, acquisition opportunities, personalized reminders, and helpful content into a clearer structure.",
-        "We organized Home around product category cards for Banking, Insurance, Investing, and Advice & Services. Each card could contain related accounts, policies, actions, and product suggestions. This gave members a clearer model of their relationship with USAA while still giving the business a structured place for acquisition and engagement.",
-        "The broader app structure used a simple tab model: Home, Search, and Chat. Home carried the main product relationship and personalized content. Search gave members a direct path when they knew what they wanted. Chat created a persistent support path for help-oriented moments."
-      ],
-      "highlightsTitle": "The new Home model",
-      "highlights": [
-        { "title": "Product cards", "desc": "Banking, Insurance, Investing, and Advice & Services — each grouping related accounts, policies, actions, and suggestions." },
-        { "title": "Activity cards", "desc": "Timely, personalized content like upcoming bills and travel notices, prioritized by what's most likely to matter now." },
-        { "title": "Home · Search · Chat", "desc": "A simple three-tab model: Home for products and content, Search for direct paths, Chat for help-oriented moments." }
-      ],
-      "structureTitle": "System structure",
-      "structure": [
-        "The redesigned app used Home as the center of gravity. From Home, members could branch into lower-level account summaries, policy pages, the claims center, servicing flows, modals, and personalized content experiences.",
-        "Product cards provided a flexible structure for owned products, related actions, and product suggestions. Activity cards provided a separate pattern for timely, personalized content. Together, these patterns helped separate \"my stuff,\" \"things I can do,\" and \"things USAA thinks may matter now.\"",
-        "This separation was important because the old app blurred too many content types together. By giving each type of content a more specific role, the experience could be more predictable for members and more scalable for future business needs."
-      ],
-      "contentRoles": [
-        { "title": "My stuff", "desc": "Accounts, policies, and products the member owns." },
-        { "title": "Things I can do", "desc": "Servicing actions like transfers and deposits, near the products they relate to." },
-        { "title": "What may matter now", "desc": "Prioritized, personalized reminders and relevant suggestions." }
+      "roleTitle": "My role",
+      "roleList": [
+        "UX/UI Designer & Design Researcher",
+        "Research synthesis",
+        "Information architecture",
+        "Interaction design",
+        "Visual design",
+        "Native mobile pattern exploration",
+        "Design-system contribution",
+        "Stakeholder & executive communication",
+        "Developer handoff support"
       ]
     },
     "challenge": {
-      "eyebrow": "Product challenge",
-      "titleLead": "Equal access vs.",
-      "titleHighlight": "prioritization",
+      "eyebrow": "Design Challenge",
+      "titleLead": "Help members act on a complex",
+      "titleHighlight": "financial relationship.",
+      "hmwLabel": "The challenge",
+      "hmwLead": "How might we redesign a large, legacy financial app so members can quickly understand and act on their relationship with USAA —",
+      "hmwHighlight": "while still supporting acquisition, personalization, servicing, platform conventions, and enterprise constraints?",
       "intro": [
-        "The sharpest product tension was equal access versus prioritization.",
-        "Members had a wide variety of relationships with USAA, from a few accounts or policies to dozens of products, plus hidden accounts, groups, custom names, and aggregated accounts. The team explored several approaches for simplifying the first level of Home, including showing only a selection of accounts, placing the rest on a deeper page, expanding cards to view more, and showing everything by default."
+        "The challenge was not only to modernize the interface. The app had to help members move through a complex financial relationship with fewer unnecessary steps. A single member might have no products, a few products, or dozens of bank accounts, insurance policies, investments, external accounts, groups, hidden products, custom names, and balance-visibility preferences.",
+        "At the same time, USAA had business goals around product acquisition, personalized content, and cross-platform consistency. The redesign needed to reduce friction without turning Home into a generic dashboard that ignored business needs, marketing requirements, support paths, and future app experiences."
       ],
-      "approachesTitle": "Directions we explored",
-      "approaches": [
-        { "title": "Selection + deeper page", "desc": "Show only a selection of accounts on the first level, with everything else on a deeper page." },
-        { "title": "Expandable cards", "desc": "Let cards expand so members could view more without leaving Home." },
-        { "title": "Everything exposed", "desc": "The more controversial direction: expose everything by default on the first level of Home." }
-      ],
-      "closing": [
-        "Member feedback and testing showed that members preferred seeing all of their products in one place. Data and business reasoning also reduced concern that full product visibility would crowd out marketing or other business content, because most members had relatively few accounts.",
-        "The final direction created a clearer, more member-centered structure while still supporting acquisition, personalization, and engagement. It also simplified the integration of customization features, because the app could treat Home as the main place where members organized and accessed their products."
+      "contextTitle": "Context: a redesign long overdue",
+      "context": [
+        "The USAA app had not been meaningfully redesigned since around 2007, even as member behavior was shifting toward mobile. App usage was rising quickly, app-only members were emerging, and the mobile experience was increasingly becoming the primary way members interacted with USAA.",
+        "The legacy experience had several problems. Navigation was difficult, interaction and performance felt slow, product and policy information was not always easy to access, and member data was underused. Product advertisements and advice could feel irrelevant, which trained members to ignore content that might have been useful if it had appeared with better timing and context.",
+        "The existing app was not all bad. Members valued quick access to common servicing actions, such as transferring funds. A critical part of the redesign was identifying what still worked and preserving that utility while rebuilding the structure around clearer member needs."
       ]
     },
-    "selectedWork": {
-      "eyebrow": "Selected work",
-      "titleLead": "Where I worked",
-      "titleHighlight": "in the details",
+    "discovery": {
+      "eyebrow": "Discovery & Synthesis",
+      "titleLead": "What the",
+      "titleHighlight": "research surfaced.",
       "intro": [
-        "Four areas where I worked through the structure and details of the redesign — each of which could stand on its own as a deeper case study."
+        "The redesign was informed by app analytics, existing member feedback, usability testing, comparative testing, member interviews, competitive analysis, and heuristic review of the legacy app. The research and synthesis pointed to a few major patterns."
       ],
-      "features": [
+      "insights": [
         {
-          "title": "Organization and interaction model",
-          "desc": [
-            "We incorporated concepts and structures from the redesigned web homepage to create better alignment across platforms. This helped members build a more consistent mental model whether they were using the website or native app.",
-            "The app's top-level structure became Home, Search, and Chat. Home carried the main product relationship and personalized content. Search gave members a direct path when they knew what they wanted. Chat created a persistent support path for help-oriented moments.",
-            "This structure reduced the need for deep navigation and helped the app behave more like a task-oriented native experience."
-          ],
-          "bullets": []
+          "title": "Members wanted top-level access to what they owned",
+          "desc": "The strongest recurring need was simple: members wanted to see their accounts, policies, and products in one place without hunting through a confusing structure."
         },
         {
-          "title": "Home and product-card model",
-          "desc": [
-            "Home organized the member experience into product cards and activity cards.",
-            "Product cards grouped Banking, Insurance, Investing, and Advice & Services. These cards gave members a place to view accounts and policies, take related actions, and discover relevant product suggestions. Actions such as transferring funds or depositing money could live near the products they related to instead of being buried elsewhere.",
-            "Activity cards handled personalized reminders and relationship-based content, such as upcoming bills or travel notices. This helped create a more useful form of personalization because content appeared as part of the member's current context instead of as disconnected advertising."
-          ],
-          "bullets": []
+          "title": "Navigation friction created avoidable support needs",
+          "desc": "When members could not find basic information or common actions, they were more likely to rely on support channels for tasks the app should have made easier."
         },
         {
-          "title": "Customization",
-          "desc": [
-            "A major part of the work was integrating existing customization capabilities into the redesigned app. The customization experience needed to feel modern on native platforms while supporting a complex set of behaviors.",
-            "This work required interaction analysis because customization could easily conflict with the new Home structure. The goal was to give members control without making the main product experience harder to understand."
-          ],
-          "bullets": [
-            "Choosing where the customization entry point belonged on Home.",
-            "Determining the right view type for customization.",
-            "Rationalizing multiple isolated tools versus one unified experience.",
-            "Reordering accounts, policies, groups, and entire product categories.",
-            "Renaming accounts or policies.",
-            "Creating, deleting, and adding products to groups.",
-            "Hiding products and balances.",
-            "Migrating \"view all\" and \"show hidden\" into a cleaner interaction model."
-          ]
+          "title": "Personalization had potential, but poor relevance created banner blindness",
+          "desc": "USAA had meaningful member context, but poorly timed or irrelevant marketing and advice reduced trust in the content area. The opportunity was to make personalized content feel more like service and less like interruption."
         },
         {
-          "title": "iPadOS adaptation",
-          "desc": [
-            "After the core mobile app structure was defined, iPadOS introduced a new design challenge. The app needed a system of structures, view types, and interactions that made better use of the larger platform while still connecting back to the broader USAA Mobile model.",
-            "This work helped extend the app from a phone-first experience into a flexible native ecosystem spanning split view, fullscreen behavior, modal patterns, and simple column-width rules."
-          ],
-          "bullets": [
-            "A tab bar organization.",
-            "Split-view layout for Home.",
-            "Support for full-screen experiences.",
-            "SwiftUI-style modals.",
-            "Persistent full-screen controls across the navigation stack.",
-            "Compatibility with back navigation.",
-            "Column-width rules for a strong experience without complex logic."
-          ]
+          "title": "Mobile and web needed a shared mental model",
+          "desc": "Members should not have to learn one structure on the website and another in the app. The redesign needed to align taxonomy, concepts, and member relationship models across platforms while still respecting native conventions."
+        },
+        {
+          "title": "Member complexity needed flexible rules, not one-off screens",
+          "desc": "The app had to support members with very different product mixes: banking, insurance, investments, advice and services, external accounts, hidden accounts, groups, asset and liability totals, and custom organization preferences."
+        },
+        {
+          "title": "Native design had to balance platform conventions with brand expression",
+          "desc": "The app needed to feel modern and native on iOS, Android, and iPadOS, while still expressing USAA's brand and contributing to a broader native design language."
+        }
+      ],
+      "responsesTitle": "From insight to product response",
+      "responses": [
+        {
+          "insight": "Members wanted to see everything they owned in one place.",
+          "requirement": "Make the member relationship visible at the top level.",
+          "response": "A Home model centered on product cards for Banking, Insurance, Investing, and Advice & Services."
+        },
+        {
+          "insight": "Navigation confusion increased friction and avoidable support needs.",
+          "requirement": "Simplify the first-level structure and create clear routes for known tasks and help-seeking moments.",
+          "response": "A simplified tab model around Home, Search, and Chat, with Home acting as the center of gravity."
+        },
+        {
+          "insight": "The app needed to support both servicing and acquisition.",
+          "requirement": "Give members immediate access to owned products and actions while creating structured spaces for relevant product discovery.",
+          "response": "Product cards that combined accounts, policies, servicing actions, product suggestions, and acquisition entry points."
+        },
+        {
+          "insight": "Personalized content was easy to ignore when it felt generic.",
+          "requirement": "Make reminders, advice, and marketing more contextual.",
+          "response": "Activity cards for relevant moments such as upcoming bills, active claims, travel notices, and other member-specific prompts."
+        },
+        {
+          "insight": "Member product relationships were highly variable.",
+          "requirement": "Create flexible rules for long product lists, custom names, groups, hidden products, and balance visibility.",
+          "response": "A product-card system paired with a single Customize experience for renaming, hiding, grouping, and reordering."
+        },
+        {
+          "insight": "Tablet behavior could not simply stretch the phone app.",
+          "requirement": "Adapt the system to iPadOS interaction patterns.",
+          "response": "A split-view structure, persistent fullscreen behavior, platform-specific modal patterns, and simple column-width rules."
         }
       ]
     },
-    "role": {
-      "eyebrow": "My role",
-      "titleLead": "Shaping the model",
-      "titleHighlight": "and the details",
+    "strategy": {
+      "eyebrow": "Strategic Direction",
+      "titleLead": "Home as the member's",
+      "titleHighlight": "relationship hub.",
       "intro": [
-        "Over the three-year effort, I worked across the full USAA Mobile redesign rather than owning only one feature. As a UX/UI Designer and Design Researcher, I contributed to research synthesis, product strategy, information architecture, interaction design, visual design, native platform patterns, and stakeholder communication."
+        "The strategic direction was to make Home the member's relationship hub: a place where members could see what they owned, act on common needs, discover relevant next steps, and receive timely reminders.",
+        "Home was not treated as a marketing surface, a product list, or a generic dashboard alone. It had to be all of these in the right balance. The redesign organized Home around owned products first, then layered in actions, acquisition, activity cards, reminders, and support paths.",
+        "This strategy also let the app align with the redesigned Member Home Web experience. The goal was not to make mobile and web identical, but to make them conceptually familiar — the same member relationship model across platforms, while native app patterns shaped the interaction details."
       ],
-      "workLabel": "My work included",
-      "work": [
-        "Defining the app's organization and interaction model.",
-        "Designing Home concepts, product cards, activity-card logic, and destination patterns.",
-        "Translating customization features from Member Home Web and the legacy app into modern native patterns.",
-        "Working through platform-specific behavior for iOS, Android, and iPadOS.",
-        "Designing and evaluating loading states.",
-        "Communicating across multiple design teams, business partners, development partners, and executive stakeholders."
+      "quoteLead": "“Home had to be a product list, an action center, a personalization surface, and an acquisition space —",
+      "quoteHighlight": "all in the right balance.”"
+    },
+    "productSystem": {
+      "eyebrow": "Product System",
+      "titleLead": "Not one screen — a",
+      "titleHighlight": "system of flows.",
+      "intro": [
+        "The redesigned app was not one screen. It was a system of related flows that had to support different member needs while staying understandable at the first level."
       ],
-      "closing": "This work also influenced how USAA could embrace native platform conventions while developing a new native design language."
+      "models": [
+        {
+          "title": "Core app structure",
+          "flow": "Home → Search → Chat",
+          "desc": "A simple first-level organization. Home supported the member relationship and contextual content. Search supported direct navigation when members knew what they wanted. Chat provided a persistent support path for help-oriented moments."
+        },
+        {
+          "title": "Member relationship model",
+          "flow": "Home → Product card → Account or policy → Summary page",
+          "desc": "Home organized member-owned products into cards for Banking, Insurance, Investing, and Advice & Services. Tapping an account or policy led to a summary experience, creating a clear path from top-level overview to product detail."
+        },
+        {
+          "title": "Servicing model",
+          "flow": "Product card or summary → Action → Modal sheet or destination",
+          "desc": "Common actions such as Transfer, Pay Bills, Deposit, and Send were surfaced near the related product context. Many focused servicing actions used modal sheets to preserve a lightweight native feel while keeping members oriented."
+        },
+        {
+          "title": "Acquisition & connection model",
+          "flow": "Product card → Add account / Get quote → Menu or modal → Product path",
+          "desc": "The same product-card structure gave USAA a place for acquisition and external account connection without forcing generic marketing into unrelated areas. The challenge was making product discovery feel contextual rather than intrusive."
+        },
+        {
+          "title": "Personalized activity model",
+          "flow": "Member context → Activity card → Reminder, task, or next step",
+          "desc": "Activity cards created a place for personalized content such as upcoming bills, active claims, and travel notices. These cards helped shift personalization from generic promotion toward timely assistance."
+        },
+        {
+          "title": "Customization model",
+          "flow": "Home → Edit → Customize → Rename, hide, group, reorder → Done",
+          "desc": "Customization translated existing web and legacy-app functionality into modern native patterns. Members could rename accounts or policies, hide products or balances, create groups, reorder products, move items between groups, and rearrange entire sections."
+        },
+        {
+          "title": "iPadOS model",
+          "flow": "Home split view → Summary → Fullscreen toggle / back navigation",
+          "desc": "The iPadOS adaptation created a structure that could support Home and detail views at the same level. A persistent fullscreen toggle solved a legacy interaction problem by letting members move in and out of fullscreen even after navigating deeper."
+        }
+      ],
+      "closing": [
+        "The system needed to preserve simplicity at the first level while still scaling to a large number of products, actions, account states, support paths, acquisition needs, and platform-specific interaction patterns."
+      ]
+    },
+    "decisions": {
+      "eyebrow": "Key Design Decisions",
+      "titleLead": "Disciplined",
+      "titleHighlight": "tradeoffs.",
+      "intro": [
+        "The strongest solution was rarely the cleanest screen or the most minimal first level. Each decision balanced member expectations, business goals, existing behaviors, and platform constraints."
+      ],
+      "items": [
+        {
+          "n": "01",
+          "title": "Make Home the center of the app",
+          "desc": "Home became the primary place where members could understand their relationship with USAA — combining owned products, common actions, activity cards, acquisition paths, and personalized content.",
+          "tradeoff": "Home risked becoming overloaded. The answer wasn't to remove complexity but to organize it into clearer zones and cards members could parse quickly."
+        },
+        {
+          "n": "02",
+          "title": "Show member-owned products at the top level",
+          "desc": "The team explored showing only a selection of accounts, placing the rest on a deeper page, adding expand/collapse, and showing all products by default.",
+          "tradeoff": "Showing everything could make Home longer for members with many products. Research and business reasoning supported full visibility: members preferred seeing all products in one place, and most had relatively few accounts."
+        },
+        {
+          "n": "03",
+          "title": "Use product cards as a flexible container",
+          "desc": "Product cards let Banking, Insurance, Investing, and Advice & Services share a common model while supporting different content types, actions, states, and suggestions.",
+          "tradeoff": "A shared card model had to avoid becoming too generic — enough consistency to feel predictable, enough flexibility to support very different product categories."
+        },
+        {
+          "n": "04",
+          "title": "Balance servicing and acquisition",
+          "desc": "Members came to complete tasks and understand their accounts, but the business also needed to support product discovery and engagement.",
+          "tradeoff": "Too much marketing would create banner blindness; too little would weaken the business value. The answer was acquisition entry points in product-relevant contexts and personalized content that felt timely."
+        },
+        {
+          "n": "05",
+          "title": "Use modal sheets for focused native tasks",
+          "desc": "Servicing actions and acquisition menus often fit modal sheets well because they were focused, temporary, and task-oriented.",
+          "tradeoff": "Not every experience belonged in a modal. Complex areas like Profile were better suited to navigation views — requiring a view-type strategy rather than one pattern."
+        },
+        {
+          "n": "06",
+          "title": "Create one Customize experience, not many editors",
+          "desc": "Customization involved many related actions: rename, hide, hide balances, reorder, group, ungroup, and move items between sections. A single Customize space unified them.",
+          "tradeoff": "One shared experience increased the need for clear structure and rules, but let members manage their full relationship in one place rather than learning separate editing patterns per card."
+        },
+        {
+          "n": "07",
+          "title": "Respect native conventions while shaping a new design language",
+          "desc": "The app needed to feel native on iOS, Android, and iPadOS while USAA evolved its broader visual and interaction language.",
+          "tradeoff": "Over-customization could feel less native or harder to build; over-reliance on defaults could weaken brand and consistency. The redesign defined a middle path: native behavior with a recognizable USAA system."
+        },
+        {
+          "n": "08",
+          "title": "Treat iPadOS as an adaptation, not a resize",
+          "desc": "The iPad version needed a structure that made better use of screen space while supporting Home, summaries, Search, Chat, Profile, transfer, and other flows.",
+          "tradeoff": "The team explored custom patterns but leaned into familiar iPad conventions like split view and SwiftUI-style modals — easier to understand, scale, and build."
+        }
+      ]
+    },
+    "execution": {
+      "eyebrow": "Execution & Collaboration",
+      "titleLead": "Across teams, constraints,",
+      "titleHighlight": "and platforms.",
+      "intro": [
+        "The project required collaboration across multiple design teams, business partners, developers, and executives. My contribution spanned research framing through native execution."
+      ],
+      "blocks": [
+        {
+          "title": "Research synthesis & problem framing",
+          "desc": "I helped synthesize years of member feedback, app analytics, usability findings, competitive patterns, and legacy-app pain points into a clearer direction: members needed faster access to owned products, better servicing paths, and more useful personalized content."
+        },
+        {
+          "title": "Information architecture & app structure",
+          "desc": "I contributed to the app's overall organization, including the Home, Search, and Chat model; destination patterns for account and policy summaries; and the role of modal sheets versus navigation views."
+        },
+        {
+          "title": "Home & product-card design",
+          "desc": "I worked on the Home model and product-card system, including how Banking, Insurance, Investing, and Advice & Services could organize owned products, common actions, product suggestions, and contextual member content."
+        },
+        {
+          "title": "Customization flows",
+          "desc": "I worked through how existing customization functionality could translate into a modern native experience — entry points, view types, renaming, hiding products and balances, grouping, reordering, and returning members to Home."
+        },
+        {
+          "title": "iPadOS adaptation",
+          "desc": "I contributed to the tablet adaptation, including split-view behavior, fullscreen interactions, modal decisions, and layout rules that could scale across iPad sizes."
+        },
+        {
+          "title": "Design-system & native language contribution",
+          "desc": "The redesign helped shape USAA's native design language. In many cases we weren't simply applying finished components — we were defining patterns and components other teams could later reuse."
+        },
+        {
+          "title": "Stakeholder communication",
+          "desc": "A major part of the work was explaining tradeoffs, aligning teams around member evidence, and balancing competing priorities without losing the core product direction."
+        }
+      ]
+    },
+    "validation": {
+      "eyebrow": "Validation & Measurement",
+      "titleLead": "Grounded in",
+      "titleHighlight": "member evidence.",
+      "intro": [
+        "The redesign was supported by both existing evidence and validation during the design process. Key signals included member preference for seeing all products in one place, reduced navigation confusion in comparative testing, and clearer understanding of the redesigned Home structure.",
+        "For a public portfolio version, exact performance numbers remain confidential, but the measurement story can still be framed around the right success signals."
+      ],
+      "inputsLabel": "Research & validation inputs",
+      "inputs": [
+        "App analytics",
+        "Existing member feedback",
+        "Usability testing",
+        "Comparative testing",
+        "Member interviews",
+        "Competitive analysis",
+        "Heuristic review"
+      ],
+      "questionsTitle": "Success signals",
+      "questions": [
+        {
+          "n": "01",
+          "q": "Can members find accounts and policies faster?"
+        },
+        {
+          "n": "02",
+          "q": "Can members complete common servicing tasks with fewer steps?"
+        },
+        {
+          "n": "03",
+          "q": "Does the redesigned Home reduce navigation confusion?"
+        },
+        {
+          "n": "04",
+          "q": "Do members use Search and Chat as intentional support paths rather than recovery from poor navigation?"
+        },
+        {
+          "n": "05",
+          "q": "Does contextual content perform better than generic promotional content?"
+        },
+        {
+          "n": "06",
+          "q": "Do product-card acquisition paths drive engagement without increasing banner blindness?"
+        },
+        {
+          "n": "07",
+          "q": "Do members understand and use customization features?"
+        },
+        {
+          "n": "08",
+          "q": "Does the iPadOS structure improve navigation and multitasking versus the legacy model?"
+        },
+        {
+          "n": "09",
+          "q": "Can the design system support other teams more efficiently after the redesign?"
+        }
+      ]
     },
     "impact": {
-      "eyebrow": "Process & impact",
-      "titleLead": "Tradeoffs, alignment",
-      "titleHighlight": "and outcomes",
-      "processTitle": "Process & collaboration",
-      "process": [
-        "The work required alignment across a large product organization. Multiple design teams were involved, and the project included conflicting viewpoints from business and development partners as well as direct executive involvement.",
-        "The process included understanding member feedback and data, identifying what was working in the old app, defining member needs and business goals, exploring competing structures, reviewing technical constraints, and iterating toward a model that could scale.",
-        "This was also a communication challenge. Because the redesign touched major parts of the app and overlapped with web strategy, design language, business goals, and technical implementation, success depended on making tradeoffs visible and helping stakeholders understand why the chosen model served both members and the business."
+      "eyebrow": "Impact",
+      "titleLead": "Beyond a",
+      "titleHighlight": "redesigned app.",
+      "intro": [
+        "The final shipped app reflected several of the project's major design decisions, including the Home structure, product-card model, customization patterns, native interaction direction, and iPadOS adaptation.",
+        "The work also influenced USAA beyond the mobile app itself. The redesigned app helped establish patterns for USAA's broader native design language, and many components and interaction models contributed to the design-system overhaul.",
+        "The strongest story is not simply that the app was redesigned. It's that the work shows how to simplify a large consumer-facing product while respecting business complexity, technical constraints, member evidence, platform conventions, and enterprise collaboration."
       ],
-      "measuringTitle": "Research & validation",
-      "measuring": [
-        "The redesign was informed by usability testing, comparative testing, member interviews, app analytics, existing member feedback, competitive analysis, and a heuristic review of the legacy app. App analytics and existing feedback helped identify pain points in the current experience, while interviews and testing helped validate which new structures were easier for members to understand and use.",
-        "Usability testing showed that members preferred seeing all of their USAA products on Home rather than only a partial or prioritized set at the top level. Comparative testing also showed that the redesigned structure reduced navigation confusion, giving the team evidence that the new model made it easier for members to move through the app."
-      ],
-      "demonstratesTitle": "Impact & what it demonstrates",
+      "demonstratesTitle": "What this project demonstrates",
       "demonstrates": [
-        "The final shipped app reflected our major design decisions, including the Home structure, product-card model, customization patterns, iOS and Android interaction direction, and iPadOS adaptation.",
-        "The work also had influence beyond USAA Mobile. Our designs served as a foundation for USAA's broader native design language, and many of the components we created were added directly into the USAA design system overhaul.",
-        "USAA Mobile demonstrates my ability to simplify a large consumer-facing product without ignoring business complexity. The work required research synthesis, platform thinking, native mobile interaction design, cross-platform taxonomy alignment, personalization strategy, product-card information architecture, design-system contribution, and collaboration across a complex enterprise environment.",
-        "It also shows how product design often depends on disciplined tradeoffs. The strongest solution was not the cleanest screen or the most minimal first level — it was the structure that best matched member expectations, supported business needs, preserved valuable existing behaviors, and created a scalable foundation for future app experiences."
+        "USAA Mobile demonstrates my ability to work inside a large, constrained, compliance-heavy enterprise environment while still thinking like a product designer. The work required connecting research, IA, interaction design, platform strategy, design systems, business priorities, and stakeholder alignment.",
+        "It also shows disciplined product judgment. The strongest solution was the structure that matched member expectations, supported business goals, preserved valuable existing behaviors, scaled across platforms, and gave future teams a reusable foundation."
       ],
-      "confidentiality": "Because this work involved USAA's internal product strategy, member data, and unreleased or proprietary design decisions, sensitive details and visuals have been anonymized or recreated for public portfolio use."
+      "caseStudiesTitle": "Deeper case studies",
+      "caseStudies": [
+        {
+          "title": "Home & Product-Card Model",
+          "question": "How might Home organize owned products, actions, acquisition, activity cards, and personalization without becoming overwhelming?"
+        },
+        {
+          "title": "Equal Access vs. Prioritization",
+          "question": "How might the team decide whether to show all member products at the first level or prioritize only a subset?"
+        },
+        {
+          "title": "Organization & Interaction Model",
+          "question": "How might Home, Search, Chat, account summaries, servicing actions, acquisition menus, Profile, and modal sheets fit into one app structure?"
+        },
+        {
+          "title": "Customization",
+          "question": "How might customization from Member Home Web and the legacy app translate into a modern native experience?"
+        },
+        {
+          "title": "iPadOS Adaptation",
+          "question": "How might a phone-first financial app become a tablet-optimized system with split view, fullscreen behavior, modal patterns, and simple layout rules?"
+        },
+        {
+          "title": "Design-System Contribution",
+          "question": "How might a major app redesign help define reusable native patterns for the broader organization?"
+        }
+      ],
+      "confidentiality": "Because this work involved USAA's internal product strategy, member data, and proprietary design decisions, sensitive details and visuals have been anonymized or recreated for public portfolio use."
     },
     "footerCta": {
       "titleLead": "Want to talk about",
