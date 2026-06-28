@@ -576,8 +576,13 @@ export default function Arcatext() {
             <Prose>
               <Paragraphs base="arcatext.execution.competitive" items={arc.execution.competitive} />
             </Prose>
-            {/* Diagram under the "The need for better typing UX" subsection. */}
-            <TypingFlowDiagram />
+            {/* Diagram under the "The need for better typing UX" subsection.
+                It breaks out of the centered content column to span the full
+                page width (clearing the left section-nav rail at >=1600px),
+                without affecting any other content's width. */}
+            <div className="mx-[calc(50%-50vw)] px-4 sm:px-6 lg:px-8 min-[1600px]:pl-56 min-[1600px]:pr-12">
+              <TypingFlowDiagram />
+            </div>
           </div>
 
           {/* Launch measurement plan */}

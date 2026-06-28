@@ -13,15 +13,10 @@ import { useTheme } from '@/hooks/useTheme';
  * interact" button that opens it full-screen.
  */
 const TOOL_SRC = `${import.meta.env.BASE_URL}arcatext-admin-tool.html`;
-// The tool's natural canvas (3-column layout). The preview scales this to fit.
-const FRAME_W = 1200;
-const FRAME_H = 820;
 
 export function AdminToolShowcase() {
   const [open, setOpen] = useState(false);
-  const wrapRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLIFrameElement>(null);
-  const [scale, setScale] = useState(0.5);
   const [hovering, setHovering] = useState(false);
 
   // Hover "alive" effect: while the cursor is over the preview, the whole UI
@@ -110,17 +105,6 @@ export function AdminToolShowcase() {
     [resolvedTheme]
   );
 
-  // Scale the preview iframe to fill the available width (keeps text readable).
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(() => {
-      setScale(Math.min(1, el.clientWidth / FRAME_W));
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
   // Lock body scroll + close on Esc while the modal is open.
   useEffect(() => {
     if (!open) return;
@@ -145,15 +129,14 @@ export function AdminToolShowcase() {
         Typing-UX admin tool. Aggregates behavior, scores it, recommends settings.
       </p>
 
-      {/* Scaled, non-interactive preview. Hovering brings it to life. */}
+      {/* Full-width, non-interactive preview. The tool is responsive, so the
+          iframe renders at the container's real width. Hovering brings it to life. */}
       <div
-        ref={wrapRef}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
-        className={`relative w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm ${
+        className={`relative h-[560px] w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm sm:h-[720px] lg:h-[820px] ${
           hovering ? 'preview-pulse' : ''
         }`}
-        style={{ height: FRAME_H * scale }}
       >
         <iframe
           ref={previewRef}
@@ -162,8 +145,7 @@ export function AdminToolShowcase() {
           loading="lazy"
           tabIndex={-1}
           aria-hidden
-          className="pointer-events-none origin-top-left border-0"
-          style={{ width: FRAME_W, height: FRAME_H, transform: `scale(${scale})` }}
+          className="pointer-events-none h-full w-full border-0"
         />
         {/* Click-catcher: the whole preview opens the tool. */}
         <button
