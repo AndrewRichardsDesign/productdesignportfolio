@@ -112,7 +112,7 @@ export function AdminBar() {
           >
             <Plus className="h-3.5 w-3.5" /> Paragraph
           </Button>
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button
                 size="sm"
@@ -123,7 +123,7 @@ export function AdminBar() {
                 <ChevronDown className="h-3.5 w-3.5 opacity-70" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
+            <DropdownMenuContent align="start" side="top" className="z-[120]">
               {HEADER_STYLES.map((h) => (
                 <DropdownMenuItem
                   key={h.style}
