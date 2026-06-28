@@ -631,22 +631,42 @@
       "flows": [
         {
           "title": "Simple Translation",
-          "steps": ["Write", "Reword", "Send"],
+          "steps": [
+            "Write",
+            "Reword",
+            "Send"
+          ],
           "desc": "For low-risk messages, the flow stays lightweight. Users type what they want to say, generate a more natural target-language version, and send it without entering a separate learning task."
         },
         {
           "title": "Context-Aware Translation",
-          "steps": ["Write", "Reword", "Check", "Clarify", "Send"],
+          "steps": [
+            "Write",
+            "Reword",
+            "Check",
+            "Clarify",
+            "Send"
+          ],
           "desc": "For higher-stakes messages, users can inspect the translation before sending. Check verifies intent through reverse translation, while Clarify handles ambiguity, alternate phrasing, homographs, tone, gender, and other context-sensitive meaning decisions."
         },
         {
           "title": "Handling Received Messages",
-          "steps": ["Copy a received message", "Paste to Translate", "Understand", "Reply"],
+          "steps": [
+            "Copy a received message",
+            "Paste to Translate",
+            "Understand",
+            "Reply"
+          ],
           "desc": "Language support also has to work for incoming messages. Arcatext supports the comprehension side of conversation — understanding what was received, maintaining context, and replying from the same writing surface."
         },
         {
           "title": "Learning Layer",
-          "steps": ["Repeated messages", "Patterns", "Insights", "Practice"],
+          "steps": [
+            "Repeated messages",
+            "Patterns",
+            "Insights",
+            "Practice"
+          ],
           "desc": "Over time, real communication becomes structured insight: recurring vocabulary, grammar gaps, confidence issues, topics of interest, and personalized recommendations — the bridge from MVP keyboard to broader learning platform."
         }
       ],
@@ -928,7 +948,7 @@
     "hero": {
       "status": "USAA · Internal platform",
       "title": "Conversant",
-      "subtitle": "Enterprise desktop platform for call center and back-office servicing",
+      "subtitle": "Enterprise desktop platform for call center and back-office servicing and stuff",
       "typeTags": [
         "Enterprise desktop",
         "Internal employee platform",
