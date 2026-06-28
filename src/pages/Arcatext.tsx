@@ -20,6 +20,7 @@ import { Editable } from '@/content/Editable';
 import { EditableBlocks } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 import { ReorderableSections } from '@/components/ReorderableSections';
+import { TypingFlowDiagram } from '@/components/TypingFlowDiagram';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -575,6 +576,8 @@ export default function Arcatext() {
             <Prose>
               <Paragraphs base="arcatext.execution.competitive" items={arc.execution.competitive} />
             </Prose>
+            {/* Diagram under the "The need for better typing UX" subsection. */}
+            <TypingFlowDiagram />
           </div>
 
           {/* Launch measurement plan */}
