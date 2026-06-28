@@ -171,7 +171,7 @@ function SideToc() {
 
 export default function UsaaApp() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const { content, isAdmin } = useContent();
+  const { content } = useContent();
   const u = content.usaa;
 
   useEffect(() => {
@@ -211,7 +211,6 @@ export default function UsaaApp() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <a
             href="#home"
-            onClick={(e) => isAdmin && e.preventDefault()}
             className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -597,7 +596,6 @@ export default function UsaaApp() {
                 <a
                   key={i}
                   href="#"
-                  onClick={(e) => isAdmin && e.preventDefault()}
                   className="reveal group rounded-2xl bg-muted/40 p-6 lg:p-8 hover:bg-muted/70 transition-all"
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -635,7 +633,7 @@ export default function UsaaApp() {
               size="lg"
               className="rounded-full px-8 py-6 gradient-bg text-white"
             >
-              <a href="#contact" onClick={(e) => isAdmin && e.preventDefault()}>
+              <a href="#contact">
                 <Editable as="span" path="usaa.footerCta.getInTouch" />
               </a>
             </Button>
@@ -645,7 +643,7 @@ export default function UsaaApp() {
               size="lg"
               className="rounded-full px-8 py-6 border-border/50 hover:border-primary/50 hover:bg-primary/5"
             >
-              <a href="#projects" onClick={(e) => isAdmin && e.preventDefault()} className="inline-flex items-center gap-2">
+              <a href="#projects" className="inline-flex items-center gap-2">
                 <ArrowLeft className="w-4 h-4" />
                 <Editable as="span" path="usaa.footerCta.backToProjects" />
               </a>

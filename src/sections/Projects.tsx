@@ -20,11 +20,10 @@ export default function Projects() {
   const [pendingLink, setPendingLink] = useState<string | null>(null);
 
   const handleProjectClick = (e: React.MouseEvent, link: string) => {
-    // Inline editing mode never navigates away.
-    if (isAdmin) {
-      e.preventDefault();
-      return;
-    }
+    // In admin mode, navigate normally — admin persists across pages and the
+    // project gate is bypassed for admins. (Clicking editable text edits it
+    // instead, since Editable stops propagation in admin.)
+    if (isAdmin) return;
     // Already unlocked this session — let the link navigate normally.
     if (isProjectUnlocked()) return;
     e.preventDefault();
@@ -187,7 +186,6 @@ export default function Projects() {
         <div className="text-center mt-12">
           <a
             href="#"
-            onClick={(e) => isAdmin && e.preventDefault()}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-border/50 hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 text-sm font-medium"
           >
             <Editable as="span" path="projects.viewAll" />

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ADMIN_TARGET, useContent } from './ContentContext';
 import { ContentEditorPanel } from './ContentEditorPanel';
+import { lockAdmin } from '@/lib/adminAuth';
 
 /**
  * Floating control bar shown only in admin mode (#/admin). Lets the editor
@@ -19,11 +20,14 @@ export function AdminBar() {
   if (!isAdmin) return null;
 
   const exitAdmin = () => {
-    // Drop the admin flag but stay on the current page.
+    // Strip any admin URL flag first, then clear the persistent session so the
+    // flag can't immediately re-unlock it.
     const hash = window.location.hash;
     const path = hash.startsWith('#/') ? hash.slice(2).split('?')[0] : '';
     const dest = path === 'admin' ? '' : path;
-    window.location.hash = dest ? `#/${dest}` : '#/';
+    const target = dest ? `#/${dest}` : '#/';
+    if (window.location.hash !== target) window.location.hash = target;
+    lockAdmin();
   };
 
   const saving = saveState.status === 'saving';
