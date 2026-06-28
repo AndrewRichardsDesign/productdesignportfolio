@@ -17,12 +17,15 @@ const TOOL_SRC = `${import.meta.env.BASE_URL}arcatext-admin-tool.html`;
 export function AdminToolShowcase() {
   const [open, setOpen] = useState(false);
   const previewRef = useRef<HTMLIFrameElement>(null);
-  const [hovering, setHovering] = useState(false);
-
-  // Hover "alive" effect: while the cursor is over the preview, the whole UI
-  // pulses (scale, via CSS) and the Parameters sliders jitter upward to random
-  // values, snapping back to their defaults between beats and when the cursor
-  // leaves. The preview iframe is same-origin, so we can drive its sliders.
+  // Hovering the preview plays a scripted demo on the (same-origin) tool:
+  //   1. raise the Decision-margin tiers (precise→3, average→4, loose→6),
+  //   2. lower Same-row strictness (→0.5),
+  //   3. reset every slider to its default,
+  // looping for as long as the cursor stays on the preview. Values outside a
+  // slider's range are clamped by the range input (loose maxes out, same-row
+  // bottoms out).
+  const DECISION_MARGIN_KEY = 'rekeys.tb.decisionMargin';
+  const SAME_ROW_KEY = 'rekeys.tb.sameRowMult';
   const defaultsRef = useRef<Map<HTMLInputElement, string>>(new Map());
   const beatRef = useRef<number | null>(null);
 
@@ -33,56 +36,59 @@ export function AdminToolShowcase() {
       return null;
     }
   };
-  const snapshotSliders = () => {
-    const doc = previewDoc();
-    if (!doc) return;
+  const snapshotSliders = (doc: Document) => {
     const map = defaultsRef.current;
     map.clear();
     doc.querySelectorAll<HTMLInputElement>('#knobs input').forEach((i) => map.set(i, i.value));
-  };
-  const randomizeSlidersUp = () => {
-    const doc = previewDoc();
-    if (!doc) return;
-    doc.querySelectorAll<HTMLInputElement>('#knobs input[type=range]').forEach((r) => {
-      const min = parseFloat(r.min);
-      const max = parseFloat(r.max);
-      if (Number.isNaN(min) || Number.isNaN(max) || max <= min) return;
-      const base = parseFloat(defaultsRef.current.get(r) ?? r.value);
-      const start = Number.isNaN(base) ? min : base;
-      const step = parseFloat(r.step) || (max - min) / 100;
-      let target = start + Math.random() * (max - start);
-      target = Math.min(max, Math.round(target / step) * step);
-      r.value = String(target);
-      // Keep the paired number "chip" in sync with the slider.
-      const key = r.getAttribute('data-key');
-      const tier = r.getAttribute('data-tier');
-      const sel =
-        `input.valuechip[data-key="${key}"]` + (tier ? `[data-tier="${tier}"]` : ':not([data-tier])');
-      doc.querySelectorAll<HTMLInputElement>(sel).forEach((c) => {
-        c.value = String(target);
-      });
-    });
   };
   const restoreSliders = () => {
     defaultsRef.current.forEach((v, i) => {
       i.value = v;
     });
   };
+  // Set a slider (and its paired number chip) to a value, clamped to its range.
+  const setSlider = (doc: Document, key: string, tier: string, value: number) => {
+    const tierSel = tier ? `[data-tier="${tier}"]` : ':not([data-tier])';
+    const range = doc.querySelector<HTMLInputElement>(
+      `input[type=range][data-key="${key}"]${tierSel}`
+    );
+    if (!range) return;
+    range.value = String(value); // the range input clamps to its [min, max]
+    const clamped = range.value;
+    doc
+      .querySelectorAll<HTMLInputElement>(`input.valuechip[data-key="${key}"]${tierSel}`)
+      .forEach((c) => {
+        c.value = clamped;
+      });
+  };
+
+  const runStep = (step: number) => {
+    const doc = previewDoc();
+    if (!doc) return;
+    if (step === 0) {
+      setSlider(doc, DECISION_MARGIN_KEY, 'precise', 3);
+      setSlider(doc, DECISION_MARGIN_KEY, 'average', 4);
+      setSlider(doc, DECISION_MARGIN_KEY, 'loose', 6);
+    } else if (step === 1) {
+      setSlider(doc, SAME_ROW_KEY, '', 0.5);
+    } else {
+      restoreSliders();
+    }
+  };
 
   const handleEnter = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    setHovering(true);
-    snapshotSliders();
-    randomizeSlidersUp();
-    let up = true;
+    const doc = previewDoc();
+    if (!doc) return;
+    snapshotSliders(doc);
+    let step = 0;
+    runStep(step);
     beatRef.current = window.setInterval(() => {
-      up = !up;
-      if (up) randomizeSlidersUp();
-      else restoreSliders();
-    }, 1000);
+      step = (step + 1) % 3;
+      runStep(step);
+    }, 900);
   };
   const handleLeave = () => {
-    setHovering(false);
     if (beatRef.current) {
       clearInterval(beatRef.current);
       beatRef.current = null;
@@ -130,13 +136,12 @@ export function AdminToolShowcase() {
       </p>
 
       {/* Full-width, non-interactive preview. The tool is responsive, so the
-          iframe renders at the container's real width. Hovering brings it to life. */}
+          iframe renders at the container's real width. Hovering plays a scripted
+          slider demo on the tool. */}
       <div
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
-        className={`relative h-[560px] w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm sm:h-[720px] lg:h-[820px] ${
-          hovering ? 'preview-pulse' : ''
-        }`}
+        className="relative h-[560px] w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm sm:h-[720px] lg:h-[820px]"
       >
         <iframe
           ref={previewRef}
