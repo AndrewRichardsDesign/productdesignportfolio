@@ -9,6 +9,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { AdminToolShowcase } from './AdminToolShowcase';
 
 /**
  * Simple flow diagram for the "The need for better typing UX" subsection.
@@ -145,6 +146,8 @@ export function TypingFlowDiagram() {
           </div>
         </div>
       </div>
+
+      <AdminToolShowcase />
     </div>
   );
 }
