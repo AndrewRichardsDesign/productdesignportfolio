@@ -30,12 +30,14 @@ jobs:
             echo "::error::Missing APPS_SCRIPT_URL and/or SYNC_SECRET repo secret."
             exit 1
           fi
-          # Secret goes in the query string so it survives Apps Script's 302
-          # redirect to googleusercontent (POST bodies can be dropped there).
-          # Registered Actions secrets are auto-masked in logs. Use a URL-safe
-          # secret (e.g. `openssl rand -hex 24`).
+          # IMPORTANT: do NOT use `-X POST` here. Apps Script answers /exec with
+          # a 302 to a googleusercontent result URL that only accepts GET; `-X
+          # POST` would force POST onto that redirect and return 405. Using
+          # `--data-urlencode` makes just the first request a POST (running
+          # doPost), then curl follows the 302 as a normal GET to read the JSON.
           code=$(curl -sS -L -o response.txt -w '%{http_code}' \
-                      -X POST "${URL}?secret=${SECRET}" --max-time 120)
+                      --data-urlencode "secret=$SECRET" \
+                      --max-time 120 "$URL")
           echo "HTTP status: $code"
           echo "Response body:"
           cat response.txt 2>/dev/null || true
