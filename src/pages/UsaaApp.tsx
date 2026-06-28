@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
 import { EditableBlocks } from '@/content/EditableBlocks';
-import { SectionToc } from '@/components/SectionToc';
+import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -127,6 +127,7 @@ export default function UsaaApp() {
             <ArrowLeft className="w-4 h-4" />
             <Editable as="span" path="usaa.backToPortfolio" />
           </a>
+          <SectionNavDropdown items={tocItems} labels={content.usaa.toc} routeHash="#/usaa" />
           <Editable as="span" path="usaa.brand" className="text-sm font-semibold gradient-text" />
         </div>
       </div>

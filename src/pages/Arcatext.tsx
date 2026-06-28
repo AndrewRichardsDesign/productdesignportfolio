@@ -18,7 +18,7 @@ import ArcatextKeyboard from '@/components/ArcatextKeyboard';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
 import { EditableBlocks } from '@/content/EditableBlocks';
-import { SectionToc } from '@/components/SectionToc';
+import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -127,6 +127,7 @@ export default function Arcatext() {
             <ArrowLeft className="w-4 h-4" />
             <Editable as="span" path="arcatext.backToPortfolio" />
           </a>
+          <SectionNavDropdown items={tocItems} labels={content.arcatext.toc} routeHash="#/arcatext" />
           <Editable as="span" path="arcatext.brand" className="text-sm font-semibold gradient-text" />
         </div>
       </div>
@@ -545,14 +546,6 @@ export default function Arcatext() {
             </div>
           </div>
 
-          {/* Competitive product requirement */}
-          <div className="mt-20 reveal">
-            <Editable as="h3" path="arcatext.execution.competitiveTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
-            <Prose>
-              <Paragraphs base="arcatext.execution.competitive" items={arc.execution.competitive} />
-            </Prose>
-          </div>
-
           {/* Shipped */}
           <div className="mt-20">
             <Editable as="h3" path="arcatext.execution.shippedTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
@@ -572,6 +565,14 @@ export default function Arcatext() {
                 </li>
               ))}
             </ol>
+          </div>
+
+          {/* Competitive product requirement */}
+          <div className="mt-20 reveal">
+            <Editable as="h3" path="arcatext.execution.competitiveTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
+            <Prose>
+              <Paragraphs base="arcatext.execution.competitive" items={arc.execution.competitive} />
+            </Prose>
           </div>
 
           {/* Launch measurement plan */}

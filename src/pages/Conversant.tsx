@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
 import { EditableBlocks } from '@/content/EditableBlocks';
-import { SectionToc } from '@/components/SectionToc';
+import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -128,6 +128,7 @@ export default function Conversant() {
             <ArrowLeft className="w-4 h-4" />
             <Editable as="span" path="conversant.backToPortfolio" />
           </a>
+          <SectionNavDropdown items={tocItems} labels={content.conversant.toc} routeHash="#/conversant" />
           <Editable as="span" path="conversant.brand" className="text-sm font-semibold gradient-text" />
         </div>
       </div>
