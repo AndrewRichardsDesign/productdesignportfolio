@@ -141,21 +141,21 @@ function Block({
   editable: boolean;
 }) {
   const { removeBlock } = useContent();
-  const block = isProseBlock(item);
   const el = blockElement(path, index, item);
 
-  // Legacy strings render exactly as before — no wrapper, no controls.
-  if (!editable || !block) return el;
+  // Visitors see plain content; in admin every block gets a delete button.
+  if (!editable) return el;
 
   return (
-    <div className="group/block relative">
+    <div className="relative">
       {el}
+      {/* Always rendered (not hover-gated) so it never vanishes mid-click. */}
       <button
         type="button"
         onClick={() => removeBlock(path, index)}
         title="Delete this block"
         aria-label="Delete this block"
-        className="absolute -left-7 top-1 hidden h-5 w-5 items-center justify-center rounded text-muted-foreground opacity-0 transition-opacity hover:bg-muted hover:text-foreground group-hover/block:flex group-hover/block:opacity-100"
+        className="absolute -left-8 top-0.5 flex h-6 w-6 items-center justify-center rounded-md border border-border/60 bg-background/90 text-muted-foreground opacity-70 shadow-sm transition hover:border-destructive/50 hover:bg-destructive/10 hover:text-destructive hover:opacity-100"
       >
         <X className="h-3.5 w-3.5" />
       </button>

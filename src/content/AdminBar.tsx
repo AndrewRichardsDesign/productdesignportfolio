@@ -105,7 +105,17 @@ export function AdminBar() {
               size="sm"
               variant="ghost"
               className="h-8 px-2 text-xs"
-              onClick={() => setOpen((v) => !v)}
+              onClick={() =>
+                setOpen((v) => {
+                  const next = !v;
+                  // Collapsing also exits any armed insert/move so no orphaned mode lingers.
+                  if (!next) {
+                    setInsertTool(null);
+                    cancelMove();
+                  }
+                  return next;
+                })
+              }
             >
               {open ? 'Hide settings' : 'Settings'}
             </Button>
@@ -121,7 +131,8 @@ export function AdminBar() {
           </div>
         </div>
 
-        {/* Insert tools — always visible so you can place blocks on the page */}
+        {/* Insert / Move tools — shown with settings, hidden when collapsed. */}
+        {open && (
         <div className="flex flex-wrap items-center gap-2 border-t border-border/60 px-4 py-2.5">
           <span className="text-xs font-medium text-muted-foreground">Insert</span>
           <Button
@@ -200,6 +211,7 @@ export function AdminBar() {
             </div>
           )}
         </div>
+        )}
 
         {open && (
           <div className="space-y-3 border-t border-border/60 px-4 py-3">
