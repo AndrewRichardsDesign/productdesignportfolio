@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Arcatext — How the system works</title>
+<style>
+  /* ============================================================
+     Arcatext interactive system diagram — boxes & arrows
+     Single file, zero dependencies. Drop anywhere or iframe it.
+     - Tabs = flows. Boxes = components. Arrows are drawn live in SVG.
+     - Click a box to expand it; the layout reflows and arrows re-route.
+     - Light + dark themes (toggle, defaults to system preference).
+     Edit the FLOWS object near the bottom to change content.
+     ============================================================ */
+
+  :root {
+    --accent:    #5b8cff;
+    --accent-2:  #38c4b4;
+    --radius:    14px;
+    --radius-sm: 10px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  html[data-theme="dark"] {
+    --bg:        #0e1116;
+    --panel:     #161b22;
+    --panel-2:   #1c232d;
+    --line:      #2a323d;
+    --ink:       #e8edf3;
+    --ink-soft:  #aab4c0;
+    --ink-faint: #6b7682;
+    --shadow:    0 12px 34px rgba(0,0,0,.45);
+    --wire:      #3a4452;
+  }
+  html[data-theme="light"] {
+    --bg:        #f6f8fb;
+    --panel:     #ffffff;
+    --panel-2:   #eef1f6;
+    --line:      #dde3ec;
+    --ink:       #18212e;
+    --ink-soft:  #515c6b;
+    --ink-faint: #8b95a3;
+    --shadow:    0 12px 30px rgba(40,55,80,.10);
+    --wire:      #c2cbd8;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    transition: background .3s ease, color .3s ease;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 22px 80px; }
+
+  /* ---------- Top bar ---------- */
+  .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent-2); font-weight: 600; margin: 0 0 8px;
+  }
+  h1.title { font-size: clamp(24px, 3.4vw, 34px); line-height: 1.1; margin: 0 0 10px; font-weight: 700; letter-spacing: -0.02em; }
+  .lede { font-size: clamp(14px, 1.5vw, 16px); color: var(--ink-soft); max-width: 62ch; margin: 0; }
+
+  .theme-toggle {
+    flex: none; display: inline-flex; align-items: center; gap: 8px;
+    background: var(--panel); border: 1px solid var(--line); color: var(--ink-soft);
+    font: inherit; font-size: 13px; padding: 8px 13px; border-radius: 999px; cursor: pointer;
+    transition: border-color .18s, color .18s;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--ink); }
+  .theme-toggle svg { width: 15px; height: 15px; }
+
+  /* ---------- Tabs ---------- */
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+  .tab {
+    appearance: none; background: none; border: none; cursor: pointer;
+    font: inherit; font-size: 14px; font-weight: 550; color: var(--ink-faint);
+    padding: 11px 15px; border-radius: 10px 10px 0 0; position: relative;
+    display: inline-flex; align-items: center; gap: 8px; transition: color .16s;
+  }
+  .tab .t-ico { font-size: 16px; }
+  .tab:hover { color: var(--ink-soft); }
+  .tab[aria-selected="true"] { color: var(--ink); }
+  .tab[aria-selected="true"]::after {
+    content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px;
+    height: 2px; border-radius: 2px; background: var(--accent);
+  }
+  .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .flow-intro { color: var(--ink-soft); font-size: 14.5px; margin: 16px 2px 4px; max-width: 74ch; min-height: 42px; }
+  .hint {
+    margin: 2px 2px 18px; font-size: 12.5px; color: var(--ink-faint);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .hint .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2.2s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(91,140,255,.55)} 70%{box-shadow:0 0 0 9px rgba(91,140,255,0)} 100%{box-shadow:0 0 0 0 rgba(91,140,255,0)} }
+
+  /* ---------- Canvas (grid + wires) ---------- */
+  .canvas {
+    position: relative;
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr) 210px;
+    gap: 30px 34px;
+    align-items: start;
+  }
+  .wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 0; }
+
+  /* ---------- Node boxes ---------- */
+  .node {
+    position: relative; z-index: 1;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: border-color .18s ease, transform .18s ease, background .18s ease;
+    scroll-margin-top: 16px;
+  }
+  .node:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .node:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .node.open { border-color: var(--accent); }
+  .node.comp { background: var(--panel-2); border-style: dashed; }
+  .node.comp:hover, .node.comp.open { border-color: var(--accent-2); border-style: solid; }
+  .node.spine { align-self: stretch; display: flex; flex-direction: column; }
+
+  .n-head { display: flex; align-items: flex-start; gap: 11px; padding: 14px 14px 12px; }
+  .n-badge {
+    flex: none; width: 23px; height: 23px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 11.5px; font-weight: 700;
+    color: var(--accent); border: 1.6px solid var(--accent); background: var(--bg); margin-top: 1px;
+  }
+  .node.comp .n-tag {
+    flex: none; font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--accent-2); border: 1px solid color-mix(in srgb, var(--accent-2) 40%, transparent);
+    padding: 2px 6px; border-radius: 5px; margin-top: 2px;
+  }
+  .n-ico { flex: none; font-size: 19px; line-height: 1; margin-top: 1px; }
+  .n-tt { flex: 1 1 auto; min-width: 0; }
+  .n-title { font-size: 14.5px; font-weight: 650; margin: 0; letter-spacing: -.01em; }
+  .n-sub { font-size: 11.5px; color: var(--ink-faint); font-family: var(--mono); margin-top: 2px; word-break: break-word; }
+  .chev { flex: none; color: var(--ink-faint); transition: transform .25s ease; margin-top: 2px; }
+  .node.open .chev { transform: rotate(90deg); color: var(--accent); }
+
+  .n-short { padding: 0 14px 14px; color: var(--ink-soft); font-size: 13px; margin: 0; }
+
+  .n-more { overflow: hidden; max-height: 0; transition: max-height .35s ease; }
+  .node.open .n-more { max-height: 720px; }
+  .n-more-inner { padding: 2px 14px 16px; border-top: 1px solid var(--line); margin-top: 2px; }
+  .n-body { color: var(--ink-soft); font-size: 13px; margin: 12px 0 14px; }
+
+  .parts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 13px; }
+  .part {
+    display: flex; gap: 9px; align-items: baseline;
+    background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: var(--radius-sm); padding: 9px 11px;
+  }
+  html[data-theme="light"] .part { background: var(--bg); }
+  .part .p-name { font-size: 12.5px; font-weight: 600; flex: none; }
+  .part .p-desc { font-size: 12.5px; color: var(--ink-soft); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 11px; padding: 3px 9px; border-radius: 999px; font-family: var(--mono);
+    background: color-mix(in srgb, var(--ink-faint) 8%, transparent);
+    border: 1px solid var(--line); color: var(--ink-soft);
+  }
+  .chip.k { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+  .node.comp .chip.k { color: var(--accent-2); border-color: color-mix(in srgb, var(--accent-2) 35%, transparent); }
+
+  /* ---------- Wire styles ---------- */
+  .wire { fill: none; transition: opacity .2s; }
+  .e-flow { stroke: var(--accent); stroke-width: 2; }
+  .e-link { stroke: var(--wire); stroke-width: 1.7; stroke-dasharray: 5 5; }
+  .e-ext  { stroke: var(--accent-2); stroke-width: 2; stroke-dasharray: 1 6; stroke-linecap: round; }
+  .e-loop { stroke: var(--accent); stroke-width: 1.7; stroke-dasharray: 6 5; opacity: .7; }
+  .wire.dim { opacity: .22; }
+  .mk-flow { fill: var(--accent); }
+  .mk-link { fill: var(--wire); }
+  .mk-ext  { fill: var(--accent-2); }
+  .wire-label {
+    font-family: var(--mono); font-size: 10.5px; fill: var(--ink-faint);
+  }
+
+  /* ---------- Footer ---------- */
+  footer.foot {
+    margin-top: 46px; padding-top: 20px; border-top: 1px solid var(--line);
+    color: var(--ink-faint); font-size: 13px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+  footer.foot a { color: var(--ink-soft); text-decoration: none; }
+  footer.foot a:hover { color: var(--accent); }
+
+  /* ---------- Responsive: collapse to single column ---------- */
+  @media (max-width: 820px) {
+    .canvas { grid-template-columns: 1fr !important; gap: 18px; }
+    .node { grid-column: 1 !important; grid-row: auto !important; }
+    .node.spine { align-self: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div>
+      <p class="eyebrow">System Architecture</p>
+      <h1 class="title">How Arcatext works</h1>
+      <p class="lede">An AI translation keyboard for iOS. Each tab is a flow through the system — click any
+        box to unfold the components beneath it. The wiring re-routes as the diagram expands.</p>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark theme">
+      <span id="themeIcon"></span><span id="themeLabel">Theme</span>
+    </button>
+  </div>
+
+  <div class="tabs" id="tabs" role="tablist"><!-- tabs injected --></div>
+  <p class="flow-intro" id="flowIntro"></p>
+  <span class="hint"><span class="dot"></span> Click a box to expand it — the layout and arrows adjust</span>
+
+  <div class="canvas" id="canvas">
+    <svg class="wires" id="wires" aria-hidden="true">
+      <defs>
+        <marker id="mkflow" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
+          <path class="mk-flow" d="M0,0 L8,4 L0,8 Z"/></marker>
+        <marker id="mklink" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
+          <path class="mk-link" d="M0,0 L8,4 L0,8 Z"/></marker>
+        <marker id="mkext" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
+          <path class="mk-ext" d="M0,0 L8,4 L0,8 Z"/></marker>
+      </defs>
+    </svg>
+    <!-- nodes injected -->
+  </div>
+
+  <footer class="foot">
+    <span>Arcatext / ReKeys — interactive system diagram</span>
+    <a href="https://andrewrichards.design/" target="_blank" rel="noopener">andrewrichards.design ↗</a>
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   FLOWS — edit here to change content.
+   node: { id, kind:'step'|'comp', col:1|2|3, row:'4' | '2 / 7',
+           badge?, tag?, icon, title, sub, short, body, parts:[{n,d}], chips:[] }
+   edge: { from, to, kind:'flow'|'link'|'ext'|'loop', fs?, ts?, label? }
+         fs/ts = forced side 't'|'b'|'l'|'r' (otherwise auto by geometry)
+   ============================================================ */
+const FLOWS = {
+  reword: {
+    label: "Reword a message", ico: "✍️",
+    intro: "The flagship flow. One tap reads your whole message, reasons about meaning, gender and tone, rewrites it in the target language, and writes the result straight back into whatever app you're in.",
+    nodes: [
+      { id:"trig", kind:"step", col:2, row:"1", badge:1, icon:"👆", title:"Tap Reword",
+        sub:"StandardToolbar.swift", short:"User taps Reword in the keyboard toolbar.",
+        body:"The toolbar is the single entry point. It silently no-ops if the field is empty or a reword is already running, so taps never stack up.",
+        parts:[{n:"isEmpty",d:"watches text on both sides of the cursor"},{n:"isLoading",d:"guard blocks duplicate taps"}],
+        chips:["StandardToolbar.swift","onReword()"] },
+
+      { id:"gate", kind:"step", col:2, row:"2", badge:2, icon:"🛡️", title:"Gating checks",
+        sub:"RewordService.reword()", short:"A gauntlet of guards before any work begins.",
+        body:"Each guard exists because removing it once caused a crash or a stuck button: keyboard Full Access, sign-in state, a one-time gender prompt for gendered languages, and token availability.",
+        parts:[{n:"Full Access",d:"needed to read the text field"},{n:"Auth",d:"signed-in Supabase session"},{n:"Gender",d:"one-time prompt per language"},{n:"Tokens",d:"trial / subscription balance"}],
+        chips:["RewordService.swift","startLoading()","guard !isLoading"] },
+
+      { id:"shared", kind:"comp", col:1, row:"2 / 7", tag:"Shared", icon:"🗄️", title:"Shared library",
+        sub:"UserDefaults · group.app.rekeys", short:"App-group store bridging the keyboard and the main app.",
+        body:"The system's nervous system: target language, alphabet/script, speaker & recipient gender, copy-language, the saved original text, the auth session and token counts all live here — 160+ usages across 20+ files. Both processes read and write it.",
+        parts:[{n:"RewordLanguageCode",d:"current target language"},{n:"lastRewordSourceText",d:"saved original for auto-reword"},{n:"supabase_session",d:"auth token blob"},{n:"localTokenUsage",d:"metering, synced cross-process"}],
+        chips:["sharedDefaults","group.app.rekeys"] },
+
+      { id:"read", kind:"step", col:2, row:"3", badge:3, icon:"📖", title:"Read full message",
+        sub:"TextReadingService.swift", short:"Reconstructs the whole message from a tiny window.",
+        body:"iOS only reveals ~130 characters around the cursor. The service walks the cursor through the document — forward in overlapping 60-char steps with overlap verification, plus a bidirectional fallback — rebuilding the full text in order without duplication.",
+        parts:[{n:"Two-phase walk",d:"ordered forward walk + bidirectional fallback"},{n:"Gap bridging",d:"backtracks when a step jumps too far"},{n:"Blank-line probing",d:"tells paragraph breaks from end-of-text"}],
+        chips:["accessFullText()","60-char steps"] },
+
+      { id:"cache", kind:"step", col:2, row:"4", badge:4, icon:"⚡", title:"Cache check",
+        sub:"LRU · RewordCacheKey", short:"Skip the network when nothing changed.",
+        body:"An LRU cache is checked with a key that includes every parameter — text, language, both genders, alphabet and copy settings. Identical requests return instantly; option tweaks stay cheap. Omitting any parameter would cause stale hits, so all are included.",
+        parts:[{n:"RewordCacheKey",d:"text + lang + genders + alphabet + copy"},{n:"LRU · max 10",d:"evicts least-recently-used"}],
+        chips:["processRewordText()"] },
+
+      { id:"llm", kind:"step", col:2, row:"5", badge:5, icon:"🧠", title:"LLM request",
+        sub:"ChatGPTService.swift", short:"Builds the prompt and calls the model.",
+        body:"Carefully engineered prompts inject the full language name, gendered forms, alphabet/script and an optional second-language copy. Short inputs use a fast timeout; long inputs get a longer one.",
+        parts:[{n:"LLMPrompts.swift",d:"prompt engineering per option"},{n:"adaptive timeout",d:"short vs long input"}],
+        chips:["ChatGPTService.swift","sendReword()"] },
+
+      { id:"proxy", kind:"comp", col:3, row:"5", tag:"External", icon:"☁️", title:"Supabase Edge · GPT-4o-mini",
+        sub:"functions/v1/chat-proxy", short:"Server-side proxy keeps the OpenAI key off-device.",
+        body:"All model calls route through a Supabase Edge Function that proxies OpenAI, so the real API key never ships in the app. It also logs usage for billing and refreshes expired tokens.",
+        parts:[{n:"chat-proxy",d:"Edge Function in front of OpenAI"},{n:"gpt-4o-mini",d:"the translation model"}],
+        chips:["Supabase","OpenAI"] },
+
+      { id:"write", kind:"step", col:2, row:"6", badge:6, icon:"✏️", title:"Write back",
+        sub:"TextManipulationService.swift", short:"Atomically replaces the field contents.",
+        body:"The original is cleared and the result inserted atomically. Keyboard-case is restored to avoid capitalization flicker, and an isManipulatingText guard suppresses callbacks so the non-re-entrant text proxy never crashes mid-edit.",
+        parts:[{n:"clearAndInsertText()",d:"delete-all then insert"},{n:"isManipulatingText",d:"suppresses re-entrant callbacks"},{n:"case restore",d:"no caps flicker"}],
+        chips:["TextManipulationService.swift"] },
+
+      { id:"check", kind:"step", col:2, row:"7", badge:7, icon:"🔍", title:"Hand off to Check",
+        sub:"rewordDidCompleteNotification", short:"Result is saved and the Check view can open.",
+        body:"The reworded text is saved to the shared store and a notification fires. The Check view listens for it to offer a side-by-side breakdown and homograph disambiguation (see the Check tab).",
+        parts:[{n:"lastRewordedText",d:"saved for the Check view"},{n:"notification",d:"CheckViewModel listens"}],
+        chips:["CheckViewModel.swift"] },
+
+      { id:"auto", kind:"comp", col:3, row:"7", tag:"Feedback", icon:"🔁", title:"Auto-reword",
+        sub:"RewordService.autoReword()", short:"Changing an option re-runs from the saved original.",
+        body:"Changing alphabet, gender or copy-language re-runs the reword from the saved original text — never the already-translated field — so you never translate a translation, avoiding cross-language contamination.",
+        parts:[{n:"saved original",d:"reads originalTextKey, not the field"},{n:"keeps cache",d:"option tweaks stay instant"}],
+        chips:["autoReword()"] },
+    ],
+    edges: [
+      { from:"trig", to:"gate", kind:"flow" },
+      { from:"gate", to:"read", kind:"flow" },
+      { from:"read", to:"cache", kind:"flow" },
+      { from:"cache", to:"llm", kind:"flow" },
+      { from:"llm", to:"write", kind:"flow" },
+      { from:"write", to:"check", kind:"flow" },
+      { from:"shared", to:"gate", kind:"link" },
+      { from:"shared", to:"cache", kind:"link" },
+      { from:"shared", to:"write", kind:"link" },
+      { from:"llm", to:"proxy", kind:"ext", fs:"r", ts:"l" },
+      { from:"auto", to:"cache", kind:"loop", fs:"r", ts:"r", label:"re-run" },
+    ],
+  },
+
+  typing: {
+    label: "Typing on the keys", ico: "⌨️",
+    intro: "Beneath the AI features is a real keyboard. Keystrokes are handled, autocorrected against per-language dictionaries, and quietly tuned by a touch-bias model that learns where your fingers actually land.",
+    nodes: [
+      { id:"press", kind:"step", col:2, row:"1", badge:1, icon:"⌨️", title:"Keypress",
+        sub:"CustomActionHandler.swift", short:"Every key event flows through one handler.",
+        body:"Character insertion, backspace (with callback suppression during a hold), and locale switching via a language popover all dispatch here, alongside custom actions like undo-autocorrect.",
+        parts:[{n:"insert / delete",d:"text-proxy edits"},{n:"locale switch",d:"language popover"},{n:"custom actions",d:"e.g. undo-autocorrect"}],
+        chips:["CustomActionHandler.swift","handle(_:)"] },
+
+      { id:"correct", kind:"step", col:2, row:"2", badge:2, icon:"✨", title:"Autocorrect",
+        sub:"AutocorrectService.swift", short:"Per-language fuzzy correction with undo.",
+        body:"Per-language dictionaries with fuzzy matching and context-aware ranking, plus a multi-level undo so any correction can be reverted. Switching language reloads the active word list on the fly.",
+        parts:[{n:"per-language dicts",d:"fuzzy spell-check"},{n:"context ranking",d:"picks the best suggestion"},{n:"undo manager",d:"revert any correction"}],
+        chips:["AutocorrectService.swift","AutocorrectUndoManager"] },
+
+      { id:"bias", kind:"comp", col:3, row:"2", tag:"Admin", icon:"🎯", title:"Tap-bias tuning",
+        sub:"TouchBiasStore · TapBiasTuning", short:"Learns where your fingers really land.",
+        body:"Tap coordinates feed a touch-bias model that nudges key targeting toward your real hit pattern, with privacy-safe aggregate scores reported back to tune accuracy over time — the internal admin/telemetry tool.",
+        parts:[{n:"TouchBiasStore",d:"local bias model"},{n:"telemetry",d:"privacy-safe aggregates"},{n:"score reporter",d:"tunes accuracy over time"}],
+        chips:["TouchBiasStore.swift","TapBiasTuning.swift"] },
+
+      { id:"commit", kind:"step", col:2, row:"3", badge:3, icon:"✅", title:"Commit text",
+        sub:"KeyboardViewController.swift", short:"Corrected text lands in the host app.",
+        body:"The final text is committed to the host field through the text proxy. Because proxy edits aren't re-entrant, the same isManipulatingText guard used by reword protects bulk edits here too.",
+        parts:[{n:"text proxy",d:"insert into host app"},{n:"non-re-entrant",d:"guarded against overlap"}],
+        chips:["KeyboardViewController.swift"] },
+    ],
+    edges: [
+      { from:"press", to:"correct", kind:"flow" },
+      { from:"correct", to:"commit", kind:"flow" },
+      { from:"bias", to:"correct", kind:"link", label:"tunes" },
+    ],
+  },
+
+  check: {
+    label: "Check & Clarify Meaning", ico: "🔍",
+    intro: "After a reword, the Check view breaks the translation down side-by-side and surfaces anything ambiguous — homographs, gendered word variants, the copy-language output and on-demand synonyms — so you confirm meaning before sending.",
+    nodes: [
+      { id:"done", kind:"step", col:2, row:"1", badge:1, icon:"🔔", title:"Reword completes",
+        sub:"rewordDidCompleteNotification", short:"A finished reword wakes the Check view.",
+        body:"When a reword finishes it posts a notification; the Check view model picks it up and starts a new session, preparing a comparison of the original and reworded text.",
+        parts:[{n:"startNewSession()",d:"fresh Check state"},{n:"lastRewordedText",d:"read from shared store"}],
+        chips:["CheckViewModel.swift"] },
+
+      { id:"build", kind:"step", col:2, row:"2", badge:2, icon:"🔀", title:"Build comparison",
+        sub:"CheckViewModel.swift", short:"Side-by-side original vs reworded text.",
+        body:"The view lays out the source and the translation together, ready to annotate with meanings, gender variants and the optional copy-language output.",
+        parts:[{n:"original ↔ reworded",d:"aligned view"},{n:"copy output",d:"shown when send-copy is on"}],
+        chips:["CheckView.swift"] },
+
+      { id:"homo", kind:"step", col:2, row:"3", badge:3, icon:"🧩", title:"Homograph detection",
+        sub:"“Clarify Meaning”", short:"Surfaces words with more than one sense.",
+        body:"Polysemous words — “bank” as a riverbank vs a financial institution — are surfaced with their distinct senses and example sentences. Tap a word to pick the intended meaning; selections are remembered and replayed on a repeat reword.",
+        parts:[{n:"HomographWord",d:"word + candidate meanings"},{n:"Meaning",d:"sense + example sentence"}],
+        chips:["rewordWithHomographContext()"] },
+
+      { id:"llm", kind:"comp", col:3, row:"3", tag:"External", icon:"🧠", title:"LLM alignment",
+        sub:"ChatGPTService.swift", short:"The model proposes and aligns word senses.",
+        body:"A dedicated prompt asks the model to identify homographs in the target language and align each to the reworded text, returning meanings with examples for the Check view to render.",
+        parts:[{n:"homograph prompt",d:"sense extraction"},{n:"alignment",d:"maps senses to positions"}],
+        chips:["LLMPrompts.swift"] },
+
+      { id:"typo", kind:"step", col:2, row:"4", badge:4, icon:"🧹", title:"Typo filtering gate",
+        sub:"stagedHomographs", short:"Hold candidates until typos are filtered out.",
+        body:"Candidates are staged in a local buffer and only published after the alignment pass filters out typo-corrections (e.g. “tear” → “year”). Publishing before classification would let wrong words flash into the Clarify Meaning list — so the assignment waits for the callback.",
+        parts:[{n:"stage then assign",d:"no flash-through"},{n:"classification",d:"drops typo-corrected words"}],
+        chips:["capturedStagedHomographs"] },
+
+      { id:"extras", kind:"step", col:2, row:"5", badge:5, icon:"🔤", title:"Gender · copy · synonyms",
+        sub:"CheckViewModel.swift", short:"The rest of the Check toolkit.",
+        body:"The same view shows gendered word variants for inflecting languages, the optional second-language copy translation, and on-demand synonyms for a chosen meaning — every cache layer propagating each field so nothing is dropped.",
+        parts:[{n:"gender words",d:"variants for inflecting languages"},{n:"copy text",d:"second-language output"},{n:"synonyms",d:"generated on demand"}],
+        chips:["genderWords","synonymsByAlphabetDict"] },
+
+      { id:"sync", kind:"comp", col:1, row:"3 / 6", tag:"State", icon:"🔗", title:"Sync & cache",
+        sub:"HomographSyncService", short:"Persists selections across both processes.",
+        body:"Disambiguation choices are persisted and synced between the main app and the keyboard extension, then replayed on a repeat reword of unchanged text — so the work is never lost between processes.",
+        parts:[{n:"HomographSyncService",d:"cross-process sync"},{n:"CheckCacheManager",d:"persistence & replay"}],
+        chips:["HomographSyncService.swift","CheckCacheManager.swift"] },
+    ],
+    edges: [
+      { from:"done", to:"build", kind:"flow" },
+      { from:"build", to:"homo", kind:"flow" },
+      { from:"homo", to:"typo", kind:"flow" },
+      { from:"typo", to:"extras", kind:"flow" },
+      { from:"homo", to:"llm", kind:"ext", fs:"r", ts:"l" },
+      { from:"sync", to:"homo", kind:"link" },
+      { from:"sync", to:"extras", kind:"link" },
+    ],
+  },
+
+  paste: {
+    label: "Paste & preview", ico: "📋",
+    intro: "Pasted text gets its own flow: it's detected automatically, translated sentence by sentence, and shown in a side-by-side preview so you can review before it lands in the field.",
+    nodes: [
+      { id:"detect", kind:"step", col:2, row:"1", badge:1, icon:"📋", title:"Paste detected",
+        sub:"PasteView.swift", short:"Pasted text is routed into a preview, not inserted blind.",
+        body:"Rather than dropping a pasted block straight into the field, the toolbar detects it and opens a dedicated preview flow.",
+        parts:[{n:"showPasteView()",d:"opens the preview"}],
+        chips:["PasteView.swift"] },
+
+      { id:"trans", kind:"step", col:2, row:"2", badge:2, icon:"🌐", title:"Per-sentence translation",
+        sub:"TranslationPoolService", short:"Long passages translated sentence by sentence.",
+        body:"Longer passages are translated sentence by sentence with an extended network timeout, keeping each unit accurate without stalling on the whole block.",
+        parts:[{n:"sentence pool",d:"concurrent requests"},{n:"extended timeout",d:"for long passages"}],
+        chips:["TranslationPoolService"] },
+
+      { id:"pllm", kind:"comp", col:3, row:"2", tag:"External", icon:"☁️", title:"Edge proxy · LLM",
+        sub:"functions/v1/chat-proxy", short:"Same server-side proxy as reword.",
+        body:"Paste translations use the same Supabase Edge proxy and model as the reword flow, so behaviour and auth stay consistent.",
+        parts:[{n:"chat-proxy",d:"shared with reword"}],
+        chips:["Supabase","gpt-4o-mini"] },
+
+      { id:"preview", kind:"step", col:2, row:"3", badge:3, icon:"👀", title:"Side-by-side preview",
+        sub:"PasteView.swift", short:"Compare source and translation before committing.",
+        body:"A side-by-side preview lets you check the translation against the source and decide before anything is written.",
+        parts:[{n:"source ↔ translation",d:"review step"}],
+        chips:["preview"] },
+
+      { id:"insert", kind:"step", col:2, row:"4", badge:4, icon:"✅", title:"Insert on confirm",
+        sub:"TextManipulationService.swift", short:"Confirmed text is written into the field.",
+        body:"On confirm, the translated text is inserted through the same guarded manipulation path the reword flow uses.",
+        parts:[{n:"confirm → insert",d:"guarded write-back"}],
+        chips:["clearAndInsertText()"] },
+    ],
+    edges: [
+      { from:"detect", to:"trans", kind:"flow" },
+      { from:"trans", to:"preview", kind:"flow" },
+      { from:"preview", to:"insert", kind:"flow" },
+      { from:"trans", to:"pllm", kind:"ext", fs:"r", ts:"l" },
+    ],
+  },
+};
+
+/* ============================================================
+   RENDER + LIVE WIRING
+   ============================================================ */
+const canvas   = document.getElementById("canvas");
+const wires    = document.getElementById("wires");
+const tabsEl   = document.getElementById("tabs");
+const introEl  = document.getElementById("flowIntro");
+const chevSvg  = '<svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+
+const order = Object.keys(FLOWS);
+let current = null;
+const nodeEls = new Map();   // id -> element
+let liveEdges = [];          // {edge, path, label}
+
+/* ---- tabs ---- */
+order.forEach((key, i) => {
+  const f = FLOWS[key];
+  const t = document.createElement("button");
+  t.className = "tab";
+  t.setAttribute("role", "tab");
+  t.id = "tab-" + key;
+  t.innerHTML = `<span class="t-ico">${f.ico}</span>${f.label}`;
+  t.addEventListener("click", () => selectFlow(key));
+  tabsEl.appendChild(t);
+});
+
+function selectFlow(key) {
+  if (key === current) return;
+  current = key;
+  const flow = FLOWS[key];
+
+  tabsEl.querySelectorAll(".tab").forEach(t =>
+    t.setAttribute("aria-selected", t.id === "tab-" + key ? "true" : "false"));
+  introEl.textContent = flow.intro;
+
+  // clear old nodes (keep the <svg> wires element)
+  [...canvas.querySelectorAll(".node")].forEach(n => n.remove());
+  nodeEls.clear();
+  [...wires.querySelectorAll(".wire, .wire-label")].forEach(w => w.remove());
+  liveEdges = [];
+
+  flow.nodes.forEach(n => canvas.appendChild(buildNode(n)));
+
+  // build wires
+  flow.edges.forEach(edge => {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("class", "wire e-" + edge.kind);
+    const mk = edge.kind === "link" ? "mklink" : edge.kind === "ext" ? "mkext" : "mkflow";
+    path.setAttribute("marker-end", `url(#${mk})`);
+    wires.appendChild(path);
+    let label = null;
+    if (edge.label) {
+      label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("class", "wire-label");
+      label.setAttribute("text-anchor", "middle");
+      label.textContent = edge.label;
+      wires.appendChild(label);
+    }
+    liveEdges.push({ edge, path, label });
+  });
+
+  history.replaceState(null, "", "#" + key);
+  requestAnimationFrame(() => { redraw(); animate(); });
+}
+
+function buildNode(n) {
+  const el = document.createElement("div");
+  el.className = "node " + (n.kind === "comp" ? "comp" : "step") + (n.row.includes("/") ? " spine" : "");
+  el.style.gridColumn = String(n.col);
+  el.style.gridRow = n.row;
+  el.setAttribute("tabindex", "0");
+  el.setAttribute("role", "button");
+  el.setAttribute("aria-expanded", "false");
+
+  const lead = n.kind === "comp"
+    ? `<span class="n-tag">${n.tag || "Component"}</span>`
+    : `<span class="n-badge">${n.badge}</span>`;
+  const parts = (n.parts || []).map(p =>
+    `<div class="part"><span class="p-name">${p.n}</span><span class="p-desc">${p.d}</span></div>`).join("");
+  const chips = (n.chips || []).map((c, i) =>
+    `<span class="chip ${i === 0 ? "k" : ""}">${c}</span>`).join("");
+
+  el.innerHTML = `
+    <div class="n-head">
+      ${lead}
+      <span class="n-ico">${n.icon}</span>
+      <span class="n-tt">
+        <p class="n-title">${n.title}</p>
+        <div class="n-sub">${n.sub}</div>
+      </span>
+      ${chevSvg}
+    </div>
+    <p class="n-short">${n.short}</p>
+    <div class="n-more"><div class="n-more-inner">
+      <p class="n-body">${n.body}</p>
+      ${parts ? `<div class="parts">${parts}</div>` : ""}
+      ${chips ? `<div class="chips">${chips}</div>` : ""}
+    </div></div>`;
+
+  const toggle = () => {
+    const open = el.classList.toggle("open");
+    el.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "nearest" }), 60);
+    animate();
+  };
+  el.addEventListener("click", toggle);
+  el.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+  });
+  el.addEventListener("mouseenter", () => highlight(n.id, true));
+  el.addEventListener("mouseleave", () => highlight(n.id, false));
+
+  nodeEls.set(n.id, el);
+  return el;
+}
+
+/* ---- geometry helpers ---- */
+function rectOf(el) { return { x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight }; }
+function side(r, s) {
+  const cx = r.x + r.w / 2, cy = r.y + r.h / 2;
+  if (s === "t") return { x: cx, y: r.y, n: [0, -1] };
+  if (s === "b") return { x: cx, y: r.y + r.h, n: [0, 1] };
+  if (s === "l") return { x: r.x, y: cy, n: [-1, 0] };
+  return { x: r.x + r.w, y: cy, n: [1, 0] };
+}
+function pickSides(a, b, edge) {
+  let fs = edge.fs, ts = edge.ts;
+  if (!fs || !ts) {
+    const acx = a.x + a.w / 2, acy = a.y + a.h / 2, bcx = b.x + b.w / 2, bcy = b.y + b.h / 2;
+    const dx = bcx - acx, dy = bcy - acy;
+    if (Math.abs(dx) > Math.abs(dy) * 1.15) {
+      fs = fs || (dx > 0 ? "r" : "l"); ts = ts || (dx > 0 ? "l" : "r");
+    } else {
+      fs = fs || (dy > 0 ? "b" : "t"); ts = ts || (dy > 0 ? "t" : "b");
+    }
+  }
+  return [fs, ts];
+}
+
+function redraw() {
+  wires.setAttribute("width", canvas.offsetWidth);
+  wires.setAttribute("height", canvas.offsetHeight);
+  liveEdges.forEach(({ edge, path, label }) => {
+    const aEl = nodeEls.get(edge.from), bEl = nodeEls.get(edge.to);
+    if (!aEl || !bEl) return;
+    const ra = rectOf(aEl), rb = rectOf(bEl);
+    const [fs, ts] = pickSides(ra, rb, edge);
+    const p1 = side(ra, fs), p2 = side(rb, ts);
+    const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+    const off = Math.max(34, Math.min(dist * 0.4, 130));
+    const c1x = p1.x + p1.n[0] * off, c1y = p1.y + p1.n[1] * off;
+    const c2x = p2.x + p2.n[0] * off, c2y = p2.y + p2.n[1] * off;
+    path.setAttribute("d", `M${p1.x},${p1.y} C${c1x},${c1y} ${c2x},${c2y} ${p2.x},${p2.y}`);
+    if (label) {
+      // place label at the bezier midpoint (t = 0.5)
+      const mx = 0.125*p1.x + 0.375*c1x + 0.375*c2x + 0.125*p2.x;
+      const my = 0.125*p1.y + 0.375*c1y + 0.375*c2y + 0.125*p2.y;
+      label.setAttribute("x", mx); label.setAttribute("y", my - 4);
+    }
+  });
+}
+
+/* redraw across the expand/reflow transition for smoothness */
+function animate() {
+  const t0 = performance.now();
+  (function tick(now) {
+    redraw();
+    if (now - t0 < 440) requestAnimationFrame(tick);
+  })(performance.now());
+}
+
+function highlight(id, on) {
+  liveEdges.forEach(({ edge, path }) => {
+    const related = edge.from === id || edge.to === id;
+    path.classList.toggle("dim", on && !related);
+  });
+}
+
+/* keep wires correct on resize / font load / content changes */
+new ResizeObserver(() => redraw()).observe(canvas);
+window.addEventListener("resize", redraw);
+window.addEventListener("load", redraw);
+
+/* ============================================================
+   THEME
+   ============================================================ */
+const root = document.documentElement;
+const tIcon = document.getElementById("themeIcon");
+const tLabel = document.getElementById("themeLabel");
+const sun = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
+const moon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';
+
+function applyTheme(theme) {
+  root.setAttribute("data-theme", theme);
+  tIcon.innerHTML = theme === "dark" ? moon : sun;
+  tLabel.textContent = theme === "dark" ? "Dark" : "Light";
+  try { localStorage.setItem("arcatext-theme", theme); } catch (e) {}
+  redraw();
+}
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem("arcatext-theme"); } catch (e) {}
+  const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+  applyTheme(saved || (prefersLight ? "light" : "dark"));
+})();
+document.getElementById("themeToggle").addEventListener("click", () =>
+  applyTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark"));
+
+/* ============================================================
+   INIT — deep-link via #flow
+   ============================================================ */
+const initial = location.hash.replace("#", "");
+selectFlow(FLOWS[initial] ? initial : order[0]);
+</script>
+</body>
+</html>
