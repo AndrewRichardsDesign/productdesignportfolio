@@ -490,7 +490,7 @@
         "Messaging companion",
         "Future AI conversation platform"
       ],
-      "originTitle": "Origin of my love for Andrea",
+      "originTitle": "Origin",
       "origin": [
         "Arcatext began as a personal attempt to make multilingual texting feel more fluid. Early exploration exposed the friction of existing translator keyboards and copy-paste workflows, which shifted the project from a conceptual messaging app optimization into a true product able to create value in any messaging app."
       ],
@@ -969,7 +969,7 @@
       "intro": [
         "Conversant was a mission-critical internal desktop platform for USAA employees who supported members through phone calls, chat, account servicing, and back-office workflows. It unified member context, communication tools, servicing alerts, product information, documentation, and internal applications into one workspace.",
         "I worked across design research, UX/UI design, interaction design, product strategy, and implementation guidance to improve high-value workflows inside the platform. My work helped Conversant become more consistent, flexible, accessible, and scalable while supporting the speed and accuracy employees needed during live servicing work.",
-        "This was not a blank-slate consumer redesign. Conversant was a mature enterprise platform with inherited patterns, legacy dependencies, technical constraints, and a wide range of employee roles. The design challenge was to improve specific workflows while strengthening the system around them.\n\n\nOh wow I added something here!"
+        "This was not a blank-slate consumer redesign. Conversant was a mature enterprise platform with inherited patterns, legacy dependencies, technical constraints, and a wide range of employee roles. The design challenge was to improve specific workflows while strengthening the system around them."
       ],
       "productTypeLabel": "Project type",
       "productTypeList": [
