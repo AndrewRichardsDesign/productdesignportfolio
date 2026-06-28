@@ -69,9 +69,9 @@ module.exports = {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        glow: "0 0 20px rgba(126, 110, 227, 0.3)",
-        "glow-lg": "0 0 40px rgba(126, 110, 227, 0.5)",
-        "glow-xl": "0 0 60px rgba(126, 110, 227, 0.6)",
+        glow: "0 0 20px rgba(91, 140, 255, 0.3)",
+        "glow-lg": "0 0 40px rgba(91, 140, 255, 0.5)",
+        "glow-xl": "0 0 60px rgba(91, 140, 255, 0.6)",
       },
       keyframes: {
         "accordion-down": {
@@ -95,8 +95,8 @@ module.exports = {
           "50%": { transform: "translateY(-20px) rotate(3deg)" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(126, 110, 227, 0.3)" },
-          "50%": { boxShadow: "0 0 40px rgba(126, 110, 227, 0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgba(91, 140, 255, 0.3)" },
+          "50%": { boxShadow: "0 0 40px rgba(91, 140, 255, 0.6)" },
         },
         "gradient-shift": {
           "0%": { backgroundPosition: "0% 50%" },

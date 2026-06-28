@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { SiteContent } from './types';
 import type { InsertTool, ProseBlock } from './proseBlocks';
@@ -69,6 +69,7 @@ interface ContentContextValue {
 }
 
 const ContentContext = createContext<ContentContextValue | null>(null);
+
 
 /** Read a nested value out of an object using a dot path like "hero.stats.0.label". */
 function getByPath(obj: unknown, path: string): unknown {
@@ -174,6 +175,42 @@ export function ContentProvider({
   const [moveMode, setMoveMode] = useState(false);
   const [selection, setSelection] = useState<MoveSelection | null>(null);
 
+  // When a move reorders content, the reflow (and tearing down the move-mode
+  // overlays/insertion lines) would otherwise make the page jump. We record the
+  // scroll offset before the mutation and restore it synchronously after the
+  // commit, in a layout effect (pre-paint) so the viewport never visibly moves.
+  const scrollRestoreRef = useRef<number | null>(null);
+  const requestScrollRestore = useCallback(() => {
+    if (typeof window === 'undefined') return;
+    scrollRestoreRef.current = window.scrollY;
+    // Disable scroll anchoring BEFORE the reorder commits, so the browser won't
+    // follow a moved node (which is what makes the page jump). Re-enabled once
+    // the restore settles.
+    document.documentElement.style.overflowAnchor = 'none';
+  }, []);
+  useLayoutEffect(() => {
+    const y = scrollRestoreRef.current;
+    if (y == null) return;
+    scrollRestoreRef.current = null;
+    const html = document.documentElement;
+    const prevBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto'; // restore instantly, not smoothly
+    window.scrollTo(0, y);
+    // Keep it pinned for a few frames against late reflows, then re-enable
+    // scroll anchoring and restore smooth scrolling.
+    let frame = 0;
+    const tick = () => {
+      if (window.scrollY !== y) window.scrollTo(0, y);
+      if (++frame < 8) {
+        requestAnimationFrame(tick);
+      } else {
+        html.style.overflowAnchor = '';
+        html.style.scrollBehavior = prevBehavior;
+      }
+    };
+    requestAnimationFrame(tick);
+  });
+
   // Insert and Move are mutually exclusive modes; arming one exits the other.
   const setInsertTool = useCallback((tool: InsertTool | null) => {
     if (tool) {
@@ -277,6 +314,7 @@ export function ContentProvider({
     (pageKey: string, naturalIds: string[], targetGap: number) => {
       if (selection?.domain !== 'section') return;
       const ids = selection.ids;
+      requestScrollRestore();
       setContent((prev) => {
         const orderPath = `${pageKey}.sectionOrder`;
         const stored = getByPath(prev, orderPath) as string[] | undefined;
@@ -296,13 +334,14 @@ export function ContentProvider({
       });
       cancelMove();
     },
-    [selection, persistDraft, cancelMove]
+    [selection, persistDraft, cancelMove, requestScrollRestore]
   );
 
   const moveBlocksTo = useCallback(
     (targetPath: string, targetGap: number) => {
       if (selection?.domain !== 'block' || selection.path !== targetPath) return;
       const indices = selection.indices;
+      requestScrollRestore();
       setContent((prev) => {
         const arr = getByPath(prev, targetPath);
         if (!Array.isArray(arr)) return prev;
@@ -318,7 +357,7 @@ export function ContentProvider({
       });
       cancelMove();
     },
-    [selection, persistDraft, cancelMove]
+    [selection, persistDraft, cancelMove, requestScrollRestore]
   );
 
   const setToken = useCallback((value: string) => {

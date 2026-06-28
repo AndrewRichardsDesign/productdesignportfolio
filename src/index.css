@@ -5,32 +5,34 @@
 @tailwind utilities;
 
 @layer base {
+  /* Palette aligned to the "How Arcatext works" diagram:
+     accent (blue) #5b8cff, accent-2 (teal) #38c4b4, neutral blue-greys. */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 260 60% 5%;
+    --background: 216 38% 98%;
+    --foreground: 216 31% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 260 60% 5%;
+    --card-foreground: 216 31% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 260 60% 5%;
-    --primary: 252 65% 60%;
+    --popover-foreground: 216 31% 14%;
+    --primary: 222 100% 68%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 260 60% 5%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 195 50% 55%;
+    --secondary: 217 31% 95%;
+    --secondary-foreground: 216 31% 14%;
+    --muted: 217 31% 95%;
+    --muted-foreground: 215 14% 37%;
+    --accent: 173 56% 49%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 252 65% 60%;
-    --radius: 0.625rem;
-    
+    --border: 216 28% 90%;
+    --input: 216 28% 90%;
+    --ring: 222 100% 68%;
+    --radius: 0.875rem;
+
     /* Custom Colors */
-    --purple: 252 65% 60%;
-    --blue: 195 50% 55%;
-    --dark-purple: 260 85% 5%;
+    --purple: 222 100% 68%;
+    --blue: 173 56% 49%;
+    --dark-purple: 217 22% 7%;
     
     /* Animation Easings */
     --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -43,25 +45,25 @@
   }
 
   .dark {
-    --background: 260 85% 5%;
-    --foreground: 0 0% 100%;
-    --card: 260 70% 8%;
-    --card-foreground: 0 0% 100%;
-    --popover: 260 70% 8%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 252 65% 60%;
+    --background: 217 22% 7%;
+    --foreground: 213 31% 93%;
+    --card: 215 21% 11%;
+    --card-foreground: 213 31% 93%;
+    --popover: 215 21% 11%;
+    --popover-foreground: 213 31% 93%;
+    --primary: 222 100% 68%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 260 50% 15%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 260 50% 15%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 195 50% 55%;
+    --secondary: 215 23% 14%;
+    --secondary-foreground: 213 31% 93%;
+    --muted: 215 23% 14%;
+    --muted-foreground: 213 16% 71%;
+    --accent: 173 56% 49%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 100% / 0.1;
-    --input: 0 0% 100% / 0.1;
-    --ring: 252 65% 60%;
+    --border: 215 18% 20%;
+    --input: 215 18% 20%;
+    --ring: 222 100% 68%;
   }
 }
 
@@ -106,6 +108,32 @@
   
   .animation-paused {
     animation-play-state: paused;
+  }
+
+  /* Flowing dashed connector lines (suggest data transfer). Colour follows
+     currentColor; direction flows toward the arrowhead. */
+  .flow-dash-h {
+    background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+    background-size: 8px 100%;
+    background-repeat: repeat-x;
+    animation: flow-dash-x 0.45s linear infinite;
+  }
+  .flow-dash-v {
+    background-image: linear-gradient(to bottom, currentColor 50%, transparent 50%);
+    background-size: 100% 8px;
+    background-repeat: repeat-y;
+    animation: flow-dash-y 0.45s linear infinite;
+  }
+}
+
+@keyframes flow-dash-x {
+  to {
+    background-position-x: 8px;
+  }
+}
+@keyframes flow-dash-y {
+  to {
+    background-position-y: 8px;
   }
 }
 
