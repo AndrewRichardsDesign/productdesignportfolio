@@ -13,14 +13,88 @@ import { useTheme } from '@/hooks/useTheme';
  * interact" button that opens it full-screen.
  */
 const TOOL_SRC = `${import.meta.env.BASE_URL}arcatext-admin-tool.html`;
-// The tool's natural canvas (3-column layout). The preview scales this to fit.
-const FRAME_W = 1200;
-const FRAME_H = 820;
 
 export function AdminToolShowcase() {
   const [open, setOpen] = useState(false);
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.5);
+  const previewRef = useRef<HTMLIFrameElement>(null);
+  const [hovering, setHovering] = useState(false);
+
+  // Hover "alive" effect: while the cursor is over the preview, the whole UI
+  // pulses (scale, via CSS) and the Parameters sliders jitter upward to random
+  // values, snapping back to their defaults between beats and when the cursor
+  // leaves. The preview iframe is same-origin, so we can drive its sliders.
+  const defaultsRef = useRef<Map<HTMLInputElement, string>>(new Map());
+  const beatRef = useRef<number | null>(null);
+
+  const previewDoc = () => {
+    try {
+      return previewRef.current?.contentDocument ?? null;
+    } catch {
+      return null;
+    }
+  };
+  const snapshotSliders = () => {
+    const doc = previewDoc();
+    if (!doc) return;
+    const map = defaultsRef.current;
+    map.clear();
+    doc.querySelectorAll<HTMLInputElement>('#knobs input').forEach((i) => map.set(i, i.value));
+  };
+  const randomizeSlidersUp = () => {
+    const doc = previewDoc();
+    if (!doc) return;
+    doc.querySelectorAll<HTMLInputElement>('#knobs input[type=range]').forEach((r) => {
+      const min = parseFloat(r.min);
+      const max = parseFloat(r.max);
+      if (Number.isNaN(min) || Number.isNaN(max) || max <= min) return;
+      const base = parseFloat(defaultsRef.current.get(r) ?? r.value);
+      const start = Number.isNaN(base) ? min : base;
+      const step = parseFloat(r.step) || (max - min) / 100;
+      let target = start + Math.random() * (max - start);
+      target = Math.min(max, Math.round(target / step) * step);
+      r.value = String(target);
+      // Keep the paired number "chip" in sync with the slider.
+      const key = r.getAttribute('data-key');
+      const tier = r.getAttribute('data-tier');
+      const sel =
+        `input.valuechip[data-key="${key}"]` + (tier ? `[data-tier="${tier}"]` : ':not([data-tier])');
+      doc.querySelectorAll<HTMLInputElement>(sel).forEach((c) => {
+        c.value = String(target);
+      });
+    });
+  };
+  const restoreSliders = () => {
+    defaultsRef.current.forEach((v, i) => {
+      i.value = v;
+    });
+  };
+
+  const handleEnter = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setHovering(true);
+    snapshotSliders();
+    randomizeSlidersUp();
+    let up = true;
+    beatRef.current = window.setInterval(() => {
+      up = !up;
+      if (up) randomizeSlidersUp();
+      else restoreSliders();
+    }, 1000);
+  };
+  const handleLeave = () => {
+    setHovering(false);
+    if (beatRef.current) {
+      clearInterval(beatRef.current);
+      beatRef.current = null;
+    }
+    restoreSliders();
+  };
+  useEffect(
+    () => () => {
+      if (beatRef.current) clearInterval(beatRef.current);
+    },
+    []
+  );
 
   // Follow the portfolio's theme: dark → the tool's "midnight" (blue-accented
   // dark) palette, light → "daylight". Passed via ?theme=; the tool seeds this
@@ -30,17 +104,6 @@ export function AdminToolShowcase() {
     () => `${TOOL_SRC}?theme=${resolvedTheme === 'dark' ? 'midnight' : 'daylight'}`,
     [resolvedTheme]
   );
-
-  // Scale the preview iframe to fill the available width (keeps text readable).
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(() => {
-      setScale(Math.min(1, el.clientWidth / FRAME_W));
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   // Lock body scroll + close on Esc while the modal is open.
   useEffect(() => {
@@ -60,26 +123,29 @@ export function AdminToolShowcase() {
   return (
     <div>
       <div className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent">
-        Admin App
+        Admin App (fully responsive)
       </div>
       <p className="mb-3 text-sm text-muted-foreground">
         Typing-UX admin tool. Aggregates behavior, scores it, recommends settings.
       </p>
 
-      {/* Scaled, non-interactive preview. */}
+      {/* Full-width, non-interactive preview. The tool is responsive, so the
+          iframe renders at the container's real width. Hovering brings it to life. */}
       <div
-        ref={wrapRef}
-        className="relative w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm"
-        style={{ height: FRAME_H * scale }}
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
+        className={`relative h-[560px] w-full overflow-hidden rounded-xl border border-border bg-card shadow-sm sm:h-[720px] lg:h-[820px] ${
+          hovering ? 'preview-pulse' : ''
+        }`}
       >
         <iframe
+          ref={previewRef}
           src={toolSrc}
           title="Typing-UX admin tool preview"
           loading="lazy"
           tabIndex={-1}
           aria-hidden
-          className="pointer-events-none origin-top-left border-0"
-          style={{ width: FRAME_W, height: FRAME_H, transform: `scale(${scale})` }}
+          className="pointer-events-none h-full w-full border-0"
         />
         {/* Click-catcher: the whole preview opens the tool. */}
         <button
@@ -95,7 +161,8 @@ export function AdminToolShowcase() {
         onClick={() => setOpen(true)}
         className="mt-3 flex w-full items-center justify-center gap-2 text-sm font-medium text-primary transition hover:opacity-80"
       >
-        Click to expand and interact
+        <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" aria-hidden />
+        Interact
         <Maximize2 className="h-4 w-4" />
       </button>
 

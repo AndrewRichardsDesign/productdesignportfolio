@@ -158,6 +158,15 @@
   100% { opacity: 0; }
 }
 
+/* Admin-tool preview "alive" pulse on hover: gently scale up/down by 5%. */
+@keyframes preview-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.preview-pulse {
+  animation: preview-pulse 1.2s ease-in-out infinite;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

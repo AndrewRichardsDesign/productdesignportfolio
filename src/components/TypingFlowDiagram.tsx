@@ -170,7 +170,7 @@ function AllUsersGroup() {
 
 export function TypingFlowDiagram() {
   return (
-    <div className="reveal mt-8 rounded-2xl border border-border bg-card/60 p-6 shadow-sm lg:p-8">
+    <div className="reveal mt-8">
       <div className="mb-6">
         <div className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
           How it works
@@ -186,8 +186,8 @@ export function TypingFlowDiagram() {
       {/* Centered vertical connector to the Admin App. */}
       <VConnector />
 
-      {/* Admin App — full width. */}
-      <div className="w-full rounded-2xl border border-border bg-card/40 p-4 sm:p-6">
+      {/* Admin App — full width, no surrounding container. */}
+      <div className="w-full">
         <AdminToolShowcase />
       </div>
     </div>
