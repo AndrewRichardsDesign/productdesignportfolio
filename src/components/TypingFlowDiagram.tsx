@@ -1,6 +1,6 @@
 import {
-  ArrowDown,
-  ArrowRight,
+  ChevronDown,
+  ChevronRight,
   Gauge,
   Keyboard,
   Network,
@@ -50,18 +50,26 @@ function Node({
 }
 
 /**
- * Arrow connector: points down when nodes are stacked, right once they sit in a
- * row. `at` is the breakpoint where the surrounding layout turns horizontal —
- * 'lg' for the device→paths split, 'sm' for the node→outcome steps within a path.
+ * Animated dashed-line connector suggesting data transfer. Points down when
+ * nodes are stacked, right once they sit in a row. `at` is the breakpoint where
+ * the surrounding layout turns horizontal — 'lg' for the device→paths split,
+ * 'sm' for the node→outcome steps within a path.
  */
 function Arrow({ label, at }: { label?: string; at: 'sm' | 'lg' }) {
-  const wrap = at === 'lg' ? 'lg:flex-col' : 'sm:flex-col';
-  const down = at === 'lg' ? 'lg:hidden' : 'sm:hidden';
-  const right = at === 'lg' ? 'hidden lg:block' : 'hidden sm:block';
+  const showVertical = at === 'lg' ? 'lg:hidden' : 'sm:hidden';
+  const showHorizontal = at === 'lg' ? 'hidden lg:flex' : 'hidden sm:flex';
   return (
-    <div className={`flex shrink-0 items-center justify-center gap-1 ${wrap}`}>
-      <ArrowDown className={`h-4 w-4 text-muted-foreground ${down}`} />
-      <ArrowRight className={`h-4 w-4 text-muted-foreground ${right}`} />
+    <div className="flex shrink-0 flex-col items-center justify-center gap-1 py-1">
+      {/* Stacked layout: vertical dashes flowing down. */}
+      <span className={`flex flex-col items-center text-primary/70 ${showVertical}`}>
+        <span className="flow-dash-v h-7 w-0.5" aria-hidden />
+        <ChevronDown className="-mt-1.5 h-4 w-4" aria-hidden />
+      </span>
+      {/* Row layout: horizontal dashes flowing toward the arrowhead. */}
+      <span className={`items-center text-primary/70 ${showHorizontal}`}>
+        <span className="flow-dash-h h-0.5 w-12" aria-hidden />
+        <ChevronRight className="-ml-1.5 h-4 w-4" aria-hidden />
+      </span>
       {label && (
         <span className="text-[10px] font-mono uppercase tracking-wide text-muted-foreground/80">
           {label}
