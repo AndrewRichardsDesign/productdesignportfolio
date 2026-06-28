@@ -73,6 +73,18 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /*
+   * Below 1600px the project pages show a sticky top tab bar beneath the fixed
+   * top bar, so section anchors need extra scroll-margin to land clear of both.
+   * At >=1600px the tab bar is replaced by the vertical side rail and the
+   * built-in scroll-mt-24 (top bar only) is enough.
+   */
+  @media (max-width: 1599px) {
+    section[id^='sec-'] {
+      scroll-margin-top: 8rem;
+    }
+  }
   
   body {
     @apply bg-background text-foreground font-sans antialiased;

@@ -75,7 +75,7 @@ function App() {
   return (
     <ThemeProvider>
       <ContentProvider isAdmin={isAdmin}>
-        <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+        <div className="relative min-h-screen bg-background text-foreground overflow-x-clip">
           {route === 'arcatext' ? (
             <ProjectGate bypass={isAdmin}>
               <Arcatext />

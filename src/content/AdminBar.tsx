@@ -1,9 +1,16 @@
-import { useState } from 'react';
-import { Check, ExternalLink, Eye, EyeOff, List, Loader2, LogOut, RotateCcw, Save, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Check, ChevronDown, ExternalLink, Eye, EyeOff, List, Loader2, LogOut, Plus, RotateCcw, Save, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { ADMIN_TARGET, useContent } from './ContentContext';
 import { ContentEditorPanel } from './ContentEditorPanel';
+import { HEADER_STYLES, headerConfig } from './proseBlocks';
 import { lockAdmin } from '@/lib/adminAuth';
 
 /**
@@ -11,13 +18,31 @@ import { lockAdmin } from '@/lib/adminAuth';
  * paste a GitHub token, commit changes back to the repo, and exit.
  */
 export function AdminBar() {
-  const { isAdmin, dirty, token, branch, saveState, setToken, setBranch, save, discardChanges } =
+  const { isAdmin, dirty, token, branch, saveState, insertTool, setInsertTool, setToken, setBranch, save, discardChanges } =
     useContent();
   const [showToken, setShowToken] = useState(false);
   const [open, setOpen] = useState(true);
   const [panelOpen, setPanelOpen] = useState(false);
 
+  // Esc cancels an armed insert tool.
+  useEffect(() => {
+    if (!insertTool) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setInsertTool(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [insertTool, setInsertTool]);
+
   if (!isAdmin) return null;
+
+  const paragraphArmed = insertTool?.kind === 'paragraph';
+  const headerArmed = insertTool?.kind === 'heading';
+  const armedLabel = insertTool
+    ? insertTool.kind === 'paragraph'
+      ? 'Paragraph'
+      : headerConfig(insertTool.style).label
+    : '';
 
   const exitAdmin = () => {
     // Strip any admin URL flag first, then clear the persistent session so the
@@ -35,6 +60,11 @@ export function AdminBar() {
   return (
     <>
     <ContentEditorPanel open={panelOpen} onClose={() => setPanelOpen(false)} />
+    {insertTool && (
+      <div className="fixed top-20 left-1/2 z-[100] -translate-x-1/2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-center text-xs font-medium text-primary shadow-lg backdrop-blur">
+        Inserting {armedLabel} — click a “+ {armedLabel}” line in the page. Esc to cancel.
+      </div>
+    )}
     <div className="fixed bottom-4 left-1/2 z-[100] w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2">
       <div className="rounded-2xl border border-border/70 bg-background/95 shadow-2xl backdrop-blur-xl">
         {/* Header row */}
@@ -69,6 +99,59 @@ export function AdminBar() {
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
+        </div>
+
+        {/* Insert tools — always visible so you can place blocks on the page */}
+        <div className="flex flex-wrap items-center gap-2 border-t border-border/60 px-4 py-2.5">
+          <span className="text-xs font-medium text-muted-foreground">Insert</span>
+          <Button
+            size="sm"
+            variant={paragraphArmed ? 'default' : 'outline'}
+            className="h-8 gap-1.5 px-2.5 text-xs"
+            onClick={() => setInsertTool(paragraphArmed ? null : { kind: 'paragraph' })}
+          >
+            <Plus className="h-3.5 w-3.5" /> Paragraph
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="sm"
+                variant={headerArmed ? 'default' : 'outline'}
+                className="h-8 gap-1.5 px-2.5 text-xs"
+              >
+                <Plus className="h-3.5 w-3.5" /> Header
+                <ChevronDown className="h-3.5 w-3.5 opacity-70" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {HEADER_STYLES.map((h) => (
+                <DropdownMenuItem
+                  key={h.style}
+                  onClick={() => setInsertTool({ kind: 'heading', style: h.style })}
+                  className="gap-6"
+                >
+                  <span className="flex-1">{h.label}</span>
+                  {insertTool?.kind === 'heading' && insertTool.style === h.style && (
+                    <Check className="h-4 w-4 text-primary" />
+                  )}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {insertTool && (
+            <div className="ml-auto flex items-center gap-1 text-xs text-primary">
+              <span className="hidden sm:inline">Click a line in the page · Esc to cancel</span>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-7 w-7 p-0"
+                onClick={() => setInsertTool(null)}
+                title="Cancel insert"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
         </div>
 
         {open && (

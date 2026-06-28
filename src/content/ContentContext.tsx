@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { SiteContent } from './types';
+import type { InsertTool, ProseBlock } from './proseBlocks';
 import defaultContent from './site-content.json';
 
 /**
@@ -29,7 +30,14 @@ interface ContentContextValue {
   token: string;
   branch: string;
   saveState: SaveState;
+  /** The armed insert tool for placing new prose blocks, or null. */
+  insertTool: InsertTool | null;
+  setInsertTool: (tool: InsertTool | null) => void;
   setText: (path: string, value: string | number) => void;
+  /** Insert a block into the array at `path` at the given index. */
+  insertBlock: (path: string, index: number, block: ProseBlock) => void;
+  /** Remove the array entry at `path`[index]. */
+  removeBlock: (path: string, index: number) => void;
   setToken: (token: string) => void;
   setBranch: (branch: string) => void;
   save: () => Promise<void>;
@@ -140,22 +148,60 @@ export function ContentProvider({
     () => localStorage.getItem(BRANCH_KEY) ?? DEFAULT_BRANCH
   );
   const [saveState, setSaveState] = useState<SaveState>({ status: 'idle' });
+  const [insertTool, setInsertTool] = useState<InsertTool | null>(null);
 
-  const setText = useCallback((path: string, value: string | number) => {
-    setContent((prev) => {
-      const current = getByPath(prev, path);
-      if (current === value) return prev;
-      const next = setByPath(prev, path, value);
-      try {
-        localStorage.setItem(DRAFT_KEY, JSON.stringify(next));
-      } catch {
-        /* ignore quota errors */
-      }
-      return next;
-    });
+  const persistDraft = useCallback((next: SiteContent) => {
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(next));
+    } catch {
+      /* ignore quota errors */
+    }
     setDirty(true);
     setSaveState({ status: 'idle' });
   }, []);
+
+  const setText = useCallback(
+    (path: string, value: string | number) => {
+      setContent((prev) => {
+        const current = getByPath(prev, path);
+        if (current === value) return prev;
+        const next = setByPath(prev, path, value);
+        persistDraft(next);
+        return next;
+      });
+    },
+    [persistDraft]
+  );
+
+  const insertBlock = useCallback(
+    (path: string, index: number, block: ProseBlock) => {
+      setContent((prev) => {
+        const arr = getByPath(prev, path);
+        const list = Array.isArray(arr) ? [...arr] : [];
+        const at = Math.max(0, Math.min(index, list.length));
+        list.splice(at, 0, block);
+        const next = setByPath(prev, path, list);
+        persistDraft(next);
+        return next;
+      });
+    },
+    [persistDraft]
+  );
+
+  const removeBlock = useCallback(
+    (path: string, index: number) => {
+      setContent((prev) => {
+        const arr = getByPath(prev, path);
+        if (!Array.isArray(arr) || index < 0 || index >= arr.length) return prev;
+        const list = [...arr];
+        list.splice(index, 1);
+        const next = setByPath(prev, path, list);
+        persistDraft(next);
+        return next;
+      });
+    },
+    [persistDraft]
+  );
 
   const setToken = useCallback((value: string) => {
     setTokenState(value);
@@ -186,6 +232,7 @@ export function ContentProvider({
     setContent(base);
     setDirty(false);
     setSaveState({ status: 'idle' });
+    setInsertTool(null);
   }, [base]);
 
   const save = useCallback(async () => {
@@ -315,14 +362,18 @@ export function ContentProvider({
       token,
       branch,
       saveState,
+      insertTool,
+      setInsertTool,
       setText,
+      insertBlock,
+      removeBlock,
       setToken,
       setBranch,
       save,
       discardChanges,
       uploadAsset,
     }),
-    [content, isAdmin, dirty, token, branch, saveState, setText, setToken, setBranch, save, discardChanges, uploadAsset]
+    [content, isAdmin, dirty, token, branch, saveState, insertTool, setText, insertBlock, removeBlock, setToken, setBranch, save, discardChanges, uploadAsset]
   );
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;
