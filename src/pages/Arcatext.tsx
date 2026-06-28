@@ -546,14 +546,6 @@ export default function Arcatext() {
             </div>
           </div>
 
-          {/* Competitive product requirement */}
-          <div className="mt-20 reveal">
-            <Editable as="h3" path="arcatext.execution.competitiveTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
-            <Prose>
-              <Paragraphs base="arcatext.execution.competitive" items={arc.execution.competitive} />
-            </Prose>
-          </div>
-
           {/* Shipped */}
           <div className="mt-20">
             <Editable as="h3" path="arcatext.execution.shippedTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
@@ -573,6 +565,14 @@ export default function Arcatext() {
                 </li>
               ))}
             </ol>
+          </div>
+
+          {/* Competitive product requirement */}
+          <div className="mt-20 reveal">
+            <Editable as="h3" path="arcatext.execution.competitiveTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
+            <Prose>
+              <Paragraphs base="arcatext.execution.competitive" items={arc.execution.competitive} />
+            </Prose>
           </div>
 
           {/* Launch measurement plan */}
