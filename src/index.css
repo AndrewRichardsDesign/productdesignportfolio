@@ -124,6 +124,16 @@
     background-repeat: repeat-y;
     animation: flow-dash-y 0.45s linear infinite;
   }
+
+  /* Two-step flow loop: step A (data flowing out — right + down) is shown for
+     the first half of the cycle, step B (settings flowing back — left + up) for
+     the second half, with a crossfade between them. */
+  .flow-step-a {
+    animation: flow-step-a 7s ease-in-out infinite;
+  }
+  .flow-step-b {
+    animation: flow-step-b 7s ease-in-out infinite;
+  }
 }
 
 @keyframes flow-dash-x {
@@ -135,6 +145,17 @@
   to {
     background-position-y: 8px;
   }
+}
+
+@keyframes flow-step-a {
+  0%, 42% { opacity: 1; }
+  50%, 92% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes flow-step-b {
+  0%, 42% { opacity: 0; }
+  50%, 92% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 /* Custom scrollbar */
