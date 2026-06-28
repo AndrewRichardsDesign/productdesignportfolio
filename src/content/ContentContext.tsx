@@ -202,27 +202,40 @@ export function ContentProvider({
     };
 
     try {
-      // Look up the current file SHA so GitHub accepts the update.
-      let sha: string | undefined;
-      const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(branch)}`, { headers });
-      if (getRes.ok) {
-        const data = (await getRes.json()) as { sha?: string };
-        sha = data.sha;
-      } else if (getRes.status !== 404) {
-        throw new Error(`Could not read existing file (${getRes.status}).`);
-      }
-
       const json = `${JSON.stringify(content, null, 2)}\n`;
-      const putRes = await fetch(apiUrl, {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify({
-          message: 'Update site content via admin mode',
-          content: utf8ToBase64(json),
-          branch,
-          sha,
-        }),
-      });
+
+      // Read the file's current blob SHA, bypassing any HTTP cache so we never
+      // send a stale SHA — GitHub rejects those with a 409 "…does not match…".
+      const fetchSha = async (): Promise<string | undefined> => {
+        const getRes = await fetch(
+          `${apiUrl}?ref=${encodeURIComponent(branch)}&t=${Date.now()}`,
+          { headers, cache: 'no-store' }
+        );
+        if (getRes.ok) {
+          const data = (await getRes.json()) as { sha?: string };
+          return data.sha;
+        }
+        if (getRes.status === 404) return undefined; // file doesn't exist yet
+        throw new Error(`Could not read existing file (${getRes.status}).`);
+      };
+
+      const commit = (sha: string | undefined) =>
+        fetch(apiUrl, {
+          method: 'PUT',
+          headers,
+          body: JSON.stringify({
+            message: 'Update site content via admin mode',
+            content: utf8ToBase64(json),
+            branch,
+            sha,
+          }),
+        });
+
+      // Commit, and on a stale-SHA conflict re-read the latest SHA and retry.
+      let putRes = await commit(await fetchSha());
+      for (let attempt = 0; putRes.status === 409 && attempt < 2; attempt++) {
+        putRes = await commit(await fetchSha());
+      }
 
       if (!putRes.ok) {
         let detail = `${putRes.status}`;
@@ -234,6 +247,8 @@ export function ContentProvider({
         }
         if (putRes.status === 401 || putRes.status === 403) {
           detail = 'Authentication failed — check the token has "Contents: write" on this repo.';
+        } else if (putRes.status === 409) {
+          detail = 'The file changed during save — click Save again.';
         }
         throw new Error(detail);
       }
