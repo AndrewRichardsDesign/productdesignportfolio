@@ -19,6 +19,7 @@ import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
 import { EditableBlocks } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
+import { ReorderableSections } from '@/components/ReorderableSections';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -115,7 +116,7 @@ export default function Arcatext() {
 
   return (
     <div ref={rootRef} className="relative">
-      <SectionToc items={tocItems} labels={content.arcatext.toc} routeHash="#/arcatext" />
+      <SectionToc items={tocItems} labels={content.arcatext.toc} routeHash="#/arcatext" order={content.arcatext.sectionOrder} />
 
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/50">
@@ -127,7 +128,7 @@ export default function Arcatext() {
             <ArrowLeft className="w-4 h-4" />
             <Editable as="span" path="arcatext.backToPortfolio" />
           </a>
-          <SectionNavDropdown items={tocItems} labels={content.arcatext.toc} routeHash="#/arcatext" />
+          <SectionNavDropdown items={tocItems} labels={content.arcatext.toc} routeHash="#/arcatext" order={content.arcatext.sectionOrder} />
           <Editable as="span" path="arcatext.brand" className="text-sm font-semibold gradient-text" />
         </div>
       </div>
@@ -193,6 +194,7 @@ export default function Arcatext() {
       </section>
 
       {/* 01 — Overview */}
+      <ReorderableSections pageKey="arcatext">
       <section id="sec-01" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
@@ -654,6 +656,7 @@ export default function Arcatext() {
           </div>
         </div>
       </section>
+      </ReorderableSections>
 
       {/* Footer CTA */}
       <section className="py-24">

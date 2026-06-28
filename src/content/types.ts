@@ -187,6 +187,8 @@ export interface ArcatextContent {
   backToPortfolio: string;
   brand: string;
   toc: string[];
+  /** Persisted display order of section ids (e.g. "sec-01"), set by admin "Move". */
+  sectionOrder?: string[];
   hero: {
     status: string;
     title: string;
@@ -316,6 +318,8 @@ export interface ConversantContent {
   backToPortfolio: string;
   brand: string;
   toc: string[];
+  /** Persisted display order of section ids (e.g. "sec-01"), set by admin "Move". */
+  sectionOrder?: string[];
   hero: {
     status: string;
     title: string;
@@ -463,6 +467,8 @@ export interface UsaaContent {
   backToPortfolio: string;
   brand: string;
   toc: string[];
+  /** Persisted display order of section ids (e.g. "sec-01"), set by admin "Move". */
+  sectionOrder?: string[];
   hero: {
     status: string;
     title: string;
@@ -569,6 +575,8 @@ export interface MemberHomeContent {
   backToPortfolio: string;
   brand: string;
   toc: string[];
+  /** Persisted display order of section ids (e.g. "sec-01"), set by admin "Move". */
+  sectionOrder?: string[];
   hero: {
     status: string;
     title: string;

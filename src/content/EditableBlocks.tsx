@@ -35,33 +35,96 @@ function toolLabel(tool: InsertTool): string {
   return tool.kind === 'paragraph' ? 'Paragraph' : headerConfig(tool.style).label;
 }
 
+/** The editable element for a single prose entry (paragraph or heading). */
+function blockElement(path: string, index: number, item: ProseItem) {
+  const block = isProseBlock(item);
+  const textPath = block ? `${path}.${index}.text` : `${path}.${index}`;
+  if (block && item.type === 'heading') {
+    const cfg = headerConfig(item.style);
+    return <Editable as={cfg.tag} path={textPath} className={cfg.className} />;
+  }
+  return <Editable as="p" multiline path={textPath} />;
+}
+
 /**
  * Renders a prose section from the content store as a list of editable blocks.
  *
- * Each entry is either a legacy string (rendered as a paragraph, identical to
- * the old behaviour) or a typed block (paragraph or heading). In admin mode,
- * when an insert tool is armed from the admin bar, a clickable preview line
- * appears between every block — styled like the block it will create — so the
- * editor can see exactly where and how a new paragraph/heading will land.
+ * Each entry is either a legacy string (rendered as a paragraph) or a typed
+ * block (paragraph or heading). In admin it supports three overlays:
+ *   - Insert tool armed: a clickable preview line between every block.
+ *   - Move mode: each block becomes selectable, and "move here" lines appear
+ *     between blocks once blocks from this list are selected.
+ *   - Otherwise: inserted blocks show a hover delete affordance.
  */
 export function EditableBlocks({ path }: { path: string }) {
-  const { content, isAdmin } = useContent();
+  const { content, isAdmin, moveMode, selection, moveBlocksTo } = useContent();
   const raw = getByPath(content, path);
   const items: ProseItem[] = Array.isArray(raw) ? (raw as ProseItem[]) : [];
 
-  // Fragments are transparent in the DOM, so the parent's `space-y-*` rhythm
-  // still applies to the real block/zone elements. When no tool is armed the
-  // zones render null, leaving the exact markup the pages had before.
+  const inMove = isAdmin && moveMode;
+  const moveActiveHere =
+    inMove && selection?.domain === 'block' && selection.path === path && selection.indices.length > 0;
+
+  const moveLine = (gap: number) =>
+    moveActiveHere ? (
+      <button
+        key={`move-${gap}`}
+        type="button"
+        aria-label="Move selected blocks here"
+        onClick={() => moveBlocksTo(path, gap)}
+        className="group/move relative z-40 -my-1 flex w-full items-center gap-2 py-1"
+      >
+        <span className="whitespace-nowrap text-[10px] font-medium uppercase tracking-wide text-primary/70 transition-colors group-hover/move:text-primary">
+          Move {selection!.domain === 'block' ? selection!.indices.length : 0} here
+        </span>
+        <span className="h-0.5 flex-1 rounded-full bg-primary/40 transition-colors group-hover/move:bg-primary" />
+      </button>
+    ) : null;
+
   return (
     <>
       {items.map((item, i) => (
         <Fragment key={i}>
-          <InsertZone path={path} index={i} />
-          <Block path={path} index={i} item={item} editable={isAdmin} />
+          {inMove ? moveLine(i) : <InsertZone path={path} index={i} />}
+          {inMove ? (
+            <MoveBlock path={path} index={i} item={item} />
+          ) : (
+            <Block path={path} index={i} item={item} editable={isAdmin} />
+          )}
         </Fragment>
       ))}
-      <InsertZone path={path} index={items.length} />
+      {inMove ? moveLine(items.length) : <InsertZone path={path} index={items.length} />}
     </>
+  );
+}
+
+/** A block in move mode: a click target that toggles its selection. */
+function MoveBlock({ path, index, item }: { path: string; index: number; item: ProseItem }) {
+  const { selection, toggleBlockSelection } = useContent();
+  const selected =
+    selection?.domain === 'block' && selection.path === path && selection.indices.includes(index);
+
+  return (
+    <div
+      className={cn(
+        'relative rounded-lg transition-shadow',
+        selected && 'ring-2 ring-primary ring-offset-2 ring-offset-background'
+      )}
+    >
+      {/* z-30 sits above the section-level select overlay (z-20) so clicking a
+          paragraph/heading selects the block, not the whole section. */}
+      <button
+        type="button"
+        aria-label="Select block"
+        data-move-block={`${path}.${index}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleBlockSelection(path, index);
+        }}
+        className="absolute inset-0 z-30 cursor-pointer rounded-lg transition-colors hover:bg-primary/10"
+      />
+      {blockElement(path, index, item)}
+    </div>
   );
 }
 
@@ -79,21 +142,9 @@ function Block({
 }) {
   const { removeBlock } = useContent();
   const block = isProseBlock(item);
-  // Block entries keep their text under `.text`; legacy strings sit at the index.
-  const textPath = block ? `${path}.${index}.text` : `${path}.${index}`;
+  const el = blockElement(path, index, item);
 
-  const heading = block && item.type === 'heading';
-  const cfg = heading ? headerConfig(item.style) : null;
-
-  const el =
-    heading && cfg ? (
-      <Editable as={cfg.tag} path={textPath} className={cfg.className} />
-    ) : (
-      <Editable as="p" multiline path={textPath} />
-    );
-
-  // Legacy strings render exactly as before — no wrapper, no controls — so the
-  // existing pages are byte-identical until something is inserted.
+  // Legacy strings render exactly as before — no wrapper, no controls.
   if (!editable || !block) return el;
 
   return (
@@ -113,9 +164,9 @@ function Block({
 }
 
 /**
- * A clickable insertion slot. Renders nothing unless an insert tool is armed.
- * Shows a primary insertion line plus, on hover, a faded preview of the block
- * that will be created (paragraph copy or the chosen heading style).
+ * A clickable insertion slot for the Insert tool. Renders nothing unless a tool
+ * is armed. Shows a primary insertion line plus, on hover, a faded preview of
+ * the block that will be created.
  */
 function InsertZone({ path, index }: { path: string; index: number }) {
   const { isAdmin, insertTool, insertBlock, setInsertTool } = useContent();
@@ -134,9 +185,7 @@ function InsertZone({ path, index }: { path: string; index: number }) {
     // Focus the new (empty) block once it has rendered.
     const focusPath = `${path}.${index}.text`;
     requestAnimationFrame(() => {
-      const el = document.querySelector<HTMLElement>(
-        `[data-editable-path="${focusPath}"]`
-      );
+      const el = document.querySelector<HTMLElement>(`[data-editable-path="${focusPath}"]`);
       if (el) focusAtEnd(el);
     });
   };

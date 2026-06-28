@@ -7,6 +7,7 @@ import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
 import { EditableBlocks } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
+import { ReorderableSections } from '@/components/ReorderableSections';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -115,7 +116,7 @@ export default function MemberHome() {
 
   return (
     <div ref={rootRef} className="relative">
-      <SectionToc items={tocItems} labels={content.memberHome.toc} routeHash="#/memberhome" />
+      <SectionToc items={tocItems} labels={content.memberHome.toc} routeHash="#/memberhome" order={content.memberHome.sectionOrder} />
 
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/50">
@@ -127,7 +128,7 @@ export default function MemberHome() {
             <ArrowLeft className="w-4 h-4" />
             <Editable as="span" path="memberHome.backToPortfolio" />
           </a>
-          <SectionNavDropdown items={tocItems} labels={content.memberHome.toc} routeHash="#/memberhome" />
+          <SectionNavDropdown items={tocItems} labels={content.memberHome.toc} routeHash="#/memberhome" order={content.memberHome.sectionOrder} />
           <Editable as="span" path="memberHome.brand" className="text-sm font-semibold gradient-text" />
         </div>
       </div>
@@ -186,6 +187,7 @@ export default function MemberHome() {
       </section>
 
       {/* 01 — Overview */}
+      <ReorderableSections pageKey="memberHome">
       <section id="sec-01" className="py-20 sm:py-28 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="reveal">
@@ -572,6 +574,7 @@ export default function MemberHome() {
           </p>
         </div>
       </section>
+      </ReorderableSections>
 
       {/* Footer CTA */}
       <section className="py-24">
