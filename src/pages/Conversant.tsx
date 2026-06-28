@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowLeft, ArrowRight, Check, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
+import { SectionToc } from '@/components/SectionToc';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -85,91 +86,6 @@ const tocItems = [
   { id: 'sec-10', n: '10' },
 ];
 
-function SideToc() {
-  const { content, isAdmin } = useContent();
-  const labels = content.conversant.toc;
-  const [activeId, setActiveId] = useState<string>(tocItems[0].id);
-
-  useEffect(() => {
-    const sections = tocItems
-      .map((item) => document.getElementById(item.id))
-      .filter((el): el is HTMLElement => el !== null);
-
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible.length > 0) {
-          setActiveId(visible[0].target.id);
-        }
-      },
-      {
-        rootMargin: '-30% 0px -55% 0px',
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-      }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      // Preserve the admin flag so scrolling doesn't drop out of edit mode.
-      history.replaceState(null, '', isAdmin ? '#/conversant?admin' : '#/conversant');
-    }
-  };
-
-  return (
-    <nav
-      aria-label="Section navigation"
-      className="hidden xl:block fixed top-1/2 left-6 -translate-y-1/2 z-40"
-    >
-      <ol className="space-y-3 text-sm">
-        {tocItems.map((item, i) => {
-          const isActive = activeId === item.id;
-          return (
-            <li key={item.id}>
-              <a
-                href={`#${item.id}`}
-                onClick={(e) => handleClick(e, item.id)}
-                className={`group flex items-baseline gap-3 py-1 transition-colors duration-200 ${
-                  isActive
-                    ? 'text-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                <span
-                  className={`text-xs font-mono ${
-                    isActive ? 'text-primary' : 'text-muted-foreground/70'
-                  }`}
-                >
-                  {item.n}
-                </span>
-                <span
-                  className={`relative leading-snug ${
-                    isActive
-                      ? 'underline underline-offset-4 decoration-primary decoration-2'
-                      : 'no-underline'
-                  }`}
-                >
-                  {labels[i]}
-                </span>
-              </a>
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
-  );
-}
-
 export default function Conversant() {
   const rootRef = useRef<HTMLDivElement>(null);
   const { content } = useContent();
@@ -205,7 +121,7 @@ export default function Conversant() {
 
   return (
     <div ref={rootRef} className="relative">
-      <SideToc />
+      <SectionToc items={tocItems} labels={content.conversant.toc} routeHash="#/conversant" />
 
       {/* Top bar */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/50">
