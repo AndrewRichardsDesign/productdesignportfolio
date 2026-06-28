@@ -34,16 +34,20 @@ function Node({
 }) {
   return (
     <div
-      className={`flex items-start gap-3 rounded-xl border px-4 py-3 ${
-        accent ? 'border-primary/30 bg-primary/5' : 'border-border/60 bg-background/70'
+      className={`flex items-start gap-3 rounded-xl border bg-card px-4 py-3 shadow-sm transition-colors ${
+        accent ? 'border-accent/40' : 'border-border'
       } ${className}`}
     >
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-        <Icon className="h-5 w-5" />
+      <div
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-background ${
+          accent ? 'border-accent/60 text-accent' : 'border-primary/60 text-primary'
+        }`}
+      >
+        <Icon className="h-[18px] w-[18px]" />
       </div>
       <div className="min-w-0">
-        <div className="text-sm font-semibold leading-snug">{title}</div>
-        <div className="mt-0.5 text-xs leading-snug text-muted-foreground">{sub}</div>
+        <div className="text-sm font-semibold leading-snug tracking-tight">{title}</div>
+        <div className="mt-1 font-mono text-[11px] leading-snug text-muted-foreground">{sub}</div>
       </div>
     </div>
   );
@@ -81,16 +85,16 @@ function Arrow({ label, at }: { label?: string; at: 'sm' | 'lg' }) {
 
 export function TypingFlowDiagram() {
   return (
-    <div className="reveal mt-8 rounded-2xl bg-muted/40 p-6 lg:p-8">
+    <div className="reveal mt-8 rounded-2xl border border-border bg-card/60 p-6 shadow-sm lg:p-8">
       <div className="mb-6 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/60 bg-background text-primary">
           <Network className="h-5 w-5" />
         </div>
         <div>
-          <div className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
             How it works
           </div>
-          <h4 className="text-base font-semibold">From typing behavior to a better keyboard</h4>
+          <h4 className="text-base font-semibold tracking-tight">From typing behavior to a better keyboard</h4>
         </div>
       </div>
 
