@@ -29,7 +29,7 @@ const socialColors: Record<string, string> = {
 };
 
 export default function Contact() {
-  const { content, isAdmin } = useContent();
+  const { content } = useContent();
   const contact = content.contact;
   const sectionRef = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -273,7 +273,6 @@ export default function Contact() {
             <Editable as="span" path="contact.altContactText" />{' '}
             <a
               href={`mailto:${contact.email}`}
-              onClick={(e) => isAdmin && e.preventDefault()}
               className="text-primary hover:underline inline-flex items-center gap-1"
             >
               <Mail className="w-3 h-3" />
@@ -290,7 +289,6 @@ export default function Contact() {
               <a
                 key={social.name}
                 href={social.href}
-                onClick={(e) => isAdmin && e.preventDefault()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`social-link w-12 h-12 rounded-full bg-card/50 border border-border/50 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:border-primary/30 ${socialColors[social.icon] ?? ''}`}
@@ -309,7 +307,6 @@ export default function Contact() {
               <a
                 key={i}
                 href={quickLink.href}
-                onClick={(e) => isAdmin && e.preventDefault()}
                 className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
               >
                 <Editable as="span" path={`contact.quickLinks.${i}.name`} />

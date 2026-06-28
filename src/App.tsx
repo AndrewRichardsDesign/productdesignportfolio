@@ -15,33 +15,47 @@ import Conversant from '@/pages/Conversant';
 import UsaaApp from '@/pages/UsaaApp';
 import MemberHome from '@/pages/MemberHome';
 import { ProjectGate } from '@/components/ProjectGate';
+import { AdminToggle } from '@/components/AdminToggle';
+import { isAdminUnlocked, unlockAdminSession, ADMIN_CHANGE_EVENT } from '@/lib/adminAuth';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * Resolves the current page and whether admin (inline editing) mode is active.
- * Admin mode is enabled by `#/admin` (home) or an `?admin` flag on any route,
- * e.g. `#/arcatext?admin`.
+ * Resolves the current route and whether the URL carries an admin flag.
+ * Admin mode is enabled by `#/admin` (home), an `?admin` flag on any route
+ * (e.g. `#/arcatext?admin`), or — once unlocked via the Admin button — a
+ * sessionStorage flag that persists across navigation.
  */
-function parseLocation(): { route: string; isAdmin: boolean } {
+function parseLocation(): { route: string; urlAdmin: boolean } {
   const hash = window.location.hash;
   const path = hash.startsWith('#/') ? hash.slice(2).split('?')[0] : '';
   const query = hash.split('?')[1] ?? '';
-  const adminFlag = new URLSearchParams(query).has('admin');
-  if (path === 'admin') return { route: '', isAdmin: true };
-  return { route: path, isAdmin: adminFlag };
+  const urlAdmin = path === 'admin' || new URLSearchParams(query).has('admin');
+  return { route: path === 'admin' ? '' : path, urlAdmin };
 }
 
 function App() {
-  const [{ route, isAdmin }, setLocation] = useState(() => parseLocation());
+  const [route, setRoute] = useState(() => parseLocation().route);
+  const [isAdmin, setIsAdmin] = useState(
+    () => parseLocation().urlAdmin || isAdminUnlocked()
+  );
 
   useEffect(() => {
-    const onHashChange = () => {
-      setLocation(parseLocation());
+    const sync = () => {
+      const { route: nextRoute, urlAdmin } = parseLocation();
+      // An admin URL flag unlocks the persistent session (idempotent).
+      if (urlAdmin) unlockAdminSession();
+      setRoute(nextRoute);
+      setIsAdmin(urlAdmin || isAdminUnlocked());
       ScrollTrigger.refresh();
     };
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    window.addEventListener('hashchange', sync);
+    window.addEventListener(ADMIN_CHANGE_EVENT, sync);
+    sync();
+    return () => {
+      window.removeEventListener('hashchange', sync);
+      window.removeEventListener(ADMIN_CHANGE_EVENT, sync);
+    };
   }, []);
 
   useEffect(() => {
@@ -90,6 +104,9 @@ function App() {
               <Footer />
             </>
           )}
+
+          {/* Admin entry — shown at the bottom of every page, hidden once in admin mode. */}
+          <AdminToggle isAdmin={isAdmin} />
 
           <div
             className="fixed inset-0 pointer-events-none -z-10"

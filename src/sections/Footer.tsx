@@ -3,7 +3,7 @@ import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
 
 export default function Footer() {
-  const { content, isAdmin } = useContent();
+  const { content } = useContent();
   const footer = content.footer;
   const currentYear = new Date().getFullYear();
 
@@ -29,7 +29,6 @@ export default function Footer() {
               <a
                 key={i}
                 href={link.href}
-                onClick={(e) => isAdmin && e.preventDefault()}
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Editable as="span" path={`footer.links.${i}.name`} />
