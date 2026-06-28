@@ -948,7 +948,7 @@
     "hero": {
       "status": "USAA · Internal platform",
       "title": "Conversant",
-      "subtitle": "Enterprise desktop platform for call center and back-office servicing and stuff",
+      "subtitle": "Enterprise desktop platform for call center and back-office servicing.",
       "typeTags": [
         "Enterprise desktop",
         "Internal employee platform",
@@ -969,7 +969,7 @@
       "intro": [
         "Conversant was a mission-critical internal desktop platform for USAA employees who supported members through phone calls, chat, account servicing, and back-office workflows. It unified member context, communication tools, servicing alerts, product information, documentation, and internal applications into one workspace.",
         "I worked across design research, UX/UI design, interaction design, product strategy, and implementation guidance to improve high-value workflows inside the platform. My work helped Conversant become more consistent, flexible, accessible, and scalable while supporting the speed and accuracy employees needed during live servicing work.",
-        "This was not a blank-slate consumer redesign. Conversant was a mature enterprise platform with inherited patterns, legacy dependencies, technical constraints, and a wide range of employee roles. The design challenge was to improve specific workflows while strengthening the system around them."
+        "This was not a blank-slate consumer redesign. Conversant was a mature enterprise platform with inherited patterns, legacy dependencies, technical constraints, and a wide range of employee roles. The design challenge was to improve specific workflows while strengthening the system around them.\n\n\nOh wow I added something here!"
       ],
       "productTypeLabel": "Project type",
       "productTypeList": [
