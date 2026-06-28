@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Check, ChevronDown, ExternalLink, Eye, EyeOff, List, Loader2, LogOut, Plus, RotateCcw, Save, X } from 'lucide-react';
+import { Check, ChevronDown, ExternalLink, Eye, EyeOff, List, Loader2, LogOut, Move, Plus, RotateCcw, Save, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -18,21 +18,27 @@ import { lockAdmin } from '@/lib/adminAuth';
  * paste a GitHub token, commit changes back to the repo, and exit.
  */
 export function AdminBar() {
-  const { isAdmin, dirty, token, branch, saveState, insertTool, setInsertTool, setToken, setBranch, save, discardChanges } =
-    useContent();
+  const {
+    isAdmin, dirty, token, branch, saveState,
+    insertTool, setInsertTool,
+    moveMode, selection, startMove, cancelMove,
+    setToken, setBranch, save, discardChanges,
+  } = useContent();
   const [showToken, setShowToken] = useState(false);
   const [open, setOpen] = useState(true);
   const [panelOpen, setPanelOpen] = useState(false);
 
-  // Esc cancels an armed insert tool.
+  // Esc cancels an armed insert tool or move mode.
   useEffect(() => {
-    if (!insertTool) return;
+    if (!insertTool && !moveMode) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setInsertTool(null);
+      if (e.key !== 'Escape') return;
+      if (insertTool) setInsertTool(null);
+      if (moveMode) cancelMove();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [insertTool, setInsertTool]);
+  }, [insertTool, moveMode, setInsertTool, cancelMove]);
 
   if (!isAdmin) return null;
 
@@ -43,6 +49,13 @@ export function AdminBar() {
       ? 'Paragraph'
       : headerConfig(insertTool.style).label
     : '';
+
+  const selectedCount = selection
+    ? selection.domain === 'section'
+      ? selection.ids.length
+      : selection.indices.length
+    : 0;
+  const selectedNoun = selection?.domain === 'section' ? 'section' : 'block';
 
   const exitAdmin = () => {
     // Strip any admin URL flag first, then clear the persistent session so the
@@ -65,6 +78,13 @@ export function AdminBar() {
         Inserting {armedLabel} — click a “+ {armedLabel}” line in the page. Esc to cancel.
       </div>
     )}
+    {moveMode && (
+      <div className="fixed top-20 left-1/2 z-[100] -translate-x-1/2 max-w-[calc(100%-2rem)] rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-center text-xs font-medium text-primary shadow-lg backdrop-blur">
+        {selectedCount === 0
+          ? 'Move mode — click sections or paragraphs/headers to select them. Esc to cancel.'
+          : `${selectedCount} ${selectedNoun}${selectedCount > 1 ? 's' : ''} selected — click a “Move here” line to place them. Esc to cancel.`}
+      </div>
+    )}
     <div className="fixed bottom-4 left-1/2 z-[100] w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2">
       <div className="rounded-2xl border border-border/70 bg-background/95 shadow-2xl backdrop-blur-xl">
         {/* Header row */}
@@ -85,7 +105,17 @@ export function AdminBar() {
               size="sm"
               variant="ghost"
               className="h-8 px-2 text-xs"
-              onClick={() => setOpen((v) => !v)}
+              onClick={() =>
+                setOpen((v) => {
+                  const next = !v;
+                  // Collapsing also exits any armed insert/move so no orphaned mode lingers.
+                  if (!next) {
+                    setInsertTool(null);
+                    cancelMove();
+                  }
+                  return next;
+                })
+              }
             >
               {open ? 'Hide settings' : 'Settings'}
             </Button>
@@ -101,7 +131,8 @@ export function AdminBar() {
           </div>
         </div>
 
-        {/* Insert tools — always visible so you can place blocks on the page */}
+        {/* Insert / Move tools — shown with settings, hidden when collapsed. */}
+        {open && (
         <div className="flex flex-wrap items-center gap-2 border-t border-border/60 px-4 py-2.5">
           <span className="text-xs font-medium text-muted-foreground">Insert</span>
           <Button
@@ -138,6 +169,33 @@ export function AdminBar() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+          <span className="mx-1 h-5 w-px bg-border" aria-hidden />
+          <Button
+            size="sm"
+            variant={moveMode ? 'default' : 'outline'}
+            className="h-8 gap-1.5 px-2.5 text-xs"
+            onClick={() => (moveMode ? cancelMove() : startMove())}
+          >
+            <Move className="h-3.5 w-3.5" /> Move
+          </Button>
+          {moveMode && (
+            <div className="ml-auto flex items-center gap-1.5 text-xs text-primary">
+              <span className="hidden sm:inline">
+                {selectedCount > 0
+                  ? `${selectedCount} ${selectedNoun}${selectedCount > 1 ? 's' : ''} selected`
+                  : 'Select items to move'}
+              </span>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-7 px-2 text-xs"
+                onClick={cancelMove}
+                title="Exit move mode"
+              >
+                Done
+              </Button>
+            </div>
+          )}
           {insertTool && (
             <div className="ml-auto flex items-center gap-1 text-xs text-primary">
               <span className="hidden sm:inline">Click a line in the page · Esc to cancel</span>
@@ -153,6 +211,7 @@ export function AdminBar() {
             </div>
           )}
         </div>
+        )}
 
         {open && (
           <div className="space-y-3 border-t border-border/60 px-4 py-3">

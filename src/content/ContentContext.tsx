@@ -5,6 +5,14 @@ import type { InsertTool, ProseBlock } from './proseBlocks';
 import defaultContent from './site-content.json';
 
 /**
+ * The current admin "Move" selection. Homogeneous by design: either whole
+ * sections (by id) or prose blocks within a single list (by array path + index).
+ */
+export type MoveSelection =
+  | { domain: 'section'; ids: string[] }
+  | { domain: 'block'; path: string; indices: number[] };
+
+/**
  * Where the content lives in the repo and which repo/branch admin edits commit to.
  * The save target branch can be overridden from the admin bar at runtime.
  */
@@ -33,6 +41,20 @@ interface ContentContextValue {
   /** The armed insert tool for placing new prose blocks, or null. */
   insertTool: InsertTool | null;
   setInsertTool: (tool: InsertTool | null) => void;
+  /** Whether admin "Move" mode is active (select + reorder sections/blocks). */
+  moveMode: boolean;
+  /** The current move selection, or null when nothing is selected. */
+  selection: MoveSelection | null;
+  /** Enter move mode (clears any insert tool and selection). */
+  startMove: () => void;
+  /** Exit move mode and clear the selection. */
+  cancelMove: () => void;
+  toggleSectionSelection: (id: string) => void;
+  toggleBlockSelection: (path: string, index: number) => void;
+  /** Move the selected sections before gap `targetGap` in the current order. */
+  moveSectionsTo: (pageKey: string, naturalIds: string[], targetGap: number) => void;
+  /** Move the selected blocks before gap `targetGap` within their list. */
+  moveBlocksTo: (targetPath: string, targetGap: number) => void;
   setText: (path: string, value: string | number) => void;
   /** Insert a block into the array at `path` at the given index. */
   insertBlock: (path: string, index: number, block: ProseBlock) => void;
@@ -148,7 +170,55 @@ export function ContentProvider({
     () => localStorage.getItem(BRANCH_KEY) ?? DEFAULT_BRANCH
   );
   const [saveState, setSaveState] = useState<SaveState>({ status: 'idle' });
-  const [insertTool, setInsertTool] = useState<InsertTool | null>(null);
+  const [insertTool, setInsertToolState] = useState<InsertTool | null>(null);
+  const [moveMode, setMoveMode] = useState(false);
+  const [selection, setSelection] = useState<MoveSelection | null>(null);
+
+  // Insert and Move are mutually exclusive modes; arming one exits the other.
+  const setInsertTool = useCallback((tool: InsertTool | null) => {
+    if (tool) {
+      setMoveMode(false);
+      setSelection(null);
+    }
+    setInsertToolState(tool);
+  }, []);
+
+  const startMove = useCallback(() => {
+    setInsertToolState(null);
+    setSelection(null);
+    setMoveMode(true);
+  }, []);
+
+  const cancelMove = useCallback(() => {
+    setMoveMode(false);
+    setSelection(null);
+  }, []);
+
+  const toggleSectionSelection = useCallback((id: string) => {
+    setSelection((prev) => {
+      if (prev?.domain === 'section') {
+        const ids = prev.ids.includes(id)
+          ? prev.ids.filter((x) => x !== id)
+          : [...prev.ids, id];
+        return ids.length ? { domain: 'section', ids } : null;
+      }
+      return { domain: 'section', ids: [id] };
+    });
+  }, []);
+
+  const toggleBlockSelection = useCallback((path: string, index: number) => {
+    setSelection((prev) => {
+      // Block selection is constrained to a single list; selecting in a
+      // different list starts a fresh selection there.
+      if (prev?.domain === 'block' && prev.path === path) {
+        const indices = prev.indices.includes(index)
+          ? prev.indices.filter((x) => x !== index)
+          : [...prev.indices, index];
+        return indices.length ? { domain: 'block', path, indices } : null;
+      }
+      return { domain: 'block', path, indices: [index] };
+    });
+  }, []);
 
   const persistDraft = useCallback((next: SiteContent) => {
     try {
@@ -203,6 +273,54 @@ export function ContentProvider({
     [persistDraft]
   );
 
+  const moveSectionsTo = useCallback(
+    (pageKey: string, naturalIds: string[], targetGap: number) => {
+      if (selection?.domain !== 'section') return;
+      const ids = selection.ids;
+      setContent((prev) => {
+        const orderPath = `${pageKey}.sectionOrder`;
+        const stored = getByPath(prev, orderPath) as string[] | undefined;
+        // Current rendered order: stored ids that still exist, then any new ones.
+        const current =
+          stored && stored.length
+            ? [...stored.filter((id) => naturalIds.includes(id)), ...naturalIds.filter((id) => !stored.includes(id))]
+            : naturalIds;
+        const removedBefore = current.slice(0, targetGap).filter((id) => ids.includes(id)).length;
+        const moving = current.filter((id) => ids.includes(id)); // preserve relative order
+        const remaining = current.filter((id) => !ids.includes(id));
+        const at = Math.max(0, Math.min(targetGap - removedBefore, remaining.length));
+        const nextOrder = [...remaining.slice(0, at), ...moving, ...remaining.slice(at)];
+        const next = setByPath(prev, orderPath, nextOrder);
+        persistDraft(next);
+        return next;
+      });
+      cancelMove();
+    },
+    [selection, persistDraft, cancelMove]
+  );
+
+  const moveBlocksTo = useCallback(
+    (targetPath: string, targetGap: number) => {
+      if (selection?.domain !== 'block' || selection.path !== targetPath) return;
+      const indices = selection.indices;
+      setContent((prev) => {
+        const arr = getByPath(prev, targetPath);
+        if (!Array.isArray(arr)) return prev;
+        const sorted = [...indices].sort((a, b) => a - b);
+        const moving = sorted.map((i) => arr[i]); // preserve top-to-bottom order
+        const remaining = arr.filter((_, i) => !sorted.includes(i));
+        const removedBefore = sorted.filter((i) => i < targetGap).length;
+        const at = Math.max(0, Math.min(targetGap - removedBefore, remaining.length));
+        const nextArr = [...remaining.slice(0, at), ...moving, ...remaining.slice(at)];
+        const next = setByPath(prev, targetPath, nextArr);
+        persistDraft(next);
+        return next;
+      });
+      cancelMove();
+    },
+    [selection, persistDraft, cancelMove]
+  );
+
   const setToken = useCallback((value: string) => {
     setTokenState(value);
     try {
@@ -233,7 +351,9 @@ export function ContentProvider({
     setDirty(false);
     setSaveState({ status: 'idle' });
     setInsertTool(null);
-  }, [base]);
+    setMoveMode(false);
+    setSelection(null);
+  }, [base, setInsertTool]);
 
   const save = useCallback(async () => {
     if (!token) {
@@ -364,6 +484,14 @@ export function ContentProvider({
       saveState,
       insertTool,
       setInsertTool,
+      moveMode,
+      selection,
+      startMove,
+      cancelMove,
+      toggleSectionSelection,
+      toggleBlockSelection,
+      moveSectionsTo,
+      moveBlocksTo,
       setText,
       insertBlock,
       removeBlock,
@@ -373,7 +501,7 @@ export function ContentProvider({
       discardChanges,
       uploadAsset,
     }),
-    [content, isAdmin, dirty, token, branch, saveState, insertTool, setText, insertBlock, removeBlock, setToken, setBranch, save, discardChanges, uploadAsset]
+    [content, isAdmin, dirty, token, branch, saveState, insertTool, setInsertTool, moveMode, selection, startMove, cancelMove, toggleSectionSelection, toggleBlockSelection, moveSectionsTo, moveBlocksTo, setText, insertBlock, removeBlock, setToken, setBranch, save, discardChanges, uploadAsset]
   );
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;

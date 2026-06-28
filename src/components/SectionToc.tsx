@@ -21,6 +21,34 @@ interface SectionNavProps {
   labels: string[];
   /** Hash route for this page (e.g. "#/arcatext"), used to preserve the URL. */
   routeHash: string;
+  /** Admin-set section display order (ids); falls back to natural order. */
+  order?: string[];
+}
+
+/** Reorder items + parallel labels by a list of section ids. */
+function applyOrder(
+  items: TocItem[],
+  labels: string[],
+  order?: string[]
+): { items: TocItem[]; labels: string[] } {
+  if (!order || !order.length) return { items, labels };
+  const outItems: TocItem[] = [];
+  const outLabels: string[] = [];
+  order.forEach((id) => {
+    const idx = items.findIndex((it) => it.id === id);
+    if (idx >= 0) {
+      outItems.push(items[idx]);
+      outLabels.push(labels[idx]);
+    }
+  });
+  // Append any sections not present in the stored order (e.g. newly added).
+  items.forEach((it, idx) => {
+    if (!order.includes(it.id)) {
+      outItems.push(it);
+      outLabels.push(labels[idx]);
+    }
+  });
+  return { items: outItems, labels: outLabels };
 }
 
 /**
@@ -78,7 +106,8 @@ function useSectionJump(routeHash: string): (id: string) => void {
  * centred content column. On narrower screens it renders nothing — the top-bar
  * SectionNavDropdown takes over there.
  */
-export function SectionToc({ items, labels, routeHash }: SectionNavProps) {
+export function SectionToc({ items: rawItems, labels: rawLabels, routeHash, order }: SectionNavProps) {
+  const { items, labels } = applyOrder(rawItems, rawLabels, order);
   const activeId = useActiveSection(items);
   const jump = useSectionJump(routeHash);
 
@@ -135,7 +164,8 @@ export function SectionToc({ items, labels, routeHash }: SectionNavProps) {
  * section currently in view — and opens a dropdown to jump to any section.
  * Hidden at >=1600px, where the vertical rail is used instead.
  */
-export function SectionNavDropdown({ items, labels, routeHash }: SectionNavProps) {
+export function SectionNavDropdown({ items: rawItems, labels: rawLabels, routeHash, order }: SectionNavProps) {
+  const { items, labels } = applyOrder(rawItems, rawLabels, order);
   const activeId = useActiveSection(items);
   const jump = useSectionJump(routeHash);
 
