@@ -48,9 +48,9 @@ export function AdminToolShowcase() {
   }, [open]);
 
   return (
-    <div className="mt-8">
+    <div>
       <div className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-accent">
-        The tuning tool
+        Admin App
       </div>
 
       {/* Scaled, non-interactive preview. */}
@@ -77,20 +77,17 @@ export function AdminToolShowcase() {
         />
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-        <p className="max-w-md text-xs text-muted-foreground">
-          A working copy of the Typing-UX admin tool — interactive, with sample data only. Nothing
-          is sent to the app or Supabase.
-        </p>
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:opacity-90"
-        >
-          <Maximize2 className="h-4 w-4" />
-          Expand &amp; interact
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="mt-3 flex w-full items-center justify-center gap-2 text-sm font-medium text-primary transition hover:opacity-80"
+      >
+        Click to expand and interact
+        <Maximize2 className="h-4 w-4" />
+      </button>
+      <p className="mt-1 text-center text-[11px] text-muted-foreground">
+        Interactive copy with sample data only — nothing is sent to the app or Supabase.
+      </p>
 
       {/* Full-screen interactive modal — portalled to <body> so it escapes any
           transformed (GSAP .reveal) ancestor and truly covers the viewport. */}
