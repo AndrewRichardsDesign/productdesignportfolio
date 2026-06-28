@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
+import { EditableBlocks } from '@/content/EditableBlocks';
 import { SectionToc } from '@/components/SectionToc';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -46,15 +47,9 @@ function Prose({ children }: { children: React.ReactNode }) {
   );
 }
 
-/** Renders an array of paragraph strings as individually editable <p> elements. */
-function Paragraphs({ base, items }: { base: string; items: string[] }) {
-  return (
-    <>
-      {items.map((_, i) => (
-        <Editable key={i} as="p" multiline path={`${base}.${i}`} />
-      ))}
-    </>
-  );
+/** Renders a prose section as editable blocks (paragraphs + inserted headings). */
+function Paragraphs({ base }: { base: string; items?: readonly unknown[] }) {
+  return <EditableBlocks path={base} />;
 }
 
 /** Renders an array of strings as editable pill/chips. */
