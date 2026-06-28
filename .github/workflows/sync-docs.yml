@@ -44,12 +44,16 @@ jobs:
             echo "Docs sync OK."
             exit 0
           fi
-          if grep -qiE 'accounts\.google\.com|sign in|<!DOCTYPE|<html' response.txt 2>/dev/null; then
-            echo "::error::Got an HTML/sign-in page, not JSON. The web app's access is not 'Anyone' — redeploy a NEW VERSION with Who-has-access: Anyone."
+          # Order matters: the specific Apps Script error pages are HTML too, so
+          # check for them BEFORE the generic HTML/sign-in catch-all.
+          if grep -qi 'function not found' response.txt 2>/dev/null; then
+            echo "::error::Apps Script: function not found (likely doPost). The live deployment is an OLD version — Deploy -> Manage deployments -> edit -> Version: New version -> Deploy."
           elif grep -qi 'unauthorized' response.txt 2>/dev/null; then
             echo "::error::Web app returned 'unauthorized' — SYNC_SECRET must equal the WEBHOOK_SECRET script property."
-          elif grep -qi 'function not found' response.txt 2>/dev/null; then
-            echo "::error::doPost not found in the deployed version — paste the updated script, then deploy a NEW VERSION."
+          elif grep -qiE 'accounts\.google\.com|sign in to continue|ServiceLogin' response.txt 2>/dev/null; then
+            echo "::error::Got a Google sign-in page — the URL is not a public /exec deployment (wrong URL or access not 'Anyone')."
+          elif grep -qiE '<!DOCTYPE|<html' response.txt 2>/dev/null; then
+            echo "::error::Got HTML, not JSON (see body above) — usually a stale deployment missing doPost, or the wrong URL."
           else
             echo "::error::Sync did not return ok:true (see body above)."
           fi
