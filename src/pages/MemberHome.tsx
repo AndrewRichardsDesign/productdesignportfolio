@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
 import { EditableBlocks } from '@/content/EditableBlocks';
-import { SectionToc } from '@/components/SectionToc';
+import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -127,6 +127,7 @@ export default function MemberHome() {
             <ArrowLeft className="w-4 h-4" />
             <Editable as="span" path="memberHome.backToPortfolio" />
           </a>
+          <SectionNavDropdown items={tocItems} labels={content.memberHome.toc} routeHash="#/memberhome" />
           <Editable as="span" path="memberHome.brand" className="text-sm font-semibold gradient-text" />
         </div>
       </div>

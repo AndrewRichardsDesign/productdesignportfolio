@@ -18,7 +18,7 @@ import ArcatextKeyboard from '@/components/ArcatextKeyboard';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
 import { EditableBlocks } from '@/content/EditableBlocks';
-import { SectionToc } from '@/components/SectionToc';
+import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -127,6 +127,7 @@ export default function Arcatext() {
             <ArrowLeft className="w-4 h-4" />
             <Editable as="span" path="arcatext.backToPortfolio" />
           </a>
+          <SectionNavDropdown items={tocItems} labels={content.arcatext.toc} routeHash="#/arcatext" />
           <Editable as="span" path="arcatext.brand" className="text-sm font-semibold gradient-text" />
         </div>
       </div>
