@@ -31,6 +31,9 @@ export default function Projects() {
   };
 
   useEffect(() => {
+    // Cleanups for the manually-attached hover listeners.
+    const removers: Array<() => void> = [];
+
     const ctx = gsap.context(() => {
       // Title animation
       gsap.fromTo(
@@ -50,31 +53,74 @@ export default function Projects() {
         }
       );
 
-      // Cards stagger animation
-      const cards = cardsRef.current?.querySelectorAll('.project-card');
-      if (cards) {
-        cards.forEach((card, i) => {
-          const direction = i % 2 === 0 ? -90 : 90;
-          gsap.fromTo(
-            card,
-            { opacity: 0, rotateY: direction },
-            {
-              opacity: 1,
-              rotateY: 0,
-              duration: 0.7,
-              ease: 'expo.out',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-              },
-            }
-          );
+      const cards = Array.from(
+        cardsRef.current?.querySelectorAll<HTMLElement>('.project-card') ?? []
+      );
+
+      cards.forEach((card, i) => {
+        // Entrance: cards stagger/flip in on scroll (animates rotateY + opacity).
+        const direction = i % 2 === 0 ? -90 : 90;
+        gsap.fromTo(
+          card,
+          { opacity: 0, rotateY: direction },
+          {
+            opacity: 1,
+            rotateY: 0,
+            duration: 0.7,
+            ease: 'expo.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+
+        // Persistent floating: a gentle, looping bob on the Y axis. Animates a
+        // different transform channel (y) than the entrance (rotateY), so the
+        // two compose without conflict. Each loop starts and ends at y:0, and
+        // every `.to` reads the current value, so resuming after a hover is
+        // seamless. Cards are phase-offset so they don't bob in unison.
+        const amp = 9; // px — subtle but perceptible
+        const dur = 0.9 + (i % 4) * 0.18;
+        let floatTl: gsap.core.Timeline;
+        let snap: gsap.core.Tween | null = null;
+
+        const startFloat = () => {
+          floatTl = gsap
+            .timeline({ repeat: -1, defaults: { ease: 'sine.inOut' } })
+            .to(card, { y: amp, duration: dur })
+            .to(card, { y: -amp, duration: dur * 2 })
+            .to(card, { y: 0, duration: dur });
+        };
+
+        startFloat();
+        floatTl!.progress(cards.length ? i / cards.length : 0);
+
+        const onEnter = () => {
+          // Stop bobbing and settle to the neutral (y:0) resting position,
+          // moving up or down from wherever the float currently is.
+          floatTl?.kill();
+          snap = gsap.to(card, { y: 0, duration: 0.4, ease: 'power3.out', overwrite: 'auto' });
+        };
+        const onLeave = () => {
+          snap?.kill();
+          startFloat(); // resumes smoothly from the current y
+        };
+
+        card.addEventListener('mouseenter', onEnter);
+        card.addEventListener('mouseleave', onLeave);
+        removers.push(() => {
+          card.removeEventListener('mouseenter', onEnter);
+          card.removeEventListener('mouseleave', onLeave);
         });
-      }
+      });
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      removers.forEach((fn) => fn());
+      ctx.revert();
+    };
   }, []);
 
   return (
