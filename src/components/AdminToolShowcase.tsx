@@ -59,9 +59,12 @@ export function AdminToolShowcase() {
 
   return (
     <div>
-      <div className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+      <div className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent">
         Admin App
       </div>
+      <p className="mb-3 text-sm text-muted-foreground">
+        Typing-UX admin tool. Aggregates behavior, scores it, recommends settings.
+      </p>
 
       {/* Scaled, non-interactive preview. */}
       <div
@@ -95,9 +98,6 @@ export function AdminToolShowcase() {
         Click to expand and interact
         <Maximize2 className="h-4 w-4" />
       </button>
-      <p className="mt-1 text-center text-[11px] text-muted-foreground">
-        Interactive copy with sample data only — nothing is sent to the app or Supabase.
-      </p>
 
       {/* Full-screen interactive modal — portalled to <body> so it escapes any
           transformed (GSAP .reveal) ancestor and truly covers the viewport. */}

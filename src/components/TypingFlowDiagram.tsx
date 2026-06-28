@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-react';
 import { AdminToolShowcase } from './AdminToolShowcase';
 
@@ -21,7 +20,7 @@ function Box({
 }) {
   return (
     <div
-      className={`flex items-center rounded-xl border bg-card px-4 py-3 text-sm font-semibold leading-snug shadow-sm ${
+      className={`flex items-center justify-center rounded-xl border bg-card px-4 py-3 text-center text-sm font-semibold leading-snug shadow-sm ${
         accent ? 'border-accent/40' : 'border-border'
       } ${className}`}
     >
@@ -69,18 +68,24 @@ function VArrow({ label, up = false }: { label?: string; up?: boolean }) {
 
 const USERS = ['User #1', 'User #2', 'User #3'];
 
-function AllUsersGroup() {
+/** A bordered container that groups the three user/profile boxes with a
+ *  caption beneath them. Used for all three stages so they read as a set. */
+function Group({ caption, accent = false }: { caption: string; accent?: boolean }) {
   return (
     <div className="flex h-full flex-col rounded-2xl border-2 border-border/80 p-3">
       <div className="flex flex-1 flex-col justify-between gap-3">
         {USERS.map((u) => (
-          <Box key={u} title={u} accent />
+          <Box key={u} title={u} accent={accent} />
         ))}
       </div>
-      <div className="mt-3 text-center text-xs font-medium text-muted-foreground">All Users</div>
+      <div className="mt-3 text-center text-xs font-medium text-muted-foreground">{caption}</div>
     </div>
   );
 }
+
+const GROUP_BEHAVIOR = "Each user's typing behavior";
+const GROUP_PERSONALIZATION = "Learns each user's typing profile, on device";
+const GROUP_ALL_USERS = 'All Users';
 
 export function TypingFlowDiagram() {
   return (
@@ -94,49 +99,44 @@ export function TypingFlowDiagram() {
         </h4>
       </div>
 
-      {/* Top flow — desktop: users → personalization → all users. */}
-      <div className="hidden items-stretch gap-x-2 gap-y-4 lg:grid lg:grid-cols-[minmax(0,1fr)_10rem_minmax(0,1fr)_11rem_minmax(0,1fr)]">
-        <div className="col-start-5 row-start-1 row-span-3 self-stretch">
-          <AllUsersGroup />
-        </div>
-        {USERS.map((u, i) => (
-          <Fragment key={u}>
-            <Box title={u} />
-            <HArrow label={i === 0 ? 'Individual behavioral data' : undefined} />
-            <Box title="Personalization Layer" />
-            <HArrow label={i === 0 ? 'Updated personalized settings' : undefined} />
-          </Fragment>
-        ))}
+      {/* Top flow — desktop: user group → personalization layer → all users. */}
+      <div className="hidden items-stretch gap-x-2 lg:grid lg:grid-cols-[minmax(0,1fr)_8rem_minmax(0,1fr)_8rem_minmax(0,1fr)]">
+        <Group caption={GROUP_BEHAVIOR} accent />
+        <HArrow label="Individual behavioral data" />
+        <Group caption={GROUP_PERSONALIZATION} />
+        <HArrow label="Updated personalized settings" />
+        <Group caption={GROUP_ALL_USERS} accent />
       </div>
 
       {/* Top flow — mobile: stacked. */}
       <div className="space-y-4 lg:hidden">
-        <div className="space-y-3">
-          {USERS.map((u) => (
-            <Box key={u} title={u} />
-          ))}
-        </div>
+        <Group caption={GROUP_BEHAVIOR} accent />
         <div className="flex justify-center">
           <VArrow label="Individual behavioral data" />
         </div>
-        <div className="space-y-3">
-          {USERS.map((u) => (
-            <Box key={u} title="Personalization Layer" className="justify-center" />
-          ))}
-        </div>
+        <Group caption={GROUP_PERSONALIZATION} />
         <div className="flex justify-center">
           <VArrow label="Updated personalized settings" />
         </div>
-        <AllUsersGroup />
+        <Group caption={GROUP_ALL_USERS} accent />
       </div>
 
-      {/* Loop connectors: behavioral data down to the Admin App, global settings
-          back up to all users. */}
-      <div className="mt-6 grid grid-cols-2 items-start gap-4">
-        <div className="flex justify-center sm:justify-start sm:pl-6">
+      {/* Loop connectors: behavioral data flows down (centered on the left user
+          group) to the Admin App; global settings flow back up (centered on the
+          All Users group). */}
+      <div className="mt-6 hidden lg:grid lg:grid-cols-[minmax(0,1fr)_8rem_minmax(0,1fr)_8rem_minmax(0,1fr)]">
+        <div className="col-start-1 flex justify-center">
           <VArrow label="Behavioral data" />
         </div>
-        <div className="flex justify-center sm:justify-end sm:pr-6">
+        <div className="col-start-5 flex justify-center">
+          <VArrow up label="Updated global typing settings" />
+        </div>
+      </div>
+      <div className="mt-6 grid grid-cols-2 items-start gap-4 lg:hidden">
+        <div className="flex justify-center">
+          <VArrow label="Behavioral data" />
+        </div>
+        <div className="flex justify-center">
           <VArrow up label="Updated global typing settings" />
         </div>
       </div>
