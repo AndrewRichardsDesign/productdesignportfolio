@@ -811,7 +811,7 @@
       ],
       "competitiveTitle": "Competitive product requirement",
       "competitive": [
-        "After studying how translation tools are used during texting, it became clear that Arcatext could not only be a better translator — it had to be a better keyboard experience.",
+        "After testing Arcatext with students, and especially after discussing business deals with teachers' reputations at risk, I learned that the translation feature set would not drive adoption if the keyboard was significantly less fluid and accurate than default keyboards.",
         "To earn a place in a daily-use interface, Arcatext needed to preserve familiar typing patterns, reduce friction, and outperform the basic translation workflows available through Apple Translate, Google Translate, DeepL, and Gboard. The product had to bridge experiential gaps while expanding beyond basic translation into confidence, context, and learning."
       ],
       "shippedTitle": "What I shipped",
