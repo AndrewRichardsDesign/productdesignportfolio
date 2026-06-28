@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Maximize2, X } from 'lucide-react';
+import { useTheme } from '@/hooks/useTheme';
 
 /**
  * Embeds a working copy of the Arcatext "Typing-UX Admin Tool".
@@ -20,6 +21,15 @@ export function AdminToolShowcase() {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.5);
+
+  // Follow the portfolio's theme: dark → the tool's "midnight" (blue-accented
+  // dark) palette, light → "daylight". Passed via ?theme=; the tool seeds this
+  // before booting. The user can still switch themes inside the modal.
+  const { resolvedTheme } = useTheme();
+  const toolSrc = useMemo(
+    () => `${TOOL_SRC}?theme=${resolvedTheme === 'dark' ? 'midnight' : 'daylight'}`,
+    [resolvedTheme]
+  );
 
   // Scale the preview iframe to fill the available width (keeps text readable).
   useEffect(() => {
@@ -60,7 +70,7 @@ export function AdminToolShowcase() {
         style={{ height: FRAME_H * scale }}
       >
         <iframe
-          src={TOOL_SRC}
+          src={toolSrc}
           title="Typing-UX admin tool preview"
           loading="lazy"
           tabIndex={-1}
@@ -111,7 +121,7 @@ export function AdminToolShowcase() {
               </button>
             </div>
             <iframe
-              src={TOOL_SRC}
+              src={toolSrc}
               title="Typing-UX admin tool"
               className="min-h-0 w-full flex-1 border-0"
             />

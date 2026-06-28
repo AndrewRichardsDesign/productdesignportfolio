@@ -120,6 +120,15 @@ async function main() {
 function buildStub(seed) {
   return `<script>/* injected by sync-admin-tool.mjs — keeps the tool fully offline */
 (function () {
+  // Theme follow: when the portfolio embeds this page it appends ?theme=<name>
+  // (e.g. ?theme=midnight when the portfolio is dark, ?theme=daylight when
+  // light). Seed localStorage BEFORE the tool's initTheme() runs so the tool
+  // boots in the matching theme. The in-tool theme picker still works after —
+  // the user can change the theme inside the interactive demo.
+  try {
+    var qp = (location.search.match(/[?&]theme=([^&]+)/) || [])[1];
+    if (qp) localStorage.setItem('rekeys.theme', decodeURIComponent(qp));
+  } catch (e) {}
   var SEED = ${JSON.stringify(seed)};
   var store = JSON.parse(JSON.stringify(SEED));
   function knobDefaults() { var o = {}; (store.knobs || []).forEach(function (k) { o[k.key] = k.default; }); return o; }
