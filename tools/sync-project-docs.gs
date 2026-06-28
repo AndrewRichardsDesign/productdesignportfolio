@@ -202,6 +202,38 @@ function bullet_(body, text) {
   return li;
 }
 
+// --- prose blocks -------------------------------------------------------
+// Prose arrays may contain plain strings (= paragraphs) or typed block objects
+// { type: 'paragraph' | 'heading', style?, text } produced by the admin editor.
+// These helpers render either shape so a mixed array never breaks the sync.
+
+function isBlock_(x) {
+  return x && typeof x === 'object' && !Array.isArray(x) &&
+         typeof x.text === 'string' && (x.type === 'paragraph' || x.type === 'heading');
+}
+
+function headingForStyle_(style) {
+  switch (style) {
+    case 'h2': return DocumentApp.ParagraphHeading.HEADING2;
+    case 'h3': return DocumentApp.ParagraphHeading.HEADING3;
+    case 'h4': return DocumentApp.ParagraphHeading.HEADING4;
+    case 'eyebrow': return DocumentApp.ParagraphHeading.HEADING5;
+    default: return DocumentApp.ParagraphHeading.HEADING3;
+  }
+}
+
+/** Render one prose entry (string or typed block) as a paragraph/heading/bullet. */
+function renderProseEntry_(body, entry, bullets) {
+  if (typeof entry === 'string') {
+    bullets ? bullet_(body, entry) : para_(body, entry, false);
+  } else if (isBlock_(entry)) {
+    if (entry.type === 'heading') heading_(body, entry.text, headingForStyle_(entry.style));
+    else para_(body, entry.text, false);
+  } else {
+    renderObject_(body, entry); // structured item, not a prose block
+  }
+}
+
 function renderField_(body, key, val, section, done) {
   // Combine "...Lead" + "...Highlight" pairs into one line (HMW, quotes, etc.)
   if (/Lead$/.test(key)) {
@@ -218,9 +250,12 @@ function renderField_(body, key, val, section, done) {
     return;
   }
   if (Array.isArray(val) && val.length) {
-    if (typeof val[0] === 'string') {
+    // A prose list is any array of strings and/or typed blocks; anything else
+    // (e.g. {title, desc} items) is a structured object list.
+    const proseList = val.every(function (x) { return typeof x === 'string' || isBlock_(x); });
+    if (proseList) {
       const bullets = BULLET_KEYS.indexOf(key) !== -1;
-      val.forEach(function (s) { bullets ? bullet_(body, s) : para_(body, s, false); });
+      val.forEach(function (entry) { renderProseEntry_(body, entry, bullets); });
     } else {
       val.forEach(function (item) { renderObject_(body, item); });
     }
@@ -229,6 +264,7 @@ function renderField_(body, key, val, section, done) {
 
 function renderObject_(body, item) {
   if (!item || typeof item !== 'object') return;
+  if (isBlock_(item)) { renderProseEntry_(body, item, false); return; }  // typed prose block
   if ('value' in item && 'label' in item) {                 // stat
     const p = para_(body, item.value + '  ' + item.label, false);
     if (item.value.length) p.editAsText().setBold(0, item.value.length - 1, true);
