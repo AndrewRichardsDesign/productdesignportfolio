@@ -17,17 +17,22 @@ const TOOL_SRC = `${import.meta.env.BASE_URL}arcatext-admin-tool.html`;
 export function AdminToolShowcase() {
   const [open, setOpen] = useState(false);
   const previewRef = useRef<HTMLIFrameElement>(null);
-  // Hovering the preview plays a scripted demo on the (same-origin) tool:
-  //   1. raise the Decision-margin tiers (precise→3, average→4, loose→6),
-  //   2. lower Same-row strictness (→0.5),
-  //   3. reset every slider to its default,
-  // looping for as long as the cursor stays on the preview. Values outside a
-  // slider's range are clamped by the range input (loose maxes out, same-row
-  // bottoms out).
+  // Hovering the preview plays a looping, *fluid* demo on the (same-origin)
+  // tool's sliders — each step tweens the thumbs from their current value to
+  // the target so they visibly slide (not jump):
+  //   1. Decision-margin tiers up (precise→3, average→4, loose→6),
+  //   2. Same-row strictness down (→0.5),
+  //   3. everything back to its default,
+  // repeating while the cursor stays on the preview. Out-of-range targets are
+  // clamped (loose maxes at 5, same-row bottoms at 1). The sliders' step is set
+  // to "any" during the demo so the thumbs glide continuously rather than snap.
   const DECISION_MARGIN_KEY = 'rekeys.tb.decisionMargin';
   const SAME_ROW_KEY = 'rekeys.tb.sameRowMult';
-  const defaultsRef = useRef<Map<HTMLInputElement, string>>(new Map());
-  const beatRef = useRef<number | null>(null);
+  const valuesRef = useRef<Map<HTMLInputElement, string>>(new Map()); // default values
+  const stepsRef = useRef<Map<HTMLInputElement, string>>(new Map()); // original range steps
+  const rafRef = useRef<number | null>(null);
+  const holdRef = useRef<number | null>(null);
+  const runningRef = useRef(false);
 
   const previewDoc = () => {
     try {
@@ -36,71 +41,128 @@ export function AdminToolShowcase() {
       return null;
     }
   };
-  const snapshotSliders = (doc: Document) => {
-    const map = defaultsRef.current;
-    map.clear();
-    doc.querySelectorAll<HTMLInputElement>('#knobs input').forEach((i) => map.set(i, i.value));
-  };
-  const restoreSliders = () => {
-    defaultsRef.current.forEach((v, i) => {
-      i.value = v;
-    });
-  };
-  // Set a slider (and its paired number chip) to a value, clamped to its range.
-  const setSlider = (doc: Document, key: string, tier: string, value: number) => {
-    const tierSel = tier ? `[data-tier="${tier}"]` : ':not([data-tier])';
-    const range = doc.querySelector<HTMLInputElement>(
-      `input[type=range][data-key="${key}"]${tierSel}`
-    );
-    if (!range) return;
-    range.value = String(value); // the range input clamps to its [min, max]
-    const clamped = range.value;
-    doc
-      .querySelectorAll<HTMLInputElement>(`input.valuechip[data-key="${key}"]${tierSel}`)
-      .forEach((c) => {
-        c.value = clamped;
-      });
+
+  type TweenItem = {
+    input: HTMLInputElement;
+    chips: NodeListOf<HTMLInputElement>;
+    to: number;
+    step: number;
   };
 
-  const runStep = (step: number) => {
+  const chipsFor = (doc: Document, key: string, tier: string) => {
+    const tierSel = tier ? `[data-tier="${tier}"]` : ':not([data-tier])';
+    return doc.querySelectorAll<HTMLInputElement>(`input.valuechip[data-key="${key}"]${tierSel}`);
+  };
+  // Build a tween target for one slider, clamped to its [min, max].
+  const aim = (doc: Document, key: string, tier: string, value: number): TweenItem | null => {
+    const tierSel = tier ? `[data-tier="${tier}"]` : ':not([data-tier])';
+    const input = doc.querySelector<HTMLInputElement>(
+      `input[type=range][data-key="${key}"]${tierSel}`
+    );
+    if (!input) return null;
+    const min = parseFloat(input.min);
+    const max = parseFloat(input.max);
+    const step = parseFloat(stepsRef.current.get(input) ?? input.step) || 0.25;
+    const to = Math.max(min, Math.min(max, value));
+    return { input, chips: chipsFor(doc, key, tier), to, step };
+  };
+  // Tween targets that return every slider to its snapshot default.
+  const resetItems = (doc: Document): TweenItem[] => {
+    const items: TweenItem[] = [];
+    stepsRef.current.forEach((origStep, input) => {
+      const def = parseFloat(valuesRef.current.get(input) ?? input.value);
+      items.push({
+        input,
+        chips: chipsFor(doc, input.getAttribute('data-key') || '', input.getAttribute('data-tier') || ''),
+        to: Number.isNaN(def) ? parseFloat(input.value) : def,
+        step: parseFloat(origStep) || 0.25,
+      });
+    });
+    return items;
+  };
+
+  const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+
+  const tween = (items: TweenItem[], duration: number, done: () => void) => {
+    const froms = items.map((it) => parseFloat(it.input.value));
+    const startTs = performance.now();
+    const frame = (now: number) => {
+      if (!runningRef.current) return;
+      const t = Math.min(1, (now - startTs) / duration);
+      const e = easeInOut(t);
+      items.forEach((it, idx) => {
+        const v = froms[idx] + (it.to - froms[idx]) * e;
+        it.input.value = String(v); // step="any" → continuous thumb motion
+        const disp = String(parseFloat((Math.round(v / it.step) * it.step).toFixed(4)));
+        it.chips.forEach((c) => {
+          c.value = disp;
+        });
+      });
+      if (t < 1) {
+        rafRef.current = requestAnimationFrame(frame);
+      } else {
+        rafRef.current = null;
+        done();
+      }
+    };
+    rafRef.current = requestAnimationFrame(frame);
+  };
+
+  const runPhase = (i: number) => {
+    if (!runningRef.current) return;
     const doc = previewDoc();
     if (!doc) return;
-    if (step === 0) {
-      setSlider(doc, DECISION_MARGIN_KEY, 'precise', 3);
-      setSlider(doc, DECISION_MARGIN_KEY, 'average', 4);
-      setSlider(doc, DECISION_MARGIN_KEY, 'loose', 6);
-    } else if (step === 1) {
-      setSlider(doc, SAME_ROW_KEY, '', 0.5);
+    let items: TweenItem[];
+    if (i === 0) {
+      items = [
+        aim(doc, DECISION_MARGIN_KEY, 'precise', 3),
+        aim(doc, DECISION_MARGIN_KEY, 'average', 4),
+        aim(doc, DECISION_MARGIN_KEY, 'loose', 6),
+      ].filter((x): x is TweenItem => x !== null);
+    } else if (i === 1) {
+      items = [aim(doc, SAME_ROW_KEY, '', 0.5)].filter((x): x is TweenItem => x !== null);
     } else {
-      restoreSliders();
+      items = resetItems(doc);
     }
+    tween(items, 650, () => {
+      holdRef.current = window.setTimeout(() => runPhase((i + 1) % 3), 300);
+    });
+  };
+
+  const stopAnim = () => {
+    runningRef.current = false;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = null;
+    if (holdRef.current) clearTimeout(holdRef.current);
+    holdRef.current = null;
   };
 
   const handleEnter = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const doc = previewDoc();
     if (!doc) return;
-    snapshotSliders(doc);
-    let step = 0;
-    runStep(step);
-    beatRef.current = window.setInterval(() => {
-      step = (step + 1) % 3;
-      runStep(step);
-    }, 900);
+    // Snapshot defaults + original steps, then loosen the step for fluid motion.
+    valuesRef.current.clear();
+    stepsRef.current.clear();
+    doc.querySelectorAll<HTMLInputElement>('#knobs input').forEach((i) => valuesRef.current.set(i, i.value));
+    doc.querySelectorAll<HTMLInputElement>('#knobs input[type=range]').forEach((r) => {
+      stepsRef.current.set(r, r.step);
+      r.step = 'any';
+    });
+    runningRef.current = true;
+    runPhase(0);
   };
   const handleLeave = () => {
-    if (beatRef.current) {
-      clearInterval(beatRef.current);
-      beatRef.current = null;
-    }
-    restoreSliders();
+    stopAnim();
+    // Restore values + original steps.
+    valuesRef.current.forEach((v, i) => {
+      i.value = v;
+    });
+    stepsRef.current.forEach((s, r) => {
+      r.step = s;
+    });
   };
-  useEffect(
-    () => () => {
-      if (beatRef.current) clearInterval(beatRef.current);
-    },
-    []
-  );
+  useEffect(() => () => stopAnim(), []);
 
   // Follow the portfolio's theme: dark → the tool's "midnight" (blue-accented
   // dark) palette, light → "daylight". Passed via ?theme=; the tool seeds this
