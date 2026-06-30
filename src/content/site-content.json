@@ -2418,7 +2418,7 @@
           "data": {
             "num": "03",
             "title": "AI reliability and cost risk",
-            "desc": "LLMs enabled the learning-centered experience, but introduced latency, reliability, and token-cost tradeoffs. This shaped model selection, prompt structure, subscription pricing, and the longer-term plan for reusable language data and hosted models."
+            "desc": "LLMs unlocked context-sensitive language support, but they also introduced risks: inconsistent output, latency, uneven performance across languages, and variable API cost. For a product embedded inside personal messaging, those risks directly affected trust, adoption, and margins."
           }
         },
         {
