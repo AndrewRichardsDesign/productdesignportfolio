@@ -11,6 +11,7 @@ import {
   type InsertTool,
   type ProseItem,
 } from './proseBlocks';
+import { ElementPreview, ElementView, getElement, makeElementBlock } from './elements';
 
 /** Resolve a nested value out of the content store using a dot path. */
 function getByPath(obj: unknown, path: string): unknown {
@@ -33,12 +34,17 @@ function focusAtEnd(el: HTMLElement) {
 
 /** Short label for the armed tool, used on the insertion line. */
 function toolLabel(tool: InsertTool): string {
-  return tool.kind === 'paragraph' ? 'Paragraph' : headerConfig(tool.style).label;
+  if (tool.kind === 'paragraph') return 'Paragraph';
+  if (tool.kind === 'heading') return headerConfig(tool.style).label;
+  return getElement(tool.variant)?.label ?? 'Element';
 }
 
-/** The editable element for a single prose entry (paragraph or heading). */
+/** The editable element for a single prose entry (paragraph, heading, or element). */
 function blockElement(path: string, index: number, item: ProseItem) {
   const block = isProseBlock(item);
+  if (block && item.type === 'element') {
+    return <ElementView path={`${path}.${index}`} block={item} />;
+  }
   const textPath = block ? `${path}.${index}.text` : `${path}.${index}`;
   if (block && item.type === 'heading') {
     const cfg = headerConfig(item.style);
@@ -322,16 +328,21 @@ function InsertZone({ path, index }: { path: string; index: number }) {
 
   if (!isAdmin || !insertTool) return null;
 
-  const paragraph = insertTool.kind === 'paragraph';
-  const cfg = paragraph ? null : headerConfig(insertTool.style);
+  const heading = insertTool.kind === 'heading';
+  const isElement = insertTool.kind === 'element';
+  const cfg = heading ? headerConfig(insertTool.style) : null;
 
   const handleInsert = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    insertBlock(path, index, blockForTool(insertTool));
+    const block = isElement ? makeElementBlock(insertTool.variant) : blockForTool(insertTool);
+    insertBlock(path, index, block);
     setInsertTool(null);
-    // Focus the new (empty) block once it has rendered.
-    const focusPath = `${path}.${index}.text`;
+    // Focus the new block's first editable field once it has rendered.
+    const firstField = isElement ? Object.keys(block.data ?? {})[0] : null;
+    const focusPath = isElement
+      ? `${path}.${index}.data.${firstField}`
+      : `${path}.${index}.text`;
     requestAnimationFrame(() => {
       const el = document.querySelector<HTMLElement>(`[data-editable-path="${focusPath}"]`);
       if (el) focusAtEnd(el);
@@ -369,14 +380,16 @@ function InsertZone({ path, index }: { path: string; index: number }) {
       </div>
 
       {hover && (
-        <div className="pointer-events-none mt-2 select-none" aria-hidden>
-          {paragraph || !cfg ? (
-            <p className="opacity-50">New paragraph…</p>
-          ) : (
+        <div className="pointer-events-none mt-2 select-none opacity-60" aria-hidden>
+          {isElement ? (
+            <ElementPreview variant={insertTool.variant} />
+          ) : cfg ? (
             (() => {
               const Tag = cfg.tag;
-              return <Tag className={cn(cfg.className, 'opacity-50')}>{cfg.previewText}</Tag>;
+              return <Tag className={cn(cfg.className, 'opacity-70')}>{cfg.previewText}</Tag>;
             })()
+          ) : (
+            <p>New paragraph…</p>
           )}
         </div>
       )}

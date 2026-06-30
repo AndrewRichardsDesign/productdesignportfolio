@@ -10,10 +10,15 @@
 export type HeaderStyle = 'h2' | 'h3' | 'h4' | 'eyebrow';
 
 export interface ProseBlock {
-  type: 'paragraph' | 'heading';
+  type: 'paragraph' | 'heading' | 'element';
   /** Only set for `heading` blocks. */
   style?: HeaderStyle;
-  text: string;
+  /** Set for `paragraph` / `heading` blocks. */
+  text?: string;
+  /** Set for `element` blocks: the elements-registry variant id. */
+  variant?: string;
+  /** Set for `element` blocks: the element's editable field values. */
+  data?: Record<string, string>;
 }
 
 /** A single entry in a prose array: a legacy string (= paragraph) or a block. */
@@ -22,7 +27,8 @@ export type ProseItem = string | ProseBlock;
 /** The currently-armed admin insert tool, or null when nothing is armed. */
 export type InsertTool =
   | { kind: 'paragraph' }
-  | { kind: 'heading'; style: HeaderStyle };
+  | { kind: 'heading'; style: HeaderStyle }
+  | { kind: 'element'; variant: string };
 
 export interface HeaderStyleConfig {
   style: HeaderStyle;
@@ -82,7 +88,7 @@ export function isProseBlock(item: ProseItem): item is ProseBlock {
 
 /** The display text for any prose entry. */
 export function proseText(item: ProseItem): string {
-  return typeof item === 'string' ? item : item.text;
+  return typeof item === 'string' ? item : item.text ?? '';
 }
 
 /** Look up a header config by style, falling back to the subsection style. */
@@ -90,9 +96,10 @@ export function headerConfig(style: HeaderStyle | undefined): HeaderStyleConfig 
   return HEADER_STYLES.find((h) => h.style === style) ?? HEADER_STYLES[1];
 }
 
-/** Build a fresh, empty block for the given armed insert tool. */
+/** Build a fresh, empty block for the given armed insert tool. (Element blocks
+ *  are built via `makeElementBlock` in elements.tsx so they carry sample data.) */
 export function blockForTool(tool: InsertTool): ProseBlock {
-  return tool.kind === 'paragraph'
-    ? { type: 'paragraph', text: '' }
-    : { type: 'heading', style: tool.style, text: '' };
+  if (tool.kind === 'paragraph') return { type: 'paragraph', text: '' };
+  if (tool.kind === 'heading') return { type: 'heading', style: tool.style, text: '' };
+  return { type: 'element', variant: tool.variant, data: {} };
 }

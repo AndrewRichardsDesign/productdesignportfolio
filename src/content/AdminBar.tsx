@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Check, ChevronDown, ExternalLink, Eye, EyeOff, List, Loader2, LogOut, Move, Plus, RotateCcw, Save, X } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { Check, ChevronDown, ExternalLink, Eye, EyeOff, LayoutGrid, List, Loader2, LogOut, Move, Plus, RotateCcw, Save, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ADMIN_TARGET, useContent } from './ContentContext';
 import { ContentEditorPanel } from './ContentEditorPanel';
 import { HEADER_STYLES, headerConfig } from './proseBlocks';
+import { ELEMENTS, ElementPreview, getElement } from './elements';
 import { lockAdmin } from '@/lib/adminAuth';
 
 /**
@@ -27,6 +31,9 @@ export function AdminBar() {
   const [showToken, setShowToken] = useState(false);
   const [open, setOpen] = useState(true);
   const [panelOpen, setPanelOpen] = useState(false);
+  // Element palette: which variant is being hovered (drives the side preview).
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [hoverVariant, setHoverVariant] = useState<string | null>(null);
 
   // Esc cancels an armed insert tool or move mode.
   useEffect(() => {
@@ -44,11 +51,14 @@ export function AdminBar() {
 
   const paragraphArmed = insertTool?.kind === 'paragraph';
   const headerArmed = insertTool?.kind === 'heading';
-  const armedLabel = insertTool
-    ? insertTool.kind === 'paragraph'
+  const elementArmed = insertTool?.kind === 'element';
+  const armedLabel = !insertTool
+    ? ''
+    : insertTool.kind === 'paragraph'
       ? 'Paragraph'
-      : headerConfig(insertTool.style).label
-    : '';
+      : insertTool.kind === 'heading'
+        ? headerConfig(insertTool.style).label
+        : getElement(insertTool.variant)?.label ?? 'Element';
 
   const selectedCount = selection
     ? selection.domain === 'section'
@@ -73,6 +83,17 @@ export function AdminBar() {
   return (
     <>
     <ContentEditorPanel open={panelOpen} onClose={() => setPanelOpen(false)} />
+    {/* Element-palette hover preview — a card on the right side of the screen. */}
+    {paletteOpen && hoverVariant &&
+      createPortal(
+        <div className="fixed bottom-4 right-4 z-[101] w-[380px] max-w-[calc(100vw-2rem)] rounded-2xl border border-border/70 bg-background/95 p-4 shadow-2xl backdrop-blur-xl">
+          <div className="mb-3 text-xs font-medium text-muted-foreground">
+            Preview · {getElement(hoverVariant)?.label}
+          </div>
+          <ElementPreview variant={hoverVariant} />
+        </div>,
+        document.body
+      )}
     {insertTool && (
       <div className="fixed top-20 left-1/2 z-[100] -translate-x-1/2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-center text-xs font-medium text-primary shadow-lg backdrop-blur">
         Inserting {armedLabel} — click a “+ {armedLabel}” line in the page. Esc to cancel.
@@ -163,6 +184,54 @@ export function AdminBar() {
                 >
                   <span className="flex-1">{h.label}</span>
                   {insertTool?.kind === 'heading' && insertTool.style === h.style && (
+                    <Check className="h-4 w-4 text-primary" />
+                  )}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu
+            modal={false}
+            open={paletteOpen}
+            onOpenChange={(o) => {
+              setPaletteOpen(o);
+              if (!o) setHoverVariant(null);
+            }}
+          >
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="sm"
+                variant={elementArmed ? 'default' : 'outline'}
+                className="h-8 gap-1.5 px-2.5 text-xs"
+              >
+                <LayoutGrid className="h-3.5 w-3.5" /> Element
+                <ChevronDown className="h-3.5 w-3.5 opacity-70" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="start"
+              side="top"
+              className="z-[120] w-56"
+              onCloseAutoFocus={() => setHoverVariant(null)}
+            >
+              <DropdownMenuLabel className="text-[11px] font-normal text-muted-foreground">
+                Hover to preview · click to place
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {ELEMENTS.map((el) => (
+                <DropdownMenuItem
+                  key={el.id}
+                  onMouseEnter={() => setHoverVariant(el.id)}
+                  onFocus={() => setHoverVariant(el.id)}
+                  onClick={() => {
+                    setInsertTool({ kind: 'element', variant: el.id });
+                    setPaletteOpen(false);
+                    setHoverVariant(null);
+                  }}
+                  className="gap-6"
+                >
+                  <span className="flex-1">{el.label}</span>
+                  {insertTool?.kind === 'element' && insertTool.variant === el.id && (
                     <Check className="h-4 w-4 text-primary" />
                   )}
                 </DropdownMenuItem>
