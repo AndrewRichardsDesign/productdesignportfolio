@@ -63,12 +63,25 @@ function blockElement(path: string, index: number, item: ProseItem) {
  *     between blocks once blocks from this list are selected.
  *   - Otherwise: inserted blocks show a hover delete affordance.
  */
+/** True for an element block whose variant is a "Cards"-group card (griddable). */
+function isCardElement(item: ProseItem): boolean {
+  return (
+    isProseBlock(item) &&
+    item.type === 'element' &&
+    getElement(item.variant ?? '')?.group === 'Cards'
+  );
+}
+
 export function EditableBlocks({ path }: { path: string }) {
-  const { content, isAdmin, moveMode, selection, moveBlocksTo } = useContent();
+  const { content, isAdmin, moveMode, insertTool, selection, moveBlocksTo } = useContent();
   const raw = getByPath(content, path);
   const items: ProseItem[] = Array.isArray(raw) ? (raw as ProseItem[]) : [];
 
   const inMove = isAdmin && moveMode;
+  // While actively inserting or moving, show the per-gap insert/move lines as a
+  // single stacked column. Otherwise (visitors, and admin at rest) lay runs of
+  // card elements out in a responsive grid.
+  const interactive = inMove || (isAdmin && !!insertTool);
   const moveActiveHere =
     inMove && selection?.domain === 'block' && selection.path === path && selection.indices.length > 0;
 
@@ -87,6 +100,38 @@ export function EditableBlocks({ path }: { path: string }) {
         <span className="h-0.5 flex-1 rounded-full bg-primary/40 transition-colors group-hover/move:bg-primary" />
       </button>
     ) : null;
+
+  if (!interactive) {
+    // Group consecutive card elements into a responsive 2–3 column grid; render
+    // everything else (headings, paragraphs, callouts, …) full width.
+    const out: React.ReactNode[] = [];
+    let i = 0;
+    while (i < items.length) {
+      if (isCardElement(items[i])) {
+        const start = i;
+        const run: number[] = [];
+        while (i < items.length && isCardElement(items[i])) {
+          run.push(i);
+          i += 1;
+        }
+        out.push(
+          run.length > 1 ? (
+            <div key={`grid-${start}`} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {run.map((idx) => (
+                <Block key={idx} path={path} index={idx} item={items[idx]} editable={isAdmin} />
+              ))}
+            </div>
+          ) : (
+            <Block key={start} path={path} index={start} item={items[start]} editable={isAdmin} />
+          )
+        );
+      } else {
+        out.push(<Block key={i} path={path} index={i} item={items[i]} editable={isAdmin} />);
+        i += 1;
+      }
+    }
+    return <>{out}</>;
+  }
 
   return (
     <>
@@ -300,6 +345,11 @@ function Block({
   // Visitors see plain content; in admin every block gets a delete button.
   if (!editable) return el;
 
+  // Element cards are boxed (and may sit in a grid cell), so anchor their delete
+  // inside the top-right corner; prose blocks keep the gutter position.
+  const isElement = isProseBlock(item) && item.type === 'element';
+  const delPos = isElement ? 'right-2 top-2' : '-left-8 top-0.5';
+
   return (
     <div className="relative">
       {el}
@@ -309,7 +359,10 @@ function Block({
         onClick={() => removeBlock(path, index)}
         title="Delete this block"
         aria-label="Delete this block"
-        className="absolute -left-8 top-0.5 flex h-6 w-6 items-center justify-center rounded-md border border-border/60 bg-background/90 text-muted-foreground opacity-70 shadow-sm transition hover:border-destructive/50 hover:bg-destructive/10 hover:text-destructive hover:opacity-100"
+        className={cn(
+          'absolute z-20 flex h-6 w-6 items-center justify-center rounded-md border border-border/60 bg-background/90 text-muted-foreground opacity-70 shadow-sm transition hover:border-destructive/50 hover:bg-destructive/10 hover:text-destructive hover:opacity-100',
+          delPos
+        )}
       >
         <X className="h-3.5 w-3.5" />
       </button>
