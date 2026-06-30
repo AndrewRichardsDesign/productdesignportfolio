@@ -461,14 +461,14 @@
     "hero": {
       "status": "In development",
       "title": "Arcatext",
-      "subtitle": "A translation keyboard that turns real conversations into the lesson — then gives you the insight to grow.",
+      "subtitle": "A translation keyboard that turns real conversations into self-directed language practice, with features that provide control and insight.",
       "typeTags": [
-        "AI Translation Keyboard",
+        "AI-Powered Translation",
         "Language-Learning Tool",
-        "Messaging Companion"
+        "Multilingual Communication"
       ],
-      "roleLabel": "Role",
-      "roleValue": "Founder · Product Designer · iOS Developer",
+      "roleLabel": "ROLE",
+      "roleValue": "Founder · Product Designer · iOS Developer · Backend Developer",
       "platformLabel": "Platform",
       "platformValue": "iOS · Custom keyboard",
       "surfaceLabel": "Surface",
