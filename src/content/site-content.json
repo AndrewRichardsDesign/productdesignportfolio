@@ -2406,7 +2406,7 @@
         {
           "type": "heading",
           "style": "h4",
-          "text": "Translation trust risk"
+          "text": "2. Translation trust risk"
         },
         {
           "type": "paragraph",
@@ -2415,7 +2415,7 @@
         {
           "type": "heading",
           "style": "h4",
-          "text": "AI reliability and cost risk"
+          "text": "3. AI reliability and cost risk"
         },
         {
           "type": "paragraph",
@@ -2424,7 +2424,7 @@
         {
           "type": "heading",
           "style": "h4",
-          "text": "Feature creep risk"
+          "text": "4. Feature creep risk"
         },
         {
           "type": "paragraph",
@@ -2433,7 +2433,7 @@
         {
           "type": "heading",
           "style": "h4",
-          "text": "Learning efficacy risk"
+          "text": "5. Learning efficacy risk"
         },
         {
           "type": "paragraph",
