@@ -10,7 +10,7 @@
  * without a navigation/hash change.
  */
 const ADMIN_KEY = 'pdp.admin.session';
-const ADMIN_PASSWORD = 'andreamibonita';
+const ADMIN_PASSWORD = '123';
 const ADMIN_EVENT = 'admin-change';
 
 export function isAdminUnlocked(): boolean {
