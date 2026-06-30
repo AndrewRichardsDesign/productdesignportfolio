@@ -4,6 +4,11 @@ name: Sync project docs
 # changing on main (e.g. an admin-mode "Save to GitHub" commit). The script
 # itself only rewrites a doc when its content changed, so this is safe to fire
 # on every relevant push.
+#
+# This is a BEST-EFFORT mirror. The content has already reached GitHub by the
+# time this runs, so a sync problem must NOT fail the run (otherwise an admin
+# save looks broken). Failures are surfaced as warnings; fix the Apps Script
+# deployment (see the warning text) to re-enable real syncing.
 
 on:
   push:
@@ -27,8 +32,8 @@ jobs:
           SECRET: ${{ secrets.SYNC_SECRET }}
         run: |
           if [ -z "$URL" ] || [ -z "$SECRET" ]; then
-            echo "::error::Missing APPS_SCRIPT_URL and/or SYNC_SECRET repo secret."
-            exit 1
+            echo "::warning::Missing APPS_SCRIPT_URL and/or SYNC_SECRET repo secret."
+            exit 0
           fi
           # IMPORTANT: do NOT use `-X POST` here. Apps Script answers /exec with
           # a 302 to a googleusercontent result URL that only accepts GET; `-X
@@ -49,14 +54,14 @@ jobs:
           # Order matters: the specific Apps Script error pages are HTML too, so
           # check for them BEFORE the generic HTML/sign-in catch-all.
           if grep -qi 'function not found' response.txt 2>/dev/null; then
-            echo "::error::Apps Script: function not found (likely doPost). The live deployment is an OLD version — Deploy -> Manage deployments -> edit -> Version: New version -> Deploy."
+            echo "::warning::Apps Script: function not found (likely doPost). The live deployment is an OLD version — Deploy -> Manage deployments -> edit -> Version: New version -> Deploy."
           elif grep -qi 'unauthorized' response.txt 2>/dev/null; then
-            echo "::error::Web app returned 'unauthorized' — SYNC_SECRET must equal the WEBHOOK_SECRET script property."
+            echo "::warning::Web app returned 'unauthorized' — SYNC_SECRET must equal the WEBHOOK_SECRET script property."
           elif grep -qiE 'accounts\.google\.com|sign in to continue|ServiceLogin' response.txt 2>/dev/null; then
-            echo "::error::Got a Google sign-in page — the URL is not a public /exec deployment (wrong URL or access not 'Anyone')."
+            echo "::warning::Got a Google sign-in page — the URL is not a public /exec deployment (wrong URL or access not 'Anyone')."
           elif grep -qiE '<!DOCTYPE|<html' response.txt 2>/dev/null; then
-            echo "::error::Got HTML, not JSON (see body above) — usually a stale deployment missing doPost, or the wrong URL."
+            echo "::warning::Got HTML, not JSON (see body above) — usually a stale deployment missing doPost, or the wrong URL."
           else
-            echo "::error::Sync did not return ok:true (see body above)."
+            echo "::warning::Sync did not return ok:true (see body above)."
           fi
-          exit 1
+          exit 0

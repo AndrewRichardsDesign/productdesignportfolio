@@ -10,9 +10,14 @@ permissions:
   pages: write
   id-token: write
 
+# Queue Pages deploys instead of cancelling. With cancel-in-progress: true a
+# second push (e.g. an admin "Save to GitHub" landing while a deploy is running)
+# cancels the earlier deploy, which shows up as a red "Canceling since a higher
+# priority waiting request for pages exists" run even though the content reached
+# GitHub fine. Queuing lets each deploy finish in order.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
