@@ -2395,49 +2395,49 @@
           "text": "Several product risks shaped what I built, simplified, delayed, or measured. I treated these risks as design constraints rather than separate concerns."
         },
         {
-          "type": "heading",
-          "style": "h4",
-          "text": "1. Keyboard adoption risk"
+          "type": "element",
+          "variant": "card-numbered",
+          "data": {
+            "num": "01",
+            "title": "Keyboard adoption risk",
+            "desc": "Users would not adopt Arcatext if typing felt slower or less accurate than their default keyboard. This pushed the product beyond translation and into keyboard quality: familiar typing behavior, greater forgiveness, personalization, glide typing, and admin tooling for tuning autocorrect performance."
+          }
         },
         {
-          "type": "paragraph",
-          "text": "Users would not adopt Arcatext if typing felt slower or less accurate than their default keyboard. This pushed the product beyond translation and into keyboard quality: familiar typing behavior, greater forgiveness, personalization, glide typing, and admin tooling for tuning autocorrect performance."
+          "type": "element",
+          "variant": "card-numbered",
+          "data": {
+            "num": "02",
+            "title": "Translation trust risk",
+            "desc": "A translation can look fluent while subtly changing tone, intent, gender, or formality. This shaped the Check experience, reverse translation, clarification tools, and concepts for naturalness feedback."
+          }
         },
         {
-          "type": "heading",
-          "style": "h4",
-          "text": "2. Translation trust risk"
+          "type": "element",
+          "variant": "card-numbered",
+          "data": {
+            "num": "03",
+            "title": "AI reliability and cost risk",
+            "desc": "LLMs enabled the learning-centered experience, but introduced latency, reliability, and token-cost tradeoffs. This shaped model selection, prompt structure, subscription pricing, and the longer-term plan for reusable language data and hosted models."
+          }
         },
         {
-          "type": "paragraph",
-          "text": "A translation can look fluent while subtly changing tone, intent, gender, or formality. This shaped the Check experience, reverse translation, clarification tools, and concepts for naturalness feedback."
+          "type": "element",
+          "variant": "card-numbered",
+          "data": {
+            "num": "04",
+            "title": "Feature creep risk",
+            "desc": "Arcatext could support many learning features, but too many controls inside a keyboard would slow the core texting flow. This reinforced a simple default path with deeper tools revealed only when needed."
+          }
         },
         {
-          "type": "heading",
-          "style": "h4",
-          "text": "3. AI reliability and cost risk"
-        },
-        {
-          "type": "paragraph",
-          "text": "LLMs enabled the learning-centered experience, but introduced latency, reliability, and token-cost tradeoffs. This shaped model selection, prompt structure, subscription pricing, and the longer-term plan for reusable language data and hosted models."
-        },
-        {
-          "type": "heading",
-          "style": "h4",
-          "text": "4. Feature creep risk"
-        },
-        {
-          "type": "paragraph",
-          "text": "Arcatext could support many learning features, but too many controls inside a keyboard would slow the core texting flow. This reinforced a simple default path with deeper tools revealed only when needed."
-        },
-        {
-          "type": "heading",
-          "style": "h4",
-          "text": "5. Learning efficacy risk"
-        },
-        {
-          "type": "paragraph",
-          "text": "The core hypothesis was not only that users could translate faster, but that real texting could become learning. This shaped the launch measurement plan around Check usage, clarification behavior, repeat keyboard use, retention, and language-pair activity."
+          "type": "element",
+          "variant": "card-numbered",
+          "data": {
+            "num": "05",
+            "title": "Learning efficacy risk",
+            "desc": "The core hypothesis was not only that users could translate faster, but that real texting could become learning. This shaped the launch measurement plan around Check usage, clarification behavior, repeat keyboard use, retention, and language-pair activity."
+          }
         }
       ]
     }
