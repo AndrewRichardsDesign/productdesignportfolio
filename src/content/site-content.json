@@ -844,6 +844,10 @@
           "desc": "Shipped the first product surface inside existing messaging apps, supporting users in real communication contexts."
         },
         {
+          "title": "Designed and built inside real technical constraints",
+          "desc": "Because I was designing and developing the MVP, I could evaluate interaction ideas against implementation reality quickly. Building the keyboard exposed constraints around iOS keyboard behavior, latency, typing accuracy, AI response structure, and edge cases across languages. This feedback loop shaped the final UX: some features were simplified, some were postponed, and others were reworked so the core experience stayed fast, reliable, and understandable."
+        },
+        {
           "title": "Built the Reword experience",
           "desc": "The core translation interaction — transforming an original message into a natural target-language version while preserving intent."
         },
