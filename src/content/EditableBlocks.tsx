@@ -1,4 +1,5 @@
-import { Fragment, useState } from 'react';
+import { Children, Fragment, useState } from 'react';
+import type { ReactNode } from 'react';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useContent } from './ContentContext';
@@ -95,6 +96,70 @@ export function EditableBlocks({ path }: { path: string }) {
       ))}
       {inMove ? moveLine(items.length) : <InsertZone path={path} index={items.length} />}
     </>
+  );
+}
+
+/**
+ * A free-form block list placed at a structural seam in a page (after a card
+ * grid, a diagram, a figure, or at a section's end). It lets admins insert
+ * paragraphs and headers ANYWHERE — not only inside the predefined prose
+ * arrays — and reorder them within the slot. The backing array is created on
+ * first insert, so it costs nothing until used: when empty and no insert/move
+ * tool is armed it renders nothing at all.
+ */
+export function BlockSlot({ path, className }: { path: string; className?: string }) {
+  const { content, isAdmin, insertTool, moveMode } = useContent();
+  const raw = getByPath(content, path);
+  const items: ProseItem[] = Array.isArray(raw) ? (raw as ProseItem[]) : [];
+  const armed = isAdmin && (!!insertTool || moveMode);
+  if (items.length === 0 && !armed) return null;
+  return (
+    <div className={cn('my-6 space-y-5', className)}>
+      <EditableBlocks path={path} />
+    </div>
+  );
+}
+
+/**
+ * Wraps a section's children and drops a {@link BlockSlot} in *every* gap —
+ * before the first child, between each pair, and after the last — so admins can
+ * insert paragraphs/headers at any structural seam (after a card grid, a
+ * diagram, etc.), not only inside the predefined prose arrays. Each slot's
+ * backing array lives at `seams.<id>.<gapIndex>` and is created on first insert.
+ */
+export function Seams({ id, children }: { id: string; children: ReactNode }) {
+  const kids = Children.toArray(children);
+  return (
+    <>
+      {kids.map((child, i) => (
+        <Fragment key={i}>
+          <BlockSlot path={`seams.${id}.${i}`} />
+          {child}
+        </Fragment>
+      ))}
+      <BlockSlot path={`seams.${id}.${kids.length}`} />
+    </>
+  );
+}
+
+/**
+ * A section's max-width content column with {@link Seams} applied, so every gap
+ * between its blocks is an insertion point. Drop-in replacement for the
+ * `<div className="max-w-6xl …">` wrapper each section used.
+ */
+export function SectionBody({
+  id,
+  children,
+  className,
+}: {
+  id: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn('max-w-6xl mx-auto px-4 sm:px-6 lg:px-8', className)}>
+      <Seams id={id}>{children}</Seams>
+    </div>
   );
 }
 

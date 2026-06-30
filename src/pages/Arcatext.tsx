@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button';
 import ArcatextKeyboard from '@/components/ArcatextKeyboard';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
-import { EditableBlocks } from '@/content/EditableBlocks';
+import { EditableBlocks, SectionBody } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 import { ReorderableSections } from '@/components/ReorderableSections';
 import { TypingFlowDiagram } from '@/components/TypingFlowDiagram';
@@ -199,7 +199,7 @@ export default function Arcatext() {
       {/* 01 — Overview */}
       <ReorderableSections pageKey="arcatext">
       <section id="sec-01" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="arcatext-01">
           <div className="reveal">
             <SectionHeader number="01" eyebrowPath="arcatext.overview.eyebrow" titlePath="arcatext.overview.titleLead" highlightPath="arcatext.overview.titleHighlight" />
           </div>
@@ -253,12 +253,12 @@ export default function Arcatext() {
               <Paragraphs base="arcatext.overview.role" items={arc.overview.role} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 02 — Problem / Opportunity */}
       <section id="sec-02" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="arcatext-02">
           <div className="reveal">
             <SectionHeader number="02" eyebrowPath="arcatext.problem.eyebrow" titlePath="arcatext.problem.titleLead" highlightPath="arcatext.problem.titleHighlight" />
           </div>
@@ -314,12 +314,12 @@ export default function Arcatext() {
               <Paragraphs base="arcatext.problem.closing" items={arc.problem.closing} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 03 — Strategy */}
       <section id="sec-03" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="arcatext-03">
           <div className="reveal">
             <SectionHeader number="03" eyebrowPath="arcatext.strategy.eyebrow" titlePath="arcatext.strategy.titleLead" highlightPath="arcatext.strategy.titleHighlight" />
           </div>
@@ -370,12 +370,12 @@ export default function Arcatext() {
               <Paragraphs base="arcatext.strategy.ai" items={arc.strategy.ai} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 04 — Product System */}
       <section id="sec-04" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="arcatext-04">
           <div className="reveal">
             <SectionHeader number="04" eyebrowPath="arcatext.productSystem.eyebrow" titlePath="arcatext.productSystem.titleLead" highlightPath="arcatext.productSystem.titleHighlight" />
           </div>
@@ -432,12 +432,12 @@ export default function Arcatext() {
               <Paragraphs base="arcatext.productSystem.closing" items={arc.productSystem.closing} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 05 — Key Design Decisions */}
       <section id="sec-05" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="arcatext-05">
           <div className="reveal">
             <SectionHeader number="05" eyebrowPath="arcatext.decisions.eyebrow" titlePath="arcatext.decisions.titleLead" highlightPath="arcatext.decisions.titleHighlight" />
           </div>
@@ -460,12 +460,12 @@ export default function Arcatext() {
               </div>
             ))}
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 06 — Execution / Outcomes */}
       <section id="sec-06" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="arcatext-06">
           <div className="reveal">
             <SectionHeader number="06" eyebrowPath="arcatext.execution.eyebrow" titlePath="arcatext.execution.titleLead" highlightPath="arcatext.execution.titleHighlight" />
           </div>
@@ -628,12 +628,12 @@ export default function Arcatext() {
               </div>
             </div>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 07 — Deeper Case Studies */}
       <section id="sec-07" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="arcatext-07">
           <div className="reveal">
             <SectionHeader number="07" eyebrowPath="arcatext.caseStudies.eyebrow" titlePath="arcatext.caseStudies.titleLead" highlightPath="arcatext.caseStudies.titleHighlight" />
           </div>
@@ -664,7 +664,7 @@ export default function Arcatext() {
               </a>
             ))}
           </div>
-        </div>
+        </SectionBody>
       </section>
       </ReorderableSections>
 

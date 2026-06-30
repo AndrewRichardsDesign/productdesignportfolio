@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
-import { EditableBlocks } from '@/content/EditableBlocks';
+import { EditableBlocks, SectionBody } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 import { ReorderableSections } from '@/components/ReorderableSections';
 
@@ -190,7 +190,7 @@ export default function Conversant() {
       {/* 01 — Overview */}
       <ReorderableSections pageKey="conversant">
       <section id="sec-01" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-01">
           <div className="reveal">
             <SectionHeader number="01" eyebrowPath="conversant.overview.eyebrow" titlePath="conversant.overview.titleLead" highlightPath="conversant.overview.titleHighlight" />
           </div>
@@ -235,12 +235,12 @@ export default function Conversant() {
             <Editable as="h3" path="conversant.overview.workstreamsLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-5" />
             <Chips base="conversant.overview.workstreamsList" items={c.overview.workstreamsList} />
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 02 — Design Challenge */}
       <section id="sec-02" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-02">
           <div className="reveal">
             <SectionHeader number="02" eyebrowPath="conversant.challenge.eyebrow" titlePath="conversant.challenge.titleLead" highlightPath="conversant.challenge.titleHighlight" />
           </div>
@@ -265,12 +265,12 @@ export default function Conversant() {
               <Paragraphs base="conversant.challenge.context" items={c.challenge.context} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 03 — Discovery & Research */}
       <section id="sec-03" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-03">
           <div className="reveal">
             <SectionHeader number="03" eyebrowPath="conversant.discovery.eyebrow" titlePath="conversant.discovery.titleLead" highlightPath="conversant.discovery.titleHighlight" />
           </div>
@@ -326,12 +326,12 @@ export default function Conversant() {
               ))}
             </div>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 04 — Strategic Direction */}
       <section id="sec-04" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-04">
           <div className="reveal">
             <SectionHeader number="04" eyebrowPath="conversant.strategy.eyebrow" titlePath="conversant.strategy.titleLead" highlightPath="conversant.strategy.titleHighlight" />
           </div>
@@ -363,12 +363,12 @@ export default function Conversant() {
               <Editable as="span" path="conversant.strategy.quoteHighlight" className="gradient-text" />
             </blockquote>
           </figure>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 05 — Product System */}
       <section id="sec-05" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-05">
           <div className="reveal">
             <SectionHeader number="05" eyebrowPath="conversant.productSystem.eyebrow" titlePath="conversant.productSystem.titleLead" highlightPath="conversant.productSystem.titleHighlight" />
           </div>
@@ -402,12 +402,12 @@ export default function Conversant() {
               <Paragraphs base="conversant.productSystem.closing" items={c.productSystem.closing} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 06 — Selected Work */}
       <section id="sec-06" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-06">
           <div className="reveal">
             <SectionHeader number="06" eyebrowPath="conversant.selectedWork.eyebrow" titlePath="conversant.selectedWork.titleLead" highlightPath="conversant.selectedWork.titleHighlight" />
           </div>
@@ -438,12 +438,12 @@ export default function Conversant() {
               </div>
             ))}
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 07 — Key Design Decisions */}
       <section id="sec-07" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-07">
           <div className="reveal">
             <SectionHeader number="07" eyebrowPath="conversant.decisions.eyebrow" titlePath="conversant.decisions.titleLead" highlightPath="conversant.decisions.titleHighlight" />
           </div>
@@ -472,12 +472,12 @@ export default function Conversant() {
               </div>
             ))}
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 08 — Constraints & Collaboration */}
       <section id="sec-08" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-08">
           <div className="reveal">
             <SectionHeader number="08" eyebrowPath="conversant.constraints.eyebrow" titlePath="conversant.constraints.titleLead" highlightPath="conversant.constraints.titleHighlight" />
           </div>
@@ -513,12 +513,12 @@ export default function Conversant() {
               <Chips base="conversant.constraints.collaborators" items={c.constraints.collaborators} />
             </div>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 09 — Validation & Measurement */}
       <section id="sec-09" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-09">
           <div className="reveal">
             <SectionHeader number="09" eyebrowPath="conversant.validation.eyebrow" titlePath="conversant.validation.titleLead" highlightPath="conversant.validation.titleHighlight" />
           </div>
@@ -545,12 +545,12 @@ export default function Conversant() {
               ))}
             </div>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 10 — Impact */}
       <section id="sec-10" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="conversant-10">
           <div className="reveal">
             <SectionHeader number="10" eyebrowPath="conversant.impact.eyebrow" titlePath="conversant.impact.titleLead" highlightPath="conversant.impact.titleHighlight" />
           </div>
@@ -609,7 +609,7 @@ export default function Conversant() {
           <p className="mt-12 reveal text-xs text-muted-foreground/80 italic max-w-3xl">
             <Editable as="span" path="conversant.impact.confidentiality" multiline />
           </p>
-        </div>
+        </SectionBody>
       </section>
       </ReorderableSections>
 

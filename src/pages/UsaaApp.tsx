@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
-import { EditableBlocks } from '@/content/EditableBlocks';
+import { EditableBlocks, SectionBody } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 import { ReorderableSections } from '@/components/ReorderableSections';
 
@@ -189,7 +189,7 @@ export default function UsaaApp() {
       {/* 01 — Overview */}
       <ReorderableSections pageKey="usaa">
       <section id="sec-01" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="usaa-01">
           <div className="reveal">
             <SectionHeader number="01" eyebrowPath="usaa.overview.eyebrow" titlePath="usaa.overview.titleLead" highlightPath="usaa.overview.titleHighlight" />
           </div>
@@ -223,12 +223,12 @@ export default function UsaaApp() {
             <Editable as="h3" path="usaa.overview.roleTitle" className="text-xl sm:text-2xl font-semibold mb-6" />
             <Chips base="usaa.overview.roleList" items={u.overview.roleList} />
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 02 — Design Challenge */}
       <section id="sec-02" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="usaa-02">
           <div className="reveal">
             <SectionHeader number="02" eyebrowPath="usaa.challenge.eyebrow" titlePath="usaa.challenge.titleLead" highlightPath="usaa.challenge.titleHighlight" />
           </div>
@@ -253,12 +253,12 @@ export default function UsaaApp() {
               <Paragraphs base="usaa.challenge.context" items={u.challenge.context} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 03 — Discovery & Synthesis */}
       <section id="sec-03" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="usaa-03">
           <div className="reveal">
             <SectionHeader number="03" eyebrowPath="usaa.discovery.eyebrow" titlePath="usaa.discovery.titleLead" highlightPath="usaa.discovery.titleHighlight" />
           </div>
@@ -316,12 +316,12 @@ export default function UsaaApp() {
               ))}
             </div>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 04 — Strategic Direction */}
       <section id="sec-04" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="usaa-04">
           <div className="reveal">
             <SectionHeader number="04" eyebrowPath="usaa.strategy.eyebrow" titlePath="usaa.strategy.titleLead" highlightPath="usaa.strategy.titleHighlight" />
           </div>
@@ -338,12 +338,12 @@ export default function UsaaApp() {
               <Editable as="span" path="usaa.strategy.quoteHighlight" className="gradient-text" />
             </blockquote>
           </figure>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 05 — Product System */}
       <section id="sec-05" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="usaa-05">
           <div className="reveal">
             <SectionHeader number="05" eyebrowPath="usaa.productSystem.eyebrow" titlePath="usaa.productSystem.titleLead" highlightPath="usaa.productSystem.titleHighlight" />
           </div>
@@ -377,12 +377,12 @@ export default function UsaaApp() {
               <Paragraphs base="usaa.productSystem.closing" items={u.productSystem.closing} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 06 — Key Design Decisions */}
       <section id="sec-06" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="usaa-06">
           <div className="reveal">
             <SectionHeader number="06" eyebrowPath="usaa.decisions.eyebrow" titlePath="usaa.decisions.titleLead" highlightPath="usaa.decisions.titleHighlight" />
           </div>
@@ -411,12 +411,12 @@ export default function UsaaApp() {
               </div>
             ))}
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 07 — Execution & Collaboration */}
       <section id="sec-07" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="usaa-07">
           <div className="reveal">
             <SectionHeader number="07" eyebrowPath="usaa.execution.eyebrow" titlePath="usaa.execution.titleLead" highlightPath="usaa.execution.titleHighlight" />
           </div>
@@ -443,12 +443,12 @@ export default function UsaaApp() {
               </div>
             ))}
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 08 — Validation & Measurement */}
       <section id="sec-08" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="usaa-08">
           <div className="reveal">
             <SectionHeader number="08" eyebrowPath="usaa.validation.eyebrow" titlePath="usaa.validation.titleLead" highlightPath="usaa.validation.titleHighlight" />
           </div>
@@ -480,12 +480,12 @@ export default function UsaaApp() {
               ))}
             </div>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 09 — Impact */}
       <section id="sec-09" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="usaa-09">
           <div className="reveal">
             <SectionHeader number="09" eyebrowPath="usaa.impact.eyebrow" titlePath="usaa.impact.titleLead" highlightPath="usaa.impact.titleHighlight" />
           </div>
@@ -530,7 +530,7 @@ export default function UsaaApp() {
           <p className="mt-12 reveal text-xs text-muted-foreground/80 italic max-w-3xl">
             <Editable as="span" path="usaa.impact.confidentiality" multiline />
           </p>
-        </div>
+        </SectionBody>
       </section>
       </ReorderableSections>
 

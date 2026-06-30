@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
-import { EditableBlocks } from '@/content/EditableBlocks';
+import { EditableBlocks, SectionBody } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 import { ReorderableSections } from '@/components/ReorderableSections';
 
@@ -189,7 +189,7 @@ export default function MemberHome() {
       {/* 01 — Overview */}
       <ReorderableSections pageKey="memberHome">
       <section id="sec-01" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="memberHome-01">
           <div className="reveal">
             <SectionHeader number="01" eyebrowPath="memberHome.overview.eyebrow" titlePath="memberHome.overview.titleLead" highlightPath="memberHome.overview.titleHighlight" />
           </div>
@@ -236,12 +236,12 @@ export default function MemberHome() {
             <Editable as="h3" path="memberHome.overview.roleTitle" className="text-xl sm:text-2xl font-semibold mb-6" />
             <Chips base="memberHome.overview.roleList" items={m.overview.roleList} />
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 02 — Design Challenge */}
       <section id="sec-02" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="memberHome-02">
           <div className="reveal">
             <SectionHeader number="02" eyebrowPath="memberHome.challenge.eyebrow" titlePath="memberHome.challenge.titleLead" highlightPath="memberHome.challenge.titleHighlight" />
           </div>
@@ -266,12 +266,12 @@ export default function MemberHome() {
               <Paragraphs base="memberHome.challenge.context" items={m.challenge.context} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 03 — Discovery & Synthesis */}
       <section id="sec-03" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="memberHome-03">
           <div className="reveal">
             <SectionHeader number="03" eyebrowPath="memberHome.discovery.eyebrow" titlePath="memberHome.discovery.titleLead" highlightPath="memberHome.discovery.titleHighlight" />
           </div>
@@ -329,12 +329,12 @@ export default function MemberHome() {
               ))}
             </div>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 04 — Strategic Direction */}
       <section id="sec-04" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="memberHome-04">
           <div className="reveal">
             <SectionHeader number="04" eyebrowPath="memberHome.strategy.eyebrow" titlePath="memberHome.strategy.titleLead" highlightPath="memberHome.strategy.titleHighlight" />
           </div>
@@ -366,12 +366,12 @@ export default function MemberHome() {
               <Editable as="span" path="memberHome.strategy.quoteHighlight" className="gradient-text" />
             </blockquote>
           </figure>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 05 — Product System */}
       <section id="sec-05" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="memberHome-05">
           <div className="reveal">
             <SectionHeader number="05" eyebrowPath="memberHome.productSystem.eyebrow" titlePath="memberHome.productSystem.titleLead" highlightPath="memberHome.productSystem.titleHighlight" />
           </div>
@@ -405,12 +405,12 @@ export default function MemberHome() {
               <Paragraphs base="memberHome.productSystem.closing" items={m.productSystem.closing} />
             </Prose>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 06 — Key Design Decisions */}
       <section id="sec-06" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="memberHome-06">
           <div className="reveal">
             <SectionHeader number="06" eyebrowPath="memberHome.decisions.eyebrow" titlePath="memberHome.decisions.titleLead" highlightPath="memberHome.decisions.titleHighlight" />
           </div>
@@ -439,12 +439,12 @@ export default function MemberHome() {
               </div>
             ))}
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 07 — Execution & Collaboration */}
       <section id="sec-07" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="memberHome-07">
           <div className="reveal">
             <SectionHeader number="07" eyebrowPath="memberHome.execution.eyebrow" titlePath="memberHome.execution.titleLead" highlightPath="memberHome.execution.titleHighlight" />
           </div>
@@ -471,12 +471,12 @@ export default function MemberHome() {
               </div>
             ))}
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 08 — Validation & Measurement */}
       <section id="sec-08" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="memberHome-08">
           <div className="reveal">
             <SectionHeader number="08" eyebrowPath="memberHome.validation.eyebrow" titlePath="memberHome.validation.titleLead" highlightPath="memberHome.validation.titleHighlight" />
           </div>
@@ -508,12 +508,12 @@ export default function MemberHome() {
               ))}
             </div>
           </div>
-        </div>
+        </SectionBody>
       </section>
 
       {/* 09 — Impact */}
       <section id="sec-09" className="py-20 sm:py-28 scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionBody id="memberHome-09">
           <div className="reveal">
             <SectionHeader number="09" eyebrowPath="memberHome.impact.eyebrow" titlePath="memberHome.impact.titleLead" highlightPath="memberHome.impact.titleHighlight" />
           </div>
@@ -572,7 +572,7 @@ export default function MemberHome() {
           <p className="mt-12 reveal text-xs text-muted-foreground/80 italic max-w-3xl">
             <Editable as="span" path="memberHome.impact.confidentiality" multiline />
           </p>
-        </div>
+        </SectionBody>
       </section>
       </ReorderableSections>
 
