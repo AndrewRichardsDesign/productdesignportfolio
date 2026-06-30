@@ -845,7 +845,7 @@
         },
         {
           "title": "Designed and built inside real technical constraints",
-          "desc": "Short list: iOS “Allow Full Access” requirement led to deep links, clear setup instructions, and redirects; API latency simplified the default Reword bundle; bad default typing accuracy expanded scope into autocorrect, personalization, glide, and admin tuning; AI variability & cost required a structured modular prompt system; and language-specific edge cases shaped gender, romanization, and clarification controls."
+          "desc": "Selected examples: iOS “Allow Full Access” requirement led to deep links, clear setup instructions, and redirects; API latency simplified the default Reword response package; bad default typing accuracy expanded scope into autocorrect, personalization, glide, and admin tuning; AI variability & cost required a structured modular prompt system; and language-specific edge cases shaped gender, romanization, and clarification controls."
         },
         {
           "title": "Built the Reword experience",
