@@ -15,6 +15,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { Editable } from '@/content/Editable';
+import { ArcatextRoadmap } from '@/components/ArcatextRoadmap';
 
 /**
  * ArcatextKeyboard
@@ -486,8 +487,14 @@ export default function ArcatextKeyboard() {
         />
       </div>
 
-      <div className="relative w-full">
-        <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:gap-8">
+      <div className="relative flex w-full flex-col gap-10 xl:flex-row xl:items-start xl:gap-12">
+        {/* Left: the live interactive demo (Phase 1). */}
+        <div className="xl:shrink-0">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+            <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" aria-hidden />
+            Phase 1 · Live today
+          </div>
+          <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:gap-8">
           {/* iPhone */}
           <div style={{ width: OUTER_W * BASE_SCALE, height: OUTER_H * BASE_SCALE }}>
             <div
@@ -1105,6 +1112,12 @@ export default function ArcatextKeyboard() {
         >
           Explore the prototype by clicking any button in the toolbar! You can also close any view.
         </p>
+        </div>
+
+        {/* Right: the product roadmap (Phases 2–4) — how the project evolves. */}
+        <div className="min-w-0 flex-1">
+          <ArcatextRoadmap />
+        </div>
       </div>
     </div>
   );

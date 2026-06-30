@@ -187,9 +187,11 @@ export default function Arcatext() {
         </div>
       </section>
 
-      {/* Interactive keyboard diagram */}
+      {/* Interactive keyboard diagram — breaks out to the full page width so the
+          live demo (Phase 1) and the roadmap (Phases 2–4) sit side by side,
+          clearing the left section-nav rail at >=1600px. */}
       <section className="py-12 sm:py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-[calc(50%-50vw)] px-4 sm:px-6 lg:px-8 min-[1600px]:pl-56 min-[1600px]:pr-12">
           <ArcatextKeyboard />
         </div>
       </section>
