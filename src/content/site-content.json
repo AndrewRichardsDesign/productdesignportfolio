@@ -711,7 +711,7 @@
         {
           "n": "05",
           "title": "Choose LLM flexibility over cheaper machine translation",
-          "desc": "Traditional machine translation would have lowered cost but limited the product to direct translation. LLMs enabled the broader vision — contextual rewording, same-language correction, homograph clarification, tone adjustment, and future learning insights. The tradeoff was latency, reliability, and token cost, so model choice became a product decision weighed across quality, coverage, speed, and margin."
+          "desc": "Traditional machine translation would have lowered cost but limited Arcatext to more direct translation workflows. LLMs supported a more flexible, context-sensitive experience: rewording, clarification, tone adjustment, same-language correction, and future learning feedback. The tradeoff was higher latency, reliability risk, and usage-based cost, so the AI experience needed safeguards that helped users verify and control output before sending."
         },
         {
           "n": "06",
