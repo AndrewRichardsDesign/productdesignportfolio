@@ -31,9 +31,16 @@ function syncAllProjects() {
   const keys = Object.keys(map);
   if (!keys.length) throw new Error('No "projectDocs" map found in site-content.json.');
 
+  const seams = content.seams || {};
   keys.forEach(function (key) {
     if (!content[key]) { Logger.log('SKIP "' + key + '": no content section by that key.'); return; }
-    writeProjectDoc_(map[key], content[key]);
+    // Seam-inserted content lives in a separate top-level `seams` object, keyed
+    // "<projectKey>-<sectionId>". Collect this project's groups to render too.
+    const mine = {};
+    Object.keys(seams).forEach(function (sk) {
+      if (sk.indexOf(key + '-') === 0) mine[sk] = seams[sk];
+    });
+    writeProjectDoc_(map[key], content[key], mine);
     Logger.log('Updated ' + key + ' -> ' + map[key]);
   });
 
@@ -137,7 +144,7 @@ function fetchContent_() {
   return JSON.parse(res.getContentText());
 }
 
-function writeProjectDoc_(docId, data) {
+function writeProjectDoc_(docId, data, seams) {
   const doc = DocumentApp.openById(docId);
   const tab = findTab_(doc.getTabs(), TAB_TITLE);
   if (!tab) throw new Error('No tab titled "' + TAB_TITLE + '" in doc ' + docId);
@@ -149,6 +156,21 @@ function writeProjectDoc_(docId, data) {
     if (section && typeof section === 'object' && !Array.isArray(section)) {
       renderSection_(body, section);
     }
+  });
+  // Render content inserted at page "seams" (admin Insert) so the Doc holds ALL
+  // text — e.g. the "Risks that shaped the product" section. Appended after the
+  // structured sections (one-way GitHub -> Docs; layout isn't preserved).
+  if (seams) renderSeams_(body, seams);
+}
+
+/** Render every seam group for a project (sorted by section id, then gap). */
+function renderSeams_(body, groups) {
+  Object.keys(groups).sort().forEach(function (gkey) {
+    const gaps = groups[gkey] || {};
+    Object.keys(gaps).map(Number).sort(function (a, b) { return a - b; }).forEach(function (gi) {
+      const arr = gaps[gi];
+      if (Array.isArray(arr)) arr.forEach(function (entry) { renderProseEntry_(body, entry, false); });
+    });
   });
 }
 
@@ -209,7 +231,24 @@ function bullet_(body, text) {
 
 function isBlock_(x) {
   return x && typeof x === 'object' && !Array.isArray(x) &&
-         typeof x.text === 'string' && (x.type === 'paragraph' || x.type === 'heading');
+         ((typeof x.text === 'string' && (x.type === 'paragraph' || x.type === 'heading')) ||
+          x.type === 'element');
+}
+
+/** Render an element/card block's data as plain text (formatting isn't kept). */
+function renderElement_(body, d) {
+  d = d || {};
+  const num = d.num ? String(d.num).replace(/\.\s*$/, '') + '.  ' : '';
+  if (d.title) heading_(body, num + d.title, DocumentApp.ParagraphHeading.HEADING3);
+  // Preferred order for the common element fields; anything else follows.
+  const order = ['eyebrow', 'value', 'label', 'flow', 'text', 'question', 'desc'];
+  const printed = { num: true, title: true };
+  order.forEach(function (k) {
+    if (d[k] && !printed[k]) { para_(body, String(d[k]), false); printed[k] = true; }
+  });
+  Object.keys(d).forEach(function (k) {
+    if (!printed[k] && typeof d[k] === 'string' && d[k]) para_(body, String(d[k]), false);
+  });
 }
 
 function headingForStyle_(style) {
@@ -227,7 +266,8 @@ function renderProseEntry_(body, entry, bullets) {
   if (typeof entry === 'string') {
     bullets ? bullet_(body, entry) : para_(body, entry, false);
   } else if (isBlock_(entry)) {
-    if (entry.type === 'heading') heading_(body, entry.text, headingForStyle_(entry.style));
+    if (entry.type === 'element') renderElement_(body, entry.data || {});
+    else if (entry.type === 'heading') heading_(body, entry.text, headingForStyle_(entry.style));
     else para_(body, entry.text, false);
   } else {
     renderObject_(body, entry); // structured item, not a prose block
