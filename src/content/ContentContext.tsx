@@ -60,6 +60,12 @@ interface ContentContextValue {
   insertBlock: (path: string, index: number, block: ProseBlock) => void;
   /** Remove the array entry at `path`[index]. */
   removeBlock: (path: string, index: number) => void;
+  /** Duplicate the array item at `path`[index], appending the copy to the end. */
+  duplicateItem: (path: string, index: number) => void;
+  /** Move the array item at `path`[index] by `delta` (-1 up / +1 down). */
+  moveItem: (path: string, index: number, delta: number) => void;
+  /** Remove the array item at `path`[index] and renumber if items carry `n`. */
+  removeItem: (path: string, index: number) => void;
   setToken: (token: string) => void;
   setBranch: (branch: string) => void;
   save: () => Promise<void>;
@@ -92,6 +98,21 @@ function setByPath<T>(obj: T, path: string, value: unknown): T {
   }
   cursor[keys[keys.length - 1]] = value;
   return clone as T;
+}
+
+/**
+ * If every item in a list is an object with a purely-numeric `n` field, reassign
+ * those `n`s sequentially (1-based) so card numbering stays correct after a
+ * duplicate / move / delete. The zero-padding width is preserved from the widest
+ * existing value (e.g. "01".."09"). Lists without a numeric `n` are unchanged.
+ */
+function renumberList<T>(list: T[]): T[] {
+  const numbered = list.every(
+    (it) => it && typeof it === 'object' && 'n' in it && /^\d+$/.test(String((it as { n: unknown }).n))
+  );
+  if (!numbered || list.length === 0) return list;
+  const width = Math.max(...list.map((it) => String((it as { n: unknown }).n).length), 1);
+  return list.map((it, i) => ({ ...(it as object), n: String(i + 1).padStart(width, '0') })) as T[];
 }
 
 /** Base64-encode a UTF-8 string (btoa only handles latin1 on its own). */
@@ -303,6 +324,53 @@ export function ContentProvider({
         const list = [...arr];
         list.splice(index, 1);
         const next = setByPath(prev, path, list);
+        persistDraft(next);
+        return next;
+      });
+    },
+    [persistDraft]
+  );
+
+  const duplicateItem = useCallback(
+    (path: string, index: number) => {
+      setContent((prev) => {
+        const arr = getByPath(prev, path);
+        if (!Array.isArray(arr) || index < 0 || index >= arr.length) return prev;
+        const copy = JSON.parse(JSON.stringify(arr[index]));
+        const next = setByPath(prev, path, renumberList([...arr, copy]));
+        persistDraft(next);
+        return next;
+      });
+    },
+    [persistDraft]
+  );
+
+  const moveItem = useCallback(
+    (path: string, index: number, delta: number) => {
+      requestScrollRestore();
+      setContent((prev) => {
+        const arr = getByPath(prev, path);
+        if (!Array.isArray(arr)) return prev;
+        const j = index + delta;
+        if (index < 0 || index >= arr.length || j < 0 || j >= arr.length) return prev;
+        const list = [...arr];
+        [list[index], list[j]] = [list[j], list[index]];
+        const next = setByPath(prev, path, renumberList(list));
+        persistDraft(next);
+        return next;
+      });
+    },
+    [persistDraft, requestScrollRestore]
+  );
+
+  const removeItem = useCallback(
+    (path: string, index: number) => {
+      setContent((prev) => {
+        const arr = getByPath(prev, path);
+        if (!Array.isArray(arr) || index < 0 || index >= arr.length) return prev;
+        const list = [...arr];
+        list.splice(index, 1);
+        const next = setByPath(prev, path, renumberList(list));
         persistDraft(next);
         return next;
       });
@@ -534,13 +602,16 @@ export function ContentProvider({
       setText,
       insertBlock,
       removeBlock,
+      duplicateItem,
+      moveItem,
+      removeItem,
       setToken,
       setBranch,
       save,
       discardChanges,
       uploadAsset,
     }),
-    [content, isAdmin, dirty, token, branch, saveState, insertTool, setInsertTool, moveMode, selection, startMove, cancelMove, toggleSectionSelection, toggleBlockSelection, moveSectionsTo, moveBlocksTo, setText, insertBlock, removeBlock, setToken, setBranch, save, discardChanges, uploadAsset]
+    [content, isAdmin, dirty, token, branch, saveState, insertTool, setInsertTool, moveMode, selection, startMove, cancelMove, toggleSectionSelection, toggleBlockSelection, moveSectionsTo, moveBlocksTo, setText, insertBlock, removeBlock, duplicateItem, moveItem, removeItem, setToken, setBranch, save, discardChanges, uploadAsset]
   );
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>;

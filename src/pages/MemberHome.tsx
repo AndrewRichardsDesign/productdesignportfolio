@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
-import { EditableBlocks, SectionBody } from '@/content/EditableBlocks';
+import { EditableBlocks, ItemGroup, SectionBody } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 import { ReorderableSections } from '@/components/ReorderableSections';
 
@@ -207,14 +207,14 @@ export default function MemberHome() {
                   <Layers className="w-4 h-4" />
                   <Editable as="span" path="memberHome.overview.productTypeLabel" />
                 </div>
-                <ul className="space-y-3 text-foreground/90">
+                <ItemGroup as="ul" path="memberHome.overview.productTypeList" className="space-y-3 text-foreground/90">
                   {m.overview.productTypeList.map((_, i) => (
                     <li key={i} className="flex items-center gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-primary/70 shrink-0" />
                       <Editable as="span" path={`memberHome.overview.productTypeList.${i}`} />
                     </li>
                   ))}
-                </ul>
+                </ItemGroup>
               </div>
             </aside>
           </div>
@@ -222,14 +222,14 @@ export default function MemberHome() {
           {/* Scale & impact stat band */}
           <div className="mt-16 reveal">
             <Editable as="h3" path="memberHome.overview.statsLabel" className="text-xs uppercase tracking-[0.2em] text-primary mb-6" />
-            <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <ItemGroup as="dl" path="memberHome.overview.stats" className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {m.overview.stats.map((_, i) => (
                 <div key={i} className="rounded-2xl bg-gradient-to-br from-primary/10 to-primary/[0.03] p-6">
                   <Editable as="dt" path={`memberHome.overview.stats.${i}.value`} className="text-3xl sm:text-4xl font-bold gradient-text mb-2" />
                   <Editable as="dd" path={`memberHome.overview.stats.${i}.label`} multiline className="text-sm text-muted-foreground leading-relaxed" />
                 </div>
               ))}
-            </dl>
+            </ItemGroup>
           </div>
 
           <div className="mt-16 reveal">
@@ -282,7 +282,7 @@ export default function MemberHome() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="memberHome.discovery.insights" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {m.discovery.insights.map((_, i) => (
               <div
                 key={i}
@@ -292,11 +292,11 @@ export default function MemberHome() {
                 <Editable as="p" path={`memberHome.discovery.insights.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <div className="mt-20">
             <Editable as="h3" path="memberHome.discovery.responsesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="memberHome.discovery.responses" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {m.discovery.responses.map((_, i) => (
                 <div
                   key={i}
@@ -327,7 +327,7 @@ export default function MemberHome() {
                   </div>
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
         </SectionBody>
       </section>
@@ -345,7 +345,7 @@ export default function MemberHome() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <ItemGroup as="div" path="memberHome.strategy.pillars" className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
             {m.strategy.pillars.map((_, i) => (
               <div
                 key={i}
@@ -358,7 +358,7 @@ export default function MemberHome() {
                 <Editable as="p" path={`memberHome.strategy.pillars.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <figure className="mt-12 reveal max-w-3xl">
             <blockquote className="text-2xl sm:text-3xl font-semibold leading-snug text-balance">
@@ -382,7 +382,7 @@ export default function MemberHome() {
             </Prose>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+          <ItemGroup as="div" path="memberHome.productSystem.models" className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
             {m.productSystem.models.map((_, i) => (
               <div
                 key={i}
@@ -398,7 +398,7 @@ export default function MemberHome() {
                 <Editable as="p" path={`memberHome.productSystem.models.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <div className="mt-12 reveal">
             <Prose>
@@ -421,7 +421,7 @@ export default function MemberHome() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="memberHome.decisions.items" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {m.decisions.items.map((_, i) => (
               <div
                 key={i}
@@ -438,7 +438,7 @@ export default function MemberHome() {
                 </div>
               </div>
             ))}
-          </div>
+          </ItemGroup>
         </SectionBody>
       </section>
 
@@ -455,7 +455,7 @@ export default function MemberHome() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="memberHome.execution.blocks" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {m.execution.blocks.map((_, i) => (
               <div
                 key={i}
@@ -470,7 +470,7 @@ export default function MemberHome() {
                 </div>
               </div>
             ))}
-          </div>
+          </ItemGroup>
         </SectionBody>
       </section>
 
@@ -494,7 +494,7 @@ export default function MemberHome() {
 
           <div className="mt-16">
             <Editable as="h3" path="memberHome.validation.questionsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="memberHome.validation.questions" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {m.validation.questions.map((item, i) => (
                 <div
                   key={i}
@@ -506,7 +506,7 @@ export default function MemberHome() {
                   <Editable as="p" path={`memberHome.validation.questions.${i}.q`} multiline className="text-base text-foreground/90 leading-snug" />
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
         </SectionBody>
       </section>
@@ -524,7 +524,7 @@ export default function MemberHome() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="memberHome.impact.highlights" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {m.impact.highlights.map((_, i) => (
               <div
                 key={i}
@@ -536,7 +536,7 @@ export default function MemberHome() {
                 <Editable as="p" path={`memberHome.impact.highlights.${i}`} multiline className="text-sm sm:text-base text-foreground/85 leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <div className="mt-16 reveal rounded-2xl bg-primary/10 p-8 lg:p-10">
             <Editable as="h3" path="memberHome.impact.demonstratesTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
@@ -547,7 +547,7 @@ export default function MemberHome() {
 
           <div className="mt-20">
             <Editable as="h3" path="memberHome.impact.caseStudiesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="memberHome.impact.caseStudies" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {m.impact.caseStudies.map((_, i) => (
                 <a
                   key={i}
@@ -566,7 +566,7 @@ export default function MemberHome() {
                   </div>
                 </a>
               ))}
-            </div>
+            </ItemGroup>
           </div>
 
           <p className="mt-12 reveal text-xs text-muted-foreground/80 italic max-w-3xl">

@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
-import { EditableBlocks, SectionBody } from '@/content/EditableBlocks';
+import { EditableBlocks, ItemGroup, SectionBody } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 import { ReorderableSections } from '@/components/ReorderableSections';
 
@@ -208,14 +208,14 @@ export default function Conversant() {
                   <Layers className="w-4 h-4" />
                   <Editable as="span" path="conversant.overview.productTypeLabel" />
                 </div>
-                <ul className="space-y-3 text-foreground/90">
+                <ItemGroup as="ul" path="conversant.overview.productTypeList" className="space-y-3 text-foreground/90">
                   {c.overview.productTypeList.map((_, i) => (
                     <li key={i} className="flex items-center gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-primary/70 shrink-0" />
                       <Editable as="span" path={`conversant.overview.productTypeList.${i}`} />
                     </li>
                   ))}
-                </ul>
+                </ItemGroup>
               </div>
             </aside>
           </div>
@@ -301,7 +301,7 @@ export default function Conversant() {
 
           <div className="mt-20">
             <Editable as="h3" path="conversant.discovery.responsesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="conversant.discovery.responses" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {c.discovery.responses.map((_, i) => (
                 <div
                   key={i}
@@ -324,7 +324,7 @@ export default function Conversant() {
                   </div>
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
         </SectionBody>
       </section>
@@ -342,7 +342,7 @@ export default function Conversant() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <ItemGroup as="div" path="conversant.strategy.pillars" className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
             {c.strategy.pillars.map((_, i) => (
               <div
                 key={i}
@@ -355,7 +355,7 @@ export default function Conversant() {
                 <Editable as="p" path={`conversant.strategy.pillars.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <figure className="mt-12 reveal max-w-3xl">
             <blockquote className="text-2xl sm:text-3xl font-semibold leading-snug text-balance">
@@ -379,7 +379,7 @@ export default function Conversant() {
             </Prose>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+          <ItemGroup as="div" path="conversant.productSystem.models" className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
             {c.productSystem.models.map((_, i) => (
               <div
                 key={i}
@@ -395,7 +395,7 @@ export default function Conversant() {
                 <Editable as="p" path={`conversant.productSystem.models.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <div className="mt-12 reveal">
             <Prose>
@@ -418,7 +418,7 @@ export default function Conversant() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ItemGroup as="div" path="conversant.selectedWork.items" className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
             {c.selectedWork.items.map((work, i) => (
               <div
                 key={i}
@@ -437,7 +437,7 @@ export default function Conversant() {
                 </div>
               </div>
             ))}
-          </div>
+          </ItemGroup>
         </SectionBody>
       </section>
 
@@ -454,7 +454,7 @@ export default function Conversant() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="conversant.decisions.items" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {c.decisions.items.map((_, i) => (
               <div
                 key={i}
@@ -471,7 +471,7 @@ export default function Conversant() {
                 </div>
               </div>
             ))}
-          </div>
+          </ItemGroup>
         </SectionBody>
       </section>
 
@@ -490,7 +490,7 @@ export default function Conversant() {
 
           <div className="mt-12">
             <Editable as="h3" path="conversant.constraints.constraintsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="conversant.constraints.items" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {c.constraints.items.map((_, i) => (
                 <div
                   key={i}
@@ -500,7 +500,7 @@ export default function Conversant() {
                   <Editable as="p" path={`conversant.constraints.items.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
 
           <div className="mt-20 reveal">
@@ -531,7 +531,7 @@ export default function Conversant() {
 
           <div className="mt-16">
             <Editable as="h3" path="conversant.validation.questionsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="conversant.validation.questions" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {c.validation.questions.map((item, i) => (
                 <div
                   key={i}
@@ -543,7 +543,7 @@ export default function Conversant() {
                   <Editable as="p" path={`conversant.validation.questions.${i}.q`} multiline className="text-base text-foreground/90 leading-snug" />
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
         </SectionBody>
       </section>
@@ -561,7 +561,7 @@ export default function Conversant() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="conversant.impact.highlights" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {c.impact.highlights.map((_, i) => (
               <div
                 key={i}
@@ -573,7 +573,7 @@ export default function Conversant() {
                 <Editable as="p" path={`conversant.impact.highlights.${i}`} multiline className="text-sm sm:text-base text-foreground/85 leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <div className="mt-16 reveal rounded-2xl bg-primary/10 p-8 lg:p-10">
             <Editable as="h3" path="conversant.impact.demonstratesTitle" className="text-xl sm:text-2xl font-semibold mb-5" />
@@ -584,7 +584,7 @@ export default function Conversant() {
 
           <div className="mt-20">
             <Editable as="h3" path="conversant.impact.caseStudiesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="conversant.impact.caseStudies" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {c.impact.caseStudies.map((_, i) => (
                 <a
                   key={i}
@@ -603,7 +603,7 @@ export default function Conversant() {
                   </div>
                 </a>
               ))}
-            </div>
+            </ItemGroup>
           </div>
 
           <p className="mt-12 reveal text-xs text-muted-foreground/80 italic max-w-3xl">

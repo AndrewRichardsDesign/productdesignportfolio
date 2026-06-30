@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
-import { EditableBlocks, SectionBody } from '@/content/EditableBlocks';
+import { EditableBlocks, ItemGroup, SectionBody } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 import { ReorderableSections } from '@/components/ReorderableSections';
 
@@ -207,14 +207,14 @@ export default function UsaaApp() {
                   <Layers className="w-4 h-4" />
                   <Editable as="span" path="usaa.overview.productTypeLabel" />
                 </div>
-                <ul className="space-y-3 text-foreground/90">
+                <ItemGroup as="ul" path="usaa.overview.productTypeList" className="space-y-3 text-foreground/90">
                   {u.overview.productTypeList.map((_, i) => (
                     <li key={i} className="flex items-center gap-3">
                       <span className="w-1.5 h-1.5 rounded-full bg-primary/70 shrink-0" />
                       <Editable as="span" path={`usaa.overview.productTypeList.${i}`} />
                     </li>
                   ))}
-                </ul>
+                </ItemGroup>
               </div>
             </aside>
           </div>
@@ -269,7 +269,7 @@ export default function UsaaApp() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="usaa.discovery.insights" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {u.discovery.insights.map((_, i) => (
               <div
                 key={i}
@@ -279,11 +279,11 @@ export default function UsaaApp() {
                 <Editable as="p" path={`usaa.discovery.insights.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <div className="mt-20">
             <Editable as="h3" path="usaa.discovery.responsesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="usaa.discovery.responses" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {u.discovery.responses.map((_, i) => (
                 <div
                   key={i}
@@ -314,7 +314,7 @@ export default function UsaaApp() {
                   </div>
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
         </SectionBody>
       </section>
@@ -354,7 +354,7 @@ export default function UsaaApp() {
             </Prose>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+          <ItemGroup as="div" path="usaa.productSystem.models" className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
             {u.productSystem.models.map((_, i) => (
               <div
                 key={i}
@@ -370,7 +370,7 @@ export default function UsaaApp() {
                 <Editable as="p" path={`usaa.productSystem.models.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <div className="mt-12 reveal">
             <Prose>
@@ -393,7 +393,7 @@ export default function UsaaApp() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="usaa.decisions.items" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {u.decisions.items.map((_, i) => (
               <div
                 key={i}
@@ -410,7 +410,7 @@ export default function UsaaApp() {
                 </div>
               </div>
             ))}
-          </div>
+          </ItemGroup>
         </SectionBody>
       </section>
 
@@ -427,7 +427,7 @@ export default function UsaaApp() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="usaa.execution.blocks" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {u.execution.blocks.map((_, i) => (
               <div
                 key={i}
@@ -442,7 +442,7 @@ export default function UsaaApp() {
                 </div>
               </div>
             ))}
-          </div>
+          </ItemGroup>
         </SectionBody>
       </section>
 
@@ -466,7 +466,7 @@ export default function UsaaApp() {
 
           <div className="mt-16">
             <Editable as="h3" path="usaa.validation.questionsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="usaa.validation.questions" className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {u.validation.questions.map((item, i) => (
                 <div
                   key={i}
@@ -478,7 +478,7 @@ export default function UsaaApp() {
                   <Editable as="p" path={`usaa.validation.questions.${i}.q`} multiline className="text-base text-foreground/90 leading-snug" />
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
         </SectionBody>
       </section>
@@ -505,7 +505,7 @@ export default function UsaaApp() {
 
           <div className="mt-20">
             <Editable as="h3" path="usaa.impact.caseStudiesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="usaa.impact.caseStudies" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {u.impact.caseStudies.map((_, i) => (
                 <a
                   key={i}
@@ -524,7 +524,7 @@ export default function UsaaApp() {
                   </div>
                 </a>
               ))}
-            </div>
+            </ItemGroup>
           </div>
 
           <p className="mt-12 reveal text-xs text-muted-foreground/80 italic max-w-3xl">

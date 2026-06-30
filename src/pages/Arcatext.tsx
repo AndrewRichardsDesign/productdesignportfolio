@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button';
 import ArcatextKeyboard from '@/components/ArcatextKeyboard';
 import { useContent } from '@/content/ContentContext';
 import { Editable } from '@/content/Editable';
-import { EditableBlocks, SectionBody } from '@/content/EditableBlocks';
+import { EditableBlocks, ItemGroup, SectionBody } from '@/content/EditableBlocks';
 import { SectionToc, SectionNavDropdown } from '@/components/SectionToc';
 import { ReorderableSections } from '@/components/ReorderableSections';
 import { TypingFlowDiagram } from '@/components/TypingFlowDiagram';
@@ -217,7 +217,7 @@ export default function Arcatext() {
                   <Languages className="w-4 h-4" />
                   <Editable as="span" path="arcatext.overview.productTypeLabel" />
                 </div>
-                <ul className="space-y-3 text-foreground/90">
+                <ItemGroup as="ul" path="arcatext.overview.productTypeList" className="space-y-3 text-foreground/90">
                   {arc.overview.productTypeList.map((_, i) => {
                     const Icon = productTypeIcons[i] ?? KeyboardIcon;
                     return (
@@ -227,7 +227,7 @@ export default function Arcatext() {
                       </li>
                     );
                   })}
-                </ul>
+                </ItemGroup>
               </div>
             </aside>
           </div>
@@ -280,7 +280,7 @@ export default function Arcatext() {
           {/* Problems */}
           <div className="mt-20">
             <Editable as="h3" path="arcatext.problem.problemsTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="arcatext.problem.problems" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {arc.problem.problems.map((_, i) => (
                 <div
                   key={i}
@@ -290,13 +290,13 @@ export default function Arcatext() {
                   <Editable as="p" path={`arcatext.problem.problems.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
 
           {/* Opportunities */}
           <div className="mt-16">
             <Editable as="h3" path="arcatext.problem.opportunitiesTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="arcatext.problem.opportunities" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {arc.problem.opportunities.map((_, i) => (
                 <div
                   key={i}
@@ -306,7 +306,7 @@ export default function Arcatext() {
                   <Editable as="p" path={`arcatext.problem.opportunities.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
 
           <div className="mt-16 reveal">
@@ -343,7 +343,7 @@ export default function Arcatext() {
             </blockquote>
           </figure>
 
-          <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ItemGroup as="div" path="arcatext.strategy.cards" className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-6">
             {arc.strategy.cards.map((_, i) => (
               <div
                 key={i}
@@ -353,7 +353,7 @@ export default function Arcatext() {
                 <Editable as="p" path={`arcatext.strategy.cards.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
 
           <div className="mt-16 reveal rounded-2xl bg-muted/40 p-8 lg:p-10">
             <Editable as="p" path="arcatext.strategy.artifactEyebrow" className="text-xs uppercase tracking-[0.2em] text-primary mb-3" />
@@ -386,7 +386,7 @@ export default function Arcatext() {
             </Prose>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+          <ItemGroup as="div" path="arcatext.productSystem.flows" className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
             {arc.productSystem.flows.map((flow, i) => {
               const Icon = flowIcons[i] ?? Sparkles;
               return (
@@ -425,7 +425,7 @@ export default function Arcatext() {
                 </div>
               );
             })}
-          </div>
+          </ItemGroup>
 
           <div className="mt-12 reveal">
             <Prose>
@@ -448,7 +448,7 @@ export default function Arcatext() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="arcatext.decisions.items" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {arc.decisions.items.map((d, i) => (
               <div
                 key={i}
@@ -459,7 +459,7 @@ export default function Arcatext() {
                 <Editable as="p" path={`arcatext.decisions.items.${i}.desc`} multiline className="text-sm text-muted-foreground leading-relaxed" />
               </div>
             ))}
-          </div>
+          </ItemGroup>
         </SectionBody>
       </section>
 
@@ -489,7 +489,7 @@ export default function Arcatext() {
           {/* Directional insights */}
           <div className="mt-20">
             <Editable as="h3" path="arcatext.execution.directionalTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="arcatext.execution.directionalInsights" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {arc.execution.directionalInsights.map((insight, i) => (
                 <div
                   key={i}
@@ -507,7 +507,7 @@ export default function Arcatext() {
                   )}
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
 
           {/* So what */}
@@ -525,7 +525,7 @@ export default function Arcatext() {
           {/* From insight to product response */}
           <div className="mt-20">
             <Editable as="h3" path="arcatext.execution.insightToResponseTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ItemGroup as="div" path="arcatext.execution.productResponses" className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {arc.execution.productResponses.map((_, i) => (
                 <div
                   key={i}
@@ -548,13 +548,13 @@ export default function Arcatext() {
                   </div>
                 </div>
               ))}
-            </div>
+            </ItemGroup>
           </div>
 
           {/* Shipped */}
           <div className="mt-20">
             <Editable as="h3" path="arcatext.execution.shippedTitle" className="text-xl sm:text-2xl font-semibold mb-8 reveal" />
-            <ol className="space-y-4">
+            <ItemGroup as="ol" path="arcatext.execution.outcomes" className="space-y-4">
               {arc.execution.outcomes.map((_, i) => (
                 <li
                   key={i}
@@ -569,7 +569,7 @@ export default function Arcatext() {
                   </div>
                 </li>
               ))}
-            </ol>
+            </ItemGroup>
           </div>
 
           {/* Competitive product requirement */}
@@ -600,7 +600,7 @@ export default function Arcatext() {
               </Prose>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
+            <ItemGroup as="div" path="arcatext.execution.launchQuestions" className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
               {arc.execution.launchQuestions.map((item, i) => (
                 <div
                   key={i}
@@ -612,7 +612,7 @@ export default function Arcatext() {
                   <Editable as="p" path={`arcatext.execution.launchQuestions.${i}.q`} multiline className="text-base sm:text-lg text-foreground/90 leading-snug" />
                 </div>
               ))}
-            </div>
+            </ItemGroup>
 
             <div className="reveal">
               <Editable as="h4" path="arcatext.execution.plannedSignalsLabel" className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-5" />
@@ -644,7 +644,7 @@ export default function Arcatext() {
             </Prose>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ItemGroup as="div" path="arcatext.caseStudies.items" className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             {arc.caseStudies.items.map((_, i) => (
               <a
                 key={i}
@@ -663,7 +663,7 @@ export default function Arcatext() {
                 </div>
               </a>
             ))}
-          </div>
+          </ItemGroup>
         </SectionBody>
       </section>
       </ReorderableSections>

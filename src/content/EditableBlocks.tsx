@@ -1,6 +1,6 @@
-import { Children, Fragment, useState } from 'react';
-import type { ReactNode } from 'react';
-import { X } from 'lucide-react';
+import { Children, Fragment, cloneElement, isValidElement, useState } from 'react';
+import type { ElementType, ReactElement, ReactNode } from 'react';
+import { ArrowDown, ArrowUp, Copy, Trash2, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useContent } from './ContentContext';
 import { Editable } from './Editable';
@@ -117,6 +117,89 @@ export function BlockSlot({ path, className }: { path: string; className?: strin
     <div className={cn('my-6 space-y-5', className)}>
       <EditableBlocks path={path} />
     </div>
+  );
+}
+
+/**
+ * Per-item admin controls (reorder · duplicate · delete) overlaid on a repeated
+ * element (a card, list row, …). Operates on the content array at `path`.
+ */
+function ItemControls({ path, index }: { path: string; index: number }) {
+  const { content, duplicateItem, moveItem, removeItem } = useContent();
+  const raw = getByPath(content, path);
+  const count = Array.isArray(raw) ? raw.length : 0;
+  const act = (fn: () => void) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    fn();
+  };
+  const btn =
+    'flex h-6 w-6 items-center justify-center rounded-md border border-border/60 bg-background/90 text-muted-foreground shadow-sm backdrop-blur transition hover:text-foreground disabled:cursor-not-allowed disabled:opacity-30';
+  return (
+    <div
+      contentEditable={false}
+      className="absolute right-2 top-2 z-30 flex items-center gap-1"
+    >
+      <button type="button" title="Move up" disabled={index === 0} onClick={act(() => moveItem(path, index, -1))} className={btn}>
+        <ArrowUp className="h-3.5 w-3.5" />
+      </button>
+      <button type="button" title="Move down" disabled={index >= count - 1} onClick={act(() => moveItem(path, index, 1))} className={btn}>
+        <ArrowDown className="h-3.5 w-3.5" />
+      </button>
+      <button type="button" title="Duplicate" onClick={act(() => duplicateItem(path, index))} className={btn}>
+        <Copy className="h-3.5 w-3.5" />
+      </button>
+      <button
+        type="button"
+        title="Delete"
+        onClick={act(() => removeItem(path, index))}
+        className={cn(btn, 'hover:border-destructive/50 hover:bg-destructive/10 hover:text-destructive')}
+      >
+        <Trash2 className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+}
+
+/**
+ * Wraps a repeated element group (a card grid, a list, …) bound to the content
+ * array at `path`. In admin mode it injects {@link ItemControls} into each child
+ * (reorder · duplicate · delete), so any card/list-row can be duplicated to the
+ * end of the list, reordered (numbering auto-updates), or removed — without
+ * touching each card's markup. Renders the plain group for visitors.
+ */
+export function ItemGroup({
+  path,
+  as = 'div',
+  className,
+  children,
+}: {
+  path: string;
+  as?: ElementType;
+  className?: string;
+  children: ReactNode;
+}) {
+  const { isAdmin } = useContent();
+  const Tag = as;
+  if (!isAdmin) return <Tag className={className}>{children}</Tag>;
+  const kids = Children.toArray(children);
+  return (
+    <Tag className={className}>
+      {kids.map((child, i) => {
+        if (!isValidElement(child)) return child;
+        const el = child as ReactElement<{ className?: string; children?: ReactNode }>;
+        return cloneElement(el, {
+          key: i,
+          className: cn('relative', el.props.className),
+          children: (
+            <>
+              {el.props.children}
+              <ItemControls path={path} index={i} />
+            </>
+          ),
+        });
+      })}
+    </Tag>
   );
 }
 
