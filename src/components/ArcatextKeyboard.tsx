@@ -14,6 +14,7 @@ import {
   Settings,
   Trash2,
 } from 'lucide-react';
+import { Editable } from '@/content/Editable';
 
 /**
  * ArcatextKeyboard
@@ -467,16 +468,22 @@ export default function ArcatextKeyboard() {
       <div className="mb-8">
         <div className="mb-3 flex items-baseline gap-4">
           <span className="font-mono text-sm tracking-wider text-primary/70">00</span>
-          <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Interactive</span>
+          <Editable
+            as="span"
+            path="arcatext.interactive.eyebrow"
+            className="text-xs uppercase tracking-[0.2em] text-muted-foreground"
+          />
         </div>
         <h2 className="max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-4xl">
-          The keyboard, <span className="gradient-text">in motion</span>
+          <Editable as="span" path="arcatext.interactive.titleLead" />{' '}
+          <Editable as="span" path="arcatext.interactive.titleHighlight" className="gradient-text" />
         </h2>
-        <p className="mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
-          An interactive walkthrough of the Arcatext keyboard, built from the iOS
-          source. The first step plays automatically, then pauses — step through it
-          with Back / Next, or tap any keyboard button to jump to that step.
-        </p>
+        <Editable
+          as="p"
+          path="arcatext.interactive.description"
+          multiline
+          className="mt-3 max-w-xl text-sm text-muted-foreground sm:text-base"
+        />
       </div>
 
       <div className="relative w-full">
